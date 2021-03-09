@@ -1,16 +1,18 @@
-import React, { Ref, useEffect, useRef, useState } from 'react'
-import car from './car.png'
-import './App.css'
+import React, { Ref, useEffect, useRef, useState } from 'react';
+import car from './car.png';
+import './App.css';
+
+const PI = Math.PI;
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [count, setCount] = useState(0);
   const ref = useRef<HTMLImageElement | null>(null);
 
   return (
     <div className="App">
       <CarView />
     </div>
-  )
+  );
 }
 
 function CarView() {
@@ -22,45 +24,83 @@ function CarView() {
     var ctx = canvas.getContext('2d');
     if (!ctx) throw new Error('no context!');
 
-    var H = 170;
-    var W = 200;
+    const H = 170;
+    const W = 200;
+    const R = W / 2;
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     ctx.beginPath();
-    ctx.moveTo(50, 50 + H + W / 2);
+    ctx.moveTo(50 - getOffset(0), 50 + H + R);
 
-    for (let y = 50 + H + W / 2; y > 50 + W / 2; y -= 5) {
-      ctx.lineTo(50, y);
+    for (let y = 50 + H + R; y > 50 + R; y -= 3) {
+      let o = getOffset((50 + H + R - y) / H * 100);
+      ctx.lineTo(50 - o, y);
     }
 
-    for (let dire = 180; dire <= 360; dire += 10) {
-      ctx.lineTo(...fromPolar(50 + W / 2, 50 + W / 2, W / 2, dire));
+    for (let dire = PI; dire <= 2 * PI; dire += 3 / R) {
+      let o = getOffset(100 + (dire - PI) / PI * 150);
+      ctx.lineTo(...fromPolar(50 + R, 50 + R, R + o, dire));
     }
 
-    for (let y = 50 + W / 2; y < 50 + H + W / 2; y += 5) {
-      ctx.lineTo(50 + W, y);
+    for (let y = 50 + R; y < 50 + H + R; y += 3) {
+      let o = getOffset(250 + (y - (50 + R))/ H * 100);
+      ctx.lineTo(50 + W + o, y);
     }
 
-    for (let dire = 0; dire <= 180; dire += 10) {
-      ctx.lineTo(...fromPolar(50 + W / 2, 50 + H + W / 2, W / 2, dire));
+    for (let dire = 0; dire <= PI; dire += 3 / R) {
+      let o = getOffset(350 + (dire / PI) * 150);
+      ctx.lineTo(...fromPolar(50 + R, 50 + H + R, R + o, dire));
     }
+
+    ctx.closePath();
 
     ctx.strokeStyle = 'white';
     ctx.lineWidth = 3;
     ctx.stroke();
   }
 
-  function fromPolar(x: number, y: number, len: number, dire: number): [x: number, y: number] {
-    var rad = dire / 180 * Math.PI;
+  function fromPolar(x: number, y: number, len: number, rad: number): [x: number, y: number] {
     return [
       x + len * Math.cos(rad),
       y + len * Math.sin(rad)
     ];
   }
 
+  const data: {pos: number, val: number}[] = [
+    {pos: 30, val: 0},
+    {pos: 0, val: 30},
+    {pos: 150, val: 30},
+    {pos: 180, val: 30},
+    {pos: 200, val: 30},
+    {pos: 250, val: 30},
+    {pos: 400, val: 30},
+  ];
+
+  function posDist(a: number, b: number) {
+    return Math.min(a > b ? a - b : b - a, a > b ? (500 - a + b) : (500 - b + a));
+  }
+
+  function getOffset(pos: number) {
+    const SPREAD = 30;
+    var result = 0;
+    for (const it of data) {
+      if (posDist(it.pos, pos) < SPREAD) {
+        // console.info([it.pos, pos, it.val]);
+        result -= (Math.sin((1 - posDist(it.pos, pos) / SPREAD) * PI - PI/2 ) + 1) / 2 * it.val;
+      }
+    }
+    return result;
+  }
+
   useEffect(() => {
     redraw();
+    var timer = setInterval(() => {
+      if (++data[0].pos == 500)
+        data[0].pos = 0;
+      redraw();
+    }, 30);
+    return () => clearInterval(timer);
   });
 
   return (
@@ -71,4 +111,4 @@ function CarView() {
   );
 }
 
-export default App
+export default App;
