@@ -6,8 +6,15 @@ import { Client } from './Client';
 export type Data = any;
 
 function App() {
+  const [data, setData] = useState('')
+  useEffect(() => {
+    return Client.current.listenData(data => {
+      setData(JSON.stringify(data));
+    });
+  })
   return (
     <div className="App">
+      <p>Data: <code>{data}</code></p>
       <CarView />
     </div>
   );

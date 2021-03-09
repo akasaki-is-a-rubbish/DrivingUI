@@ -1,18 +1,47 @@
 import React, { useEffect, useRef } from 'react';
 import car from './car.png';
 import { Client } from './Client';
-import { baseDistance, sensorFunction, sensorMap } from './config';
+import { baseDistance, colors, sensorFunction, sensorMap, Color } from './config';
 
 const PI = Math.PI;
 
 export function CarView() {
   var ref = useRef<HTMLCanvasElement>(null);
+  var canvas: HTMLCanvasElement;
+  var ctx: CanvasRenderingContext2D;
+
+  function clear() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+
+  var lastX: number, lastY: number;
+  function moveTo(x: number, y: number) {
+    lastX = x; lastY = y;
+  }
+  
+  function lineTo(x: number, y: number, o: number) {
+    ctx.beginPath();
+    ctx.moveTo(lastX, lastY);
+    ctx.lineTo(x, y);
+    lastX = x; lastY = y;
+    o -= baseDistance;
+    var prev = colors[0];
+    var next = colors[1];
+    for (let i = 1; i < colors.length; i++) {
+      if (next.distance > o) break;
+      [prev, next] = [next, colors[i]];
+    }
+    var color = mixColor(prev, next, (prev.distance - o) / (next.distance - prev.distance));
+    // var color = next;
+    ctx.strokeStyle = `rgb(${(color.r)}, ${(color.g)}, ${(color.b)})`;
+    ctx.stroke();
+  }
 
   function redraw() {
-    var canvas = ref.current;
+    canvas = ref.current!;
     if (!canvas)
       throw new Error('no canvas!');
-    var ctx = canvas.getContext('2d');
+    ctx = canvas.getContext('2d')!;
     if (!ctx)
       throw new Error('no context!');
 
@@ -21,43 +50,36 @@ export function CarView() {
     const W = 200;
     const R = W / 2;
 
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    clear();
 
-    ctx.beginPath();
-    ctx.moveTo(M - getOffset(0), M + H + R);
+    ctx.strokeStyle = 'white';
+    ctx.lineCap = 'round';
+    ctx.lineWidth = 5;
+
+    moveTo(M - getOffset(0), M + H + R);
 
     for (let y = M + H + R; y > M + R; y -= 3) {
       let o = getOffset((M + H + R - y) / H * 100);
-      ctx.lineTo(M - o, y);
+      lineTo(M - o, y, o);
     }
 
     for (let dire = PI; dire <= 2 * PI; dire += 3 / R) {
       let o = getOffset(100 + (dire - PI) / PI * 150);
-      ctx.lineTo(...fromPolar(M + R, M + R, R + o, dire));
+      lineTo(...fromPolar(M + R, M + R, R + o, dire), o);
     }
+    
 
     for (let y = M + R; y < M + H + R; y += 3) {
       let o = getOffset(250 + (y - (M + R)) / H * 100);
-      ctx.lineTo(M + W + o, y);
+      lineTo(M + W + o, y, o);
     }
 
     for (let dire = 0; dire <= PI; dire += 3 / R) {
       let o = getOffset(350 + (dire / PI) * 150);
-      ctx.lineTo(...fromPolar(M + R, M + H + R, R + o, dire));
+      lineTo(...fromPolar(M + R, M + H + R, R + o, dire), o);
     }
 
-    ctx.closePath();
-
-    ctx.strokeStyle = 'white';
-    ctx.lineWidth = 3;
-    ctx.stroke();
-  }
-
-  function fromPolar(x: number, y: number, len: number, rad: number): [x: number, y: number] {
-    return [
-      x + len * Math.cos(rad),
-      y + len * Math.sin(rad)
-    ];
+    lineTo(M - getOffset(0), M + H + R, getOffset(0));
   }
 
   let dataPoints: { pos: number; val: number; spread: number; }[] = [];
@@ -98,20 +120,27 @@ export function CarView() {
     });
   });
 
-  // useEffect(() => {
-  //   redraw();
-  //   var timer = setInterval(() => {
-  //     if ((data[0].pos += 1) >= 500)
-  //       data[0].pos = 0;
-  //     redraw();
-  //   }, 16);
-  //   return () => clearInterval(timer);
-  // });
-
   return (
     <div className='car-view'>
       <canvas ref={ref} width='320' height='490' />
       <img className="car-body" src={car} alt="" />
     </div>
   );
+}
+
+
+function fromPolar(x: number, y: number, len: number, rad: number): [x: number, y: number] {
+  return [
+    x + len * Math.cos(rad),
+    y + len * Math.sin(rad)
+  ];
+}
+
+function mixColor(a: Color, b: Color, weight: number): Color {
+  var wa = weight, wb = 1 - weight;
+  return {
+    r: a.r * wa + b.r * wb,
+    g: a.g * wa + b.g * wb,
+    b: a.b * wa + b.b * wb,
+  };
 }

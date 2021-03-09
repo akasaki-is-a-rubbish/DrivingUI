@@ -8,8 +8,16 @@ export const sensorMap = {
     dist4x_1s4: { spread: 50, pos: 150 },
 };
 
+export const colors: Array<{ distance: number } & Color> = [
+    { distance: -50, r: 255, g: 0, b: 0 },
+    { distance: -25, r: 255, g: 200, b: 0 },
+    { distance: 0, r: 255, g: 255, b: 255 },
+];
+
 export const baseDistance = 50;
 
 export function sensorFunction(x: number) {
     return (x == 0 || x > 1500) ? 0 : -((1500 - x) / 1500 * 100);
 }
+
+export type Color = { r: number, g: number, b: number };
