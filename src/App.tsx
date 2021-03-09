@@ -4,18 +4,37 @@ import './App.css';
 
 const PI = Math.PI;
 
+class Client {
+  ws = new WebSocket('ws://10.0.0.1:8765/');
+  constructor() {
+    this.ws.onopen = () => console.info("[ws] open");
+    this.ws.onerror = (e) => console.error("[ws] error", e);
+    this.ws.onclose = (e) => console.warn('[ws] closed');
+    this.ws.onmessage = (e) => {
+      console.info("[ws] msg", e.data);
+    };
+  }
+  close() {
+    console.warn('[ws] close()')
+    this.ws.close();
+  }
+}
+
 function App() {
-  const [count, setCount] = useState(0);
-  const ref = useRef<HTMLImageElement | null>(null);
+  const client = useRef<Client>();
+  useEffect(() => {
+    client.current = new Client();
+    return () => client.current!.close();
+  });
 
   return (
     <div className="App">
-      <CarView />
+      <CarView client={client} />
     </div>
   );
 }
 
-function CarView() {
+function CarView({client}) {
   var ref = useRef<HTMLCanvasElement>(null);
 
   function redraw() {
@@ -68,7 +87,7 @@ function CarView() {
   }
 
   const data: {pos: number, val: number}[] = [
-    {pos: 30, val: 0},
+    {pos: 30, val: 30},
     {pos: 0, val: 30},
     {pos: 150, val: 30},
     {pos: 180, val: 30},
@@ -90,16 +109,16 @@ function CarView() {
         result -= (Math.sin((1 - posDist(it.pos, pos) / SPREAD) * PI - PI/2 ) + 1) / 2 * it.val;
       }
     }
-    return result;
+    return 40 + result;
   }
 
   useEffect(() => {
     redraw();
     var timer = setInterval(() => {
-      if (++data[0].pos == 500)
+      if ((data[0].pos += 3) >= 500)
         data[0].pos = 0;
       redraw();
-    }, 30);
+    }, 60);
     return () => clearInterval(timer);
   });
 
