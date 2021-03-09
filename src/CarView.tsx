@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import car from './car.png';
 import { Client } from './Client';
-import { sensorFunction } from './config';
+import { baseDistance, sensorFunction, sensorMap } from './config';
 
 const PI = Math.PI;
 
@@ -16,6 +16,7 @@ export function CarView() {
     if (!ctx)
       throw new Error('no context!');
 
+    const M = 60; // margin
     const H = 170;
     const W = 200;
     const R = W / 2;
@@ -23,26 +24,26 @@ export function CarView() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     ctx.beginPath();
-    ctx.moveTo(50 - getOffset(0), 50 + H + R);
+    ctx.moveTo(M - getOffset(0), M + H + R);
 
-    for (let y = 50 + H + R; y > 50 + R; y -= 3) {
-      let o = getOffset((50 + H + R - y) / H * 100);
-      ctx.lineTo(50 - o, y);
+    for (let y = M + H + R; y > M + R; y -= 3) {
+      let o = getOffset((M + H + R - y) / H * 100);
+      ctx.lineTo(M - o, y);
     }
 
     for (let dire = PI; dire <= 2 * PI; dire += 3 / R) {
       let o = getOffset(100 + (dire - PI) / PI * 150);
-      ctx.lineTo(...fromPolar(50 + R, 50 + R, R + o, dire));
+      ctx.lineTo(...fromPolar(M + R, M + R, R + o, dire));
     }
 
-    for (let y = 50 + R; y < 50 + H + R; y += 3) {
-      let o = getOffset(250 + (y - (50 + R)) / H * 100);
-      ctx.lineTo(50 + W + o, y);
+    for (let y = M + R; y < M + H + R; y += 3) {
+      let o = getOffset(250 + (y - (M + R)) / H * 100);
+      ctx.lineTo(M + W + o, y);
     }
 
     for (let dire = 0; dire <= PI; dire += 3 / R) {
       let o = getOffset(350 + (dire / PI) * 150);
-      ctx.lineTo(...fromPolar(50 + R, 50 + H + R, R + o, dire));
+      ctx.lineTo(...fromPolar(M + R, M + H + R, R + o, dire));
     }
 
     ctx.closePath();
@@ -66,12 +67,11 @@ export function CarView() {
   }
 
   function getOffset(pos: number) {
-    const SPREAD = 30;
-    var result = 0;
+    var result = baseDistance;
     for (const it of dataPoints) {
-      if (posDist(it.pos, pos) < SPREAD) {
+      if (posDist(it.pos, pos) < it.spread) {
         // console.info([it.pos, pos, it.val]);
-        result += (Math.sin((1 - posDist(it.pos, pos) / SPREAD) * PI - PI / 2) + 1) / 2 * it.val;
+        result += (Math.sin((1 - posDist(it.pos, pos) / it.spread) * PI - PI / 2) + 1) / 2 * it.val;
       }
     }
     return result;
@@ -110,7 +110,7 @@ export function CarView() {
 
   return (
     <div className='car-view'>
-      <canvas ref={ref} width='300' height='470' />
+      <canvas ref={ref} width='320' height='490' />
       <img className="car-body" src={car} alt="" />
     </div>
   );

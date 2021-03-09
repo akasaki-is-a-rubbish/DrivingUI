@@ -18,8 +18,8 @@ html, body {
 
 .car-body {
   position: absolute;
-  left: 22px;
-  top: 172px;
+  left: 27px;
+  top: 177px;
   transform: rotate(-90deg);
   height: 120px;
   overflow: hidden;
