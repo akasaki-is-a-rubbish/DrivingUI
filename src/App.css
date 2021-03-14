@@ -8,12 +8,14 @@ html, body {
   height: 100vh;
   background: black;
   color: white;
+  overflow: hidden;
 }
 
 .car-view {
   position: relative;
   display: inline-block;
   width: 300px;
+  overflow: hidden;
 }
 
 .car-body {
@@ -22,7 +24,6 @@ html, body {
   top: 177px;
   transform: rotate(-90deg);
   height: 120px;
-  overflow: hidden;
 }
 
 button {

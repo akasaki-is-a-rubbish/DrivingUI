@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import car from './car.png';
 import { Client } from './Client';
 import { baseDistance, colors, sensorFunction, sensorMap, Color } from './config';
+import { useWebfxCallback } from './utils';
 
 const PI = Math.PI;
 
@@ -99,25 +100,26 @@ export function CarView() {
     return result;
   }
 
-  useEffect(() => {
-    return Client.current.listenData((data) => {
-      var d = Object.fromEntries(
-        Object.keys(data)
-          .flatMap(x =>
-            Object.keys(data[x])
-              .map(y => [x + y, data[x][y]])
-          )
-      );
-      console.info(d);
-      dataPoints = Object.entries(d).map(([x, val]) => 
-        ({
-          spread: sensorMap[x].spread,
-          pos: sensorMap[x].pos,
+  useWebfxCallback(Client.current.data.onChanged, (ref) => {
+    const data = ref.value;
+    var d = Object.fromEntries(
+      Object.keys(data)
+        .flatMap(x =>
+          Object.keys(data[x])
+            .map(y => [x + y, data[x][y]])
+        )
+    );
+    console.info(d);
+    dataPoints = Object.entries(d).map(([x, val]) => {
+        const mapVal = sensorMap[x as any] as any;
+        return {
+          spread: mapVal.spread,
+          pos: mapVal.pos,
           val: sensorFunction(val)
-        })
-      );
-      redraw();
-    });
+        };
+      }
+    );
+    redraw();
   });
 
   return (
