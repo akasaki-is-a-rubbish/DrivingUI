@@ -1,6 +1,6 @@
 import { Action, Callbacks, Ref } from '@yuuza/webfx';
 import { Data } from './App';
-import { websocketServer } from './config';
+import { initData, websocketServer } from './config';
 
 export class Client {
   static current = new Client();
@@ -12,6 +12,7 @@ export class Client {
   data = new Ref<Data | null>();
 
   constructor() {
+    this.data.value = JSON.parse(JSON.stringify(initData));
     this.connectionState.value = 'disconnected';
   }
   connect() {
@@ -41,3 +42,5 @@ export class Client {
     this.ws.close();
   }
 }
+
+window['client'] = Client.current;

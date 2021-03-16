@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import car from './car.png';
 import { Client } from './Client';
 import { baseDistance, colors, sensorFunction, sensorMap, Color } from './config';
-import { useWebfxCallback } from './utils';
+import { useWebfxCallback, useWebfxRef } from './utils';
 
 const PI = Math.PI;
 
@@ -100,8 +100,12 @@ export function CarView() {
     return result;
   }
 
+  const data = useWebfxRef(Client.current.data);
+
   useWebfxCallback(Client.current.data.onChanged, (ref) => {
-    const data = ref.value;
+  });
+
+  useEffect(() => {
     var d = Object.fromEntries(
       Object.keys(data)
         .flatMap(x =>
@@ -120,7 +124,7 @@ export function CarView() {
       }
     );
     redraw();
-  });
+  }, [data])
 
   return (
     <div className='car-view'>

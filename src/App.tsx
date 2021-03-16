@@ -1,5 +1,6 @@
-import React, { Ref, useEffect, useRef, useState } from 'react';
+import React, { Ref, useEffect, useState } from 'react';
 import './App.css';
+import { Camera } from './Camera';
 import { CarView } from './CarView';
 import { Client } from './Client';
 import { useWebfxCallback, useWebfxRef } from './utils';
@@ -17,9 +18,21 @@ function App() {
 
   return (
     <div className="App">
-      <p>Data: <code>{data}</code></p>
-      {connection == 'disconnected' ? <p>(Disconnected)</p> : null}
-      <CarView />
+      <div>Data: <code>{JSON.stringify(data)}</code></div>
+      {connection == 'disconnected' ? <div>(Disconnected)</div> : null}
+      <div className="columns">
+        <CarView />
+        <SomeCameras />
+      </div>
+    </div>
+  );
+}
+
+function SomeCameras() {
+  return (
+    <div className="cameras">
+      <Camera device='/dev' />
+      <Camera device='/dev' />
     </div>
   );
 }

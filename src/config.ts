@@ -8,6 +8,10 @@ export const sensorMap = {
     dist4x_1s4: { spread: 50, pos: 150 },
 };
 
+export const initData = {
+    'dist4x_1': {s1: 0, s2: 0, s3: 0, s4: 700}
+};
+
 export const colors: Array<{ distance: number } & Color> = [
     { distance: -50, r: 255, g: 0, b: 0 },
     { distance: -25, r: 255, g: 200, b: 0 },
