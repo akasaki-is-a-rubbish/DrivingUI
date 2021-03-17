@@ -29,10 +29,14 @@ function App() {
 }
 
 function SomeCameras() {
+  useEffect(() => {
+    navigator.mediaDevices.enumerateDevices()
+    .then(x => console.info('devices', x), console.error);
+  }, []);
   return (
     <div className="cameras">
-      <Camera device='/dev' />
-      <Camera device='/dev' />
+      <Camera device='ca22de068fe6c751104b4118492296154e0705722e533418cc48cc8d4aaf88ba' />
+      <Camera device='f5b3ec5219dd18aee5c35b3e49126d58b66cc26a0bbc35404849228498b158b2' />
     </div>
   );
 }

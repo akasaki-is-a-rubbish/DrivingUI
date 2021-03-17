@@ -3,8 +3,6 @@ import React, { useEffect, useRef } from 'react';
 export function Camera({ device }: { device: string; }) {
     const video = useRef<HTMLVideoElement>(null);
     useEffect(() => {
-        navigator.mediaDevices.enumerateDevices()
-            .then(x => console.info('devices', x), console.error);
         navigator.mediaDevices.getUserMedia({ video: device ? { deviceId: device } : true })
             .then(function (stream) {
                 console.info(stream);

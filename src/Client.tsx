@@ -32,8 +32,12 @@ export class Client {
     };
     this.ws.onmessage = (e) => {
       console.info("[ws] msg", e.data);
-      var parsed = JSON.parse(e.data);
-      this.data.value = parsed;
+      if (typeof e.data == 'string') {
+        var parsed = JSON.parse(e.data);
+        this.data.value = parsed;
+      } else {
+        console.warn('unknown msg type');
+      }
     };
   }
   close() {
