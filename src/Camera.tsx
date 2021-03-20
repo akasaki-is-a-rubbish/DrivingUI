@@ -13,8 +13,8 @@ export function Camera({ device }: { device: string; }) {
     }, []);
     return (
         <div className='camera'>
-            <div className='label'>{device}</div>
             <video ref={video} autoPlay></video>
+            <div className='label'>{device}</div>
         </div>
     );
 }

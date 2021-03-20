@@ -1,4 +1,5 @@
 import React, { Ref, useEffect, useState } from 'react';
+import { Activity } from './Basics';
 import './App.css';
 import { Camera } from './Camera';
 import { CarView } from './CarView';
@@ -8,35 +9,52 @@ import { useWebfxCallback, useWebfxRef } from './utils';
 export type Data = any;
 
 function App() {
-  const data = useWebfxRef(Client.current.data);
-  const connection = useWebfxRef(Client.current.connectionState);
+  // useEffect(() => {
+  //   Client.current.connect();
+  //   return () => Client.current.close();
+  // }, []);
 
-  useEffect(() => {
-    Client.current.connect();
-    return () => Client.current.close();
-  }, []);
+  const connection = useWebfxRef(Client.current.connectionState);
 
   return (
     <div className="App">
-      <div>Data: <code>{JSON.stringify(data)}</code></div>
       {connection == 'disconnected' ? <div>(Disconnected)</div> : null}
-      <div className="columns">
-        <CarView />
-        <SomeCameras />
-      </div>
+      <RadarAndCamsActivity />
     </div>
   );
 }
 
+function NavBar() {
+  <div className="nav-bar">
+    
+  </div>
+}
+
+function RadarAndCamsActivity() {
+  const data = useWebfxRef(Client.current.data);
+  return (
+    <Activity className="radar">
+      <div>Data: <code>{JSON.stringify(data)}</code></div>
+      <div className="columns">
+        <CarView />
+        <SomeCameras />
+      </div>
+    </Activity>
+  );
+}
+
 function SomeCameras() {
+  const [cameras, setCameras] = useState<string[]>([]);
   useEffect(() => {
     navigator.mediaDevices.enumerateDevices()
-    .then(x => console.info('devices', x), console.error);
+      .then(x => {
+        console.info('devices', x);
+        setCameras(x.filter(x => x.kind == 'videoinput').map(x => x.deviceId));
+      }, console.error);
   }, []);
   return (
     <div className="cameras">
-      <Camera device='ca22de068fe6c751104b4118492296154e0705722e533418cc48cc8d4aaf88ba' />
-      <Camera device='f5b3ec5219dd18aee5c35b3e49126d58b66cc26a0bbc35404849228498b158b2' />
+      {cameras.map(x => <Camera device={x} />)}
     </div>
   );
 }
