@@ -19,7 +19,7 @@ export function CarView() {
   function moveTo(x: number, y: number) {
     lastX = x; lastY = y;
   }
-  
+
   function lineTo(x: number, y: number, o: number) {
     ctx.beginPath();
     ctx.moveTo(lastX, lastY);
@@ -68,7 +68,7 @@ export function CarView() {
       let o = getOffset(100 + (dire - PI) / PI * 150);
       lineTo(...fromPolar(M + R, M + R, R + o, dire), o);
     }
-    
+
 
     for (let y = M + R; y < M + H + R; y += 3) {
       let o = getOffset(250 + (y - (M + R)) / H * 100);
@@ -114,17 +114,18 @@ export function CarView() {
         )
     );
     console.info(d);
-    dataPoints = Object.entries(d).map(([x, val]) => {
-        const mapVal = sensorMap[x as any] as any;
+    dataPoints = Object.entries(d)
+      .map(([x, val]) => [sensorMap[x], val] as const)
+      .filter(([sensor, val]) => sensor)
+      .map(([sensor, val]) => {
         return {
-          spread: mapVal.spread,
-          pos: mapVal.pos,
+          spread: sensor.spread,
+          pos: sensor.pos,
           val: sensorFunction(val)
         };
-      }
-    );
+      });
     redraw();
-  }, [data])
+  }, [data]);
 
   return (
     <div className='car-view'>

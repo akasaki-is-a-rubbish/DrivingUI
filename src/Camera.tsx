@@ -5,7 +5,7 @@ export function Camera({ device }: { device: string; }) {
     useEffect(() => {
         navigator.mediaDevices.getUserMedia({ video: device ? { deviceId: device } : true })
             .then(function (stream) {
-                console.info(stream);
+                console.info('camera stream', stream);
                 video.current!.srcObject = stream;
             }).catch(function () {
                 alert('could not connect stream');

@@ -1,7 +1,7 @@
 
 export const websocketServer = 'ws://10.0.0.1:8765/';
 
-export const sensorMap = {
+export const sensorMap: Record<string, {spread: number, pos: number}> = {
     dist4x_1s1: { spread: 50, pos: 0 },
     dist4x_1s2: { spread: 50, pos: 50 },
     dist4x_1s3: { spread: 50, pos: 100 },
@@ -15,7 +15,7 @@ export const initData = {
 export const colors: Array<{ distance: number } & Color> = [
     { distance: -50, r: 255, g: 0, b: 0 },
     { distance: -25, r: 255, g: 200, b: 0 },
-    { distance: 0, r: 255, g: 255, b: 255 },
+    { distance: 0, r: 0, g: 0, b: 0 },
 ];
 
 export const baseDistance = 50;

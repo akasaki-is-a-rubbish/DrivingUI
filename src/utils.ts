@@ -11,7 +11,7 @@ export function useWebfxCallback<T extends AnyFunc>(callbacks: Callbacks<T>, cb:
 export function useWebfxRef<T>(ref: Ref<T>) {
     const [val, setVal] = useState(ref.value);
     useWebfxCallback(ref.onChanged, x => {
-        console.info('Ref changed', ref)
+        // console.info('Ref changed', ref)
         setVal(x.value);
     });
     return val;

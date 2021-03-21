@@ -3,10 +3,13 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
+    "electron": "(sleep 2; electron src/electron-main.js) & vite",
     "build": "tsc && vite build",
     "serve": "vite preview"
   },
   "dependencies": {
+    "@material-ui/core": "^4.11.3",
+    "@material-ui/icons": "^4.11.2",
     "@yuuza/webfx": "^1.6.1",
     "esbuild": "^0.8.52",
     "react": "^17.0.0",
