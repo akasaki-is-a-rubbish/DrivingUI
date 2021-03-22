@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import car from './car.png';
 import { Client } from './Client';
 import { baseDistance, colors, sensorFunction, sensorMap, Color } from './config';
-import { useWebfxCallback, useWebfxRef } from './utils';
+import { fromPolar, mixColor, useWebfxCallback, useWebfxRef } from './utils';
 
 const PI = Math.PI;
 
@@ -20,6 +20,9 @@ export function CarView() {
     lastX = x; lastY = y;
   }
 
+  /**
+   * @param o offset
+   */
   function lineTo(x: number, y: number, o: number) {
     ctx.beginPath();
     ctx.moveTo(lastX, lastY);
@@ -133,21 +136,4 @@ export function CarView() {
       <img className="car-body" src={car} alt="" />
     </div>
   );
-}
-
-
-function fromPolar(x: number, y: number, len: number, rad: number): [x: number, y: number] {
-  return [
-    x + len * Math.cos(rad),
-    y + len * Math.sin(rad)
-  ];
-}
-
-function mixColor(a: Color, b: Color, weight: number): Color {
-  var wa = weight, wb = 1 - weight;
-  return {
-    r: a.r * wa + b.r * wb,
-    g: a.g * wa + b.g * wb,
-    b: a.b * wa + b.b * wb,
-  };
 }

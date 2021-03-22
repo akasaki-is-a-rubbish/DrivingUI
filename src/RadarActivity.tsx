@@ -9,7 +9,7 @@ export function RadarAndCamsActivity(props: { hidden: boolean; }) {
   const data = useWebfxRef(Client.current.data);
   return (
     <Activity className="radar" hidden={props.hidden}>
-      <div>Data: <code>{JSON.stringify(data)}</code></div>
+      {/* <div>Data: <code>{JSON.stringify(data)}</code></div> */}
       <div className="columns">
         <CarView />
         <SomeCameras />
@@ -17,6 +17,7 @@ export function RadarAndCamsActivity(props: { hidden: boolean; }) {
     </Activity>
   );
 }
+
 function SomeCameras() {
   const [cameras, setCameras] = useState<string[]>([]);
   useEffect(() => {

@@ -8,6 +8,8 @@ export const sensorMap: Record<string, {spread: number, pos: number}> = {
     dist4x_1s4: { spread: 50, pos: 150 },
 };
 
+export const lidarName = 'RPLidar';
+
 export const initData = {
     'dist4x_1': {s1: 0, s2: 0, s3: 0, s4: 700}
 };

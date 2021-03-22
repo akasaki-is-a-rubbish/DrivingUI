@@ -10,7 +10,7 @@ import MusicNote from "@material-ui/icons/MusicNote";
 import * as webfx from "@yuuza/webfx";
 import { RadarAndCamsActivity } from './RadarActivity';
 import { MusicActivity } from './MusicActivity';
-import { DotsActivity } from './DotsActivity';
+import { LidarActivity } from './LidarActivity';
 
 export type Data = any;
 
@@ -34,7 +34,7 @@ function App() {
       <div className="activity-outer">
         <RadarAndCamsActivity hidden={navState != 'rac'} />
         <MusicActivity hidden={navState != 'music'} />
-        <DotsActivity hidden={navState != 'dots'} />
+        <LidarActivity hidden={navState != 'lidar'} />
       </div>
       <NavBar valRef={navStateRef} />
     </div>
@@ -50,7 +50,7 @@ function NavBar(props: { valRef: webfx.Ref<string>; }) {
       <BottomNavigationAction label="雷达" value="rac" icon={<RadarIcon />} />
       {/* TODO: */}
       <BottomNavigationAction label="Front" value="front" icon={<Favorite />} />
-      <BottomNavigationAction label="Dots" value="dots" icon={<LocationOn />} />
+      <BottomNavigationAction label="Lidar" value="lidar" icon={<LocationOn />} />
 
       <BottomNavigationAction label="音乐" value="music" icon={<MusicNote />} />
     </BottomNavigation>
