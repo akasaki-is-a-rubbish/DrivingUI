@@ -1,4 +1,4 @@
-import React, { Ref, useState } from 'react';
+import React, { Ref, useEffect, useState } from 'react';
 import './App.css';
 import { Client } from './Client';
 import { useWebfxCallback, useWebfxRef } from './utils';
@@ -10,16 +10,17 @@ import MusicNote from "@material-ui/icons/MusicNote";
 import * as webfx from "@yuuza/webfx";
 import { RadarAndCamsActivity } from './RadarActivity';
 import { MusicActivity } from './MusicActivity';
+import { DotsActivity } from './DotsActivity';
 
 export type Data = any;
 
 function App() {
   const [navStateRef] = useState(() => Object.assign(new webfx.Ref<string>(), { value: 'rac' }));
   const navState = useWebfxRef(navStateRef);
-  // useEffect(() => {
-  //   Client.current.connect();
-  //   return () => Client.current.close();
-  // }, []);
+  useEffect(() => {
+    Client.current.connect(); 
+    return () => Client.current.close();
+  }, []);
 
   const connection = useWebfxRef(Client.current.connectionState);
   let curActivity: JSX.Element = null!;
@@ -30,8 +31,11 @@ function App() {
   return (
     <div className="App">
       {/* {connection == 'disconnected' ? <div>(Disconnected)</div> : null} */}
-      <RadarAndCamsActivity hidden={navState != 'rac'} />
-      <MusicActivity hidden={navState != 'music'} />
+      <div className="activity-outer">
+        <RadarAndCamsActivity hidden={navState != 'rac'} />
+        <MusicActivity hidden={navState != 'music'} />
+        <DotsActivity hidden={navState != 'dots'} />
+      </div>
       <NavBar valRef={navStateRef} />
     </div>
   );
@@ -43,10 +47,12 @@ function NavBar(props: { valRef: webfx.Ref<string>; }) {
     <BottomNavigation value={val} onChange={(e, newval) => {
       props.valRef.value = newval;
     }} className="my-navbar">
-      <BottomNavigationAction label="R" value="rac" icon={<RadarIcon />} />
-      <BottomNavigationAction label="Music" value="music" icon={<MusicNote />} />
-      {/* <BottomNavigationAction label="Favorites" value="a2" icon={<Favorite />} />
-      <BottomNavigationAction label="Nearby" value="a3" icon={<LocationOn />} /> */}
+      <BottomNavigationAction label="雷达" value="rac" icon={<RadarIcon />} />
+      {/* TODO: */}
+      <BottomNavigationAction label="Front" value="front" icon={<Favorite />} />
+      <BottomNavigationAction label="Dots" value="dots" icon={<LocationOn />} />
+
+      <BottomNavigationAction label="音乐" value="music" icon={<MusicNote />} />
     </BottomNavigation>
   );
 }
