@@ -18,6 +18,12 @@ export function useWebfxRef<T>(ref: Ref<T>) {
     return val;
 }
 
+export function pointDist(x1: number, y1: number, x2: number, y2: number) {
+    return Math.sqrt(
+        (x1 - x2) * (x1 - x2) +
+        (y1 - y2) * (y1 - y2)
+    );
+}
 
 export function fromPolar(x: number, y: number, len: number, rad: number): [x: number, y: number] {
     return [

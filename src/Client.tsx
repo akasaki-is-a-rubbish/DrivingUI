@@ -3,16 +3,18 @@ import { Data } from './App';
 import { initData, websocketServer } from './config';
 
 export class Client {
-  static current = new Client();
+  static current: Client;
 
   ws!: WebSocket;
   closed = false;
 
   connectionState = new Ref<'ok' | 'disconnected'>();
   data = new Ref<Data | null>();
+  dataHub = new DataHub();
 
   constructor() {
-    this.data.value = JSON.parse(JSON.stringify(initData));
+    this.data.value = {};
+    this.handleNewData(JSON.parse(JSON.stringify(initData)));
     this.connectionState.value = 'disconnected';
   }
   connect() {
@@ -31,15 +33,31 @@ export class Client {
       setTimeout(() => this.connect(), 5000);
     };
     this.ws.onmessage = (e) => {
-      console.info("[ws] msg", e.data);
+      // console.info("[ws] msg", e.data);
       if (typeof e.data == 'string') {
         var parsed = JSON.parse(e.data);
-        this.data.value = parsed;
+        this.handleNewData(parsed);
       } else {
         console.warn('unknown msg type');
       }
     };
   }
+
+  private handleNewData(parsed: any) {
+    for (const key in parsed) {
+      if (Object.prototype.hasOwnProperty.call(parsed, key)) {
+        const val = parsed[key];
+        this.dataHub.get(key).value = val;
+      }
+    }
+    this.data.value = { ...this.data.value, ...parsed };
+  }
+
+  getData(key?: string) {
+    if (key) return this.dataHub.get(key);
+    return this.data;
+  }
+
   close() {
     this.closed = true;
     console.warn('[ws] close()');
@@ -47,4 +65,17 @@ export class Client {
   }
 }
 
+class DataHub {
+  map = new Map<string, Ref<any>>();
+  get(key: string) {
+    var ref = this.map.get(key);
+    if (!ref) {
+      ref = new Ref();
+      this.map.set(key, ref);
+    }
+    return ref;
+  }
+}
+
 window['client'] = Client.current;
+Client.current = new Client();

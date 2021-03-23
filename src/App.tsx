@@ -15,10 +15,10 @@ import { LidarActivity } from './LidarActivity';
 export type Data = any;
 
 function App() {
-  const [navStateRef] = useState(() => Object.assign(new webfx.Ref<string>(), { value: 'rac' }));
+  const [navStateRef] = useState(() => Object.assign(new webfx.Ref<NavValue>(), { value: 'rac' }));
   const navState = useWebfxRef(navStateRef);
   useEffect(() => {
-    Client.current.connect(); 
+    Client.current.connect();
     return () => Client.current.close();
   }, []);
 
@@ -41,7 +41,10 @@ function App() {
   );
 }
 
-function NavBar(props: { valRef: webfx.Ref<string>; }) {
+const navs = ['rac', 'front', 'lidar', 'music' ] as const;
+type NavValue = (typeof navs)[number];
+
+function NavBar(props: { valRef: webfx.Ref<NavValue>; }) {
   const val = useWebfxRef(props.valRef);
   return (
     <BottomNavigation value={val} onChange={(e, newval) => {

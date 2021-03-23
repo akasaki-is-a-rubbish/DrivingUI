@@ -116,7 +116,7 @@ export function CarView() {
             .map(y => [x + y, data[x][y]])
         )
     );
-    console.info(d);
+    // console.info(d);
     dataPoints = Object.entries(d)
       .map(([x, val]) => [sensorMap[x], val] as const)
       .filter(([sensor, val]) => sensor)
