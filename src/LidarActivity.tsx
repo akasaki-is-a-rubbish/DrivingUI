@@ -5,21 +5,19 @@ import { Client } from './Client';
 import { lidarName } from './config';
 import { useWebfxCallback, useWebfxRef, fromPolar, pointDist } from './utils';
 
+const CANVAS_SIZE = [600, 600];
+
 export function LidarActivity(props: { hidden: boolean; }) {
-  const windowed = useMemo(() => new DataWindow(Client.current.getData(lidarName), 100), []);
-  useEffect(() => {
-    windowed.start();
-    return () => windowed.stop();
-  }, []);
+  const windowed = useMemo(() => new DataWindow(Client.current.getData(lidarName), 200, 3), []);
   const data = useWebfxRef(windowed.data);
   const canvas = useRef<HTMLCanvasElement>(null);
 
   const render = useMemo(() => {
     let ctx: CanvasRenderingContext2D;
-    let lastP: {x: number, y: number} | null = null;
+    let lastP: { x: number, y: number; } | null = null;
 
-    function drawPoint(ratio: number, dist: number) {
-      var [x, y] = fromPolar(300, 300, dist * 0.02, ratio / 180 * Math.PI);
+    function drawPoint(ratio: number, dist: number, quality: number) {
+      var [x, y] = fromPolar(CANVAS_SIZE[0] / 2, CANVAS_SIZE[1] / 2, dist * 0.02, ratio / 180 * Math.PI);
       ctx.beginPath();
       if (lastP && pointDist(lastP.x, lastP.y, x, y) < 0) {
         ctx.moveTo(lastP.x, lastP.y);
@@ -27,8 +25,9 @@ export function LidarActivity(props: { hidden: boolean; }) {
         ctx.moveTo(x, y);
       }
       ctx.lineTo(x, y);
+      ctx.strokeStyle = `rgba(${quality}, 0, 0, 0)`;
       ctx.stroke();
-      lastP = {x, y};
+      lastP = { x, y };
     }
 
     return (data: any) => {
@@ -43,10 +42,8 @@ export function LidarActivity(props: { hidden: boolean; }) {
       // ctx.stroke();
       if (data) {
         for (const p of data) {
-          const [idk, rat, dist] = p;
-          drawPoint(rat, dist);
-          // if (idk == 15) console.info(idk);
-          // else console.info(idk, rat, dist);
+          const [quality, rat, dist] = p;
+          drawPoint(rat, dist, quality / 15);
         }
       }
     };
@@ -59,28 +56,37 @@ export function LidarActivity(props: { hidden: boolean; }) {
   return (
     <Activity hidden={props.hidden}>
       {/* <div>{JSON.stringify(data[lidarName])}</div> */}
-      <canvas width="600" height="600" ref={canvas}></canvas>
+      <canvas width={CANVAS_SIZE[0]} height={CANVAS_SIZE[1]} ref={canvas}></canvas>
     </Activity>
   );
 }
 
 class DataWindow<T> {
-  data = new Ref<T[]>();
-  constructor(readonly baseData: Ref<T[]>, readonly size: number) {
+  readonly data = new Ref<T[]>();
+  private history: T[][] = [];
+  constructor(
+    readonly baseData: Ref<T[]>,
+    readonly maxSize: number,
+    readonly maxIter: number,
+  ) {
     this.data.value = [...(baseData.value || [])];
-  }
-  start() {
-    this.baseData.onChanged.add(this._onChanged);
-  }
-  stop() {
-    this.baseData.onChanged.remove(this._onChanged);
+    this.data.onChanged.onChanged.add((add) => {
+      if (add && this.data.onChanged.length == 1) {
+        this.baseData.onChanged.add(this._onChanged);
+      } else if (this.data.onChanged.length == 0) {
+        this.baseData.onChanged.remove(this._onChanged);
+      }
+    });
   }
   _onChanged = (ref: Ref<T[]>) => {
     console.info(ref.value?.length);
     var newdata = ref.value || [];
-    var combined = [...this.data.value!, ...newdata];
-    if (combined.length > this.size)
-      combined = combined.slice(combined.length - this.size);
+    this.history.push(newdata);
+    if (this.maxIter && this.history.length > this.maxIter)
+      this.history.shift();
+    var combined = this.history.flat();
+    if (this.maxSize && combined.length > this.maxSize)
+      combined = combined.slice(combined.length - this.maxSize);
     this.data.value = combined;
   };
 }
