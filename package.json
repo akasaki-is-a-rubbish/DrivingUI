@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
-    "electron": "(sleep 2; electron src/electron-main.js) & vite",
+    "electron": "electron src/electron-main.js & vite",
     "build": "tsc && vite build",
     "serve": "vite preview"
   },
