@@ -11,6 +11,7 @@ import * as webfx from "@yuuza/webfx";
 import { RadarAndCamsActivity } from './RadarActivity';
 import { MusicActivity } from './MusicActivity';
 import { LidarActivity } from './LidarActivity';
+import { FrontActivity } from './FrontActivity';
 
 export type Data = any;
 
@@ -35,6 +36,7 @@ function App() {
         <RadarAndCamsActivity hidden={navState != 'rac'} />
         <MusicActivity hidden={navState != 'music'} />
         <LidarActivity hidden={navState != 'lidar'} />
+        <FrontActivity hidden={navState != 'front'} />
       </div>
       <NavBar valRef={navStateRef} />
     </div>
