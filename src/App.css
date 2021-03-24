@@ -96,6 +96,16 @@ video {
   width: 100%;
 }
 
+.front {
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+}
+
+.front canvas {
+  width: 100%;
+}
+
 .my-navbar.MuiBottomNavigation-root {
   height: 70px;
 }
