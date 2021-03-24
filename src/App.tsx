@@ -3,11 +3,8 @@ import './App.css';
 import { Client } from './Client';
 import { useWebfxCallback, useWebfxRef } from './utils';
 import { BottomNavigation, BottomNavigationAction } from "@material-ui/core";
-import Favorite from "@material-ui/icons/Favorite";
-import RadarIcon from "@material-ui/icons/FindInPage";
-import LocationOn from "@material-ui/icons/LocationOn";
-import MusicNote from "@material-ui/icons/MusicNote";
 import * as webfx from "@yuuza/webfx";
+import { Sensors, Camera, LocationOn, MusicNote } from "./icons";
 import { RadarAndCamsActivity } from './RadarActivity';
 import { MusicActivity } from './MusicActivity';
 import { LidarActivity } from './LidarActivity';
@@ -43,7 +40,7 @@ function App() {
   );
 }
 
-const navs = ['rac', 'front', 'lidar', 'music' ] as const;
+const navs = ['rac', 'front', 'lidar', 'music'] as const;
 type NavValue = (typeof navs)[number];
 
 function NavBar(props: { valRef: webfx.Ref<NavValue>; }) {
@@ -52,9 +49,9 @@ function NavBar(props: { valRef: webfx.Ref<NavValue>; }) {
     <BottomNavigation value={val} onChange={(e, newval) => {
       props.valRef.value = newval;
     }} className="my-navbar">
-      <BottomNavigationAction label="雷达" value="rac" icon={<RadarIcon />} />
+      <BottomNavigationAction label="雷达" value="rac" icon={<Sensors />} />
       {/* TODO: */}
-      <BottomNavigationAction label="Front" value="front" icon={<Favorite />} />
+      <BottomNavigationAction label="Front" value="front" icon={<Camera />} />
       <BottomNavigationAction label="Lidar" value="lidar" icon={<LocationOn />} />
 
       <BottomNavigationAction label="音乐" value="music" icon={<MusicNote />} />
