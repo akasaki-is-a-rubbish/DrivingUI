@@ -9,7 +9,7 @@ export function FrontActivity(props: { hidden: boolean; }) {
         const img = ctx.createImageData(1280, 720);
         const imgdata = img.data;
         let val = 0;
-        let raf: number | null = null;
+        let raf: number;
 
         function render() {
             for(let i = 0; i < imgdata.length; i++) {
@@ -20,7 +20,7 @@ export function FrontActivity(props: { hidden: boolean; }) {
             raf = requestAnimationFrame(render);
         }
         render();
-        return () => (raf != null && cancelAnimationFrame(raf));
+        return () => cancelAnimationFrame(raf);
     }, [props.hidden]);
     return (
         <Activity hidden={props.hidden}>

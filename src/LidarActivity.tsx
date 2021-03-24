@@ -25,7 +25,7 @@ export function LidarActivity(props: { hidden: boolean; }) {
         ctx.moveTo(x, y);
       }
       ctx.lineTo(x, y);
-      ctx.strokeStyle = `rgba(${quality}, 0, 0, 0)`;
+      ctx.strokeStyle = `rgba(0, 0, 0, ${quality})`;
       ctx.stroke();
       lastP = { x, y };
     }
@@ -42,7 +42,7 @@ export function LidarActivity(props: { hidden: boolean; }) {
       // ctx.stroke();
       if (data) {
         for (const p of data) {
-          const [quality, rat, dist] = p;
+          const [quality, rat, dist] = p; 
           drawPoint(rat, dist, quality / 15);
         }
       }
@@ -50,12 +50,13 @@ export function LidarActivity(props: { hidden: boolean; }) {
   }, []);
 
   useEffect(() => {
+    // console.info('Lidar rendering', data);
     render(data);
   }, [data]);
 
   return (
     <Activity hidden={props.hidden}>
-      {/* <div>{JSON.stringify(data[lidarName])}</div> */}
+      {/* <div>{JSON.stringify(data)}</div> */}
       <canvas width={CANVAS_SIZE[0]} height={CANVAS_SIZE[1]} ref={canvas}></canvas>
     </Activity>
   );
