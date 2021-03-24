@@ -1,6 +1,6 @@
 import { AnyFunc, Callbacks, Ref } from "@yuuza/webfx";
 import { useEffect, useState } from "react";
-import { Color } from "./config";
+import { RGBA } from "./config";
 
 export function useWebfxCallback<T extends AnyFunc>(callbacks: Callbacks<T>, cb: T) {
     useEffect(() => {
@@ -32,12 +32,13 @@ export function fromPolar(x: number, y: number, len: number, rad: number): [x: n
     ];
 }
 
-export function mixColor(a: Color, b: Color, weight: number): Color {
+export function mixColor(a: RGBA, b: RGBA, weight: number): RGBA {
     var wa = weight, wb = 1 - weight;
     return {
         r: a.r * wa + b.r * wb,
         g: a.g * wa + b.g * wb,
         b: a.b * wa + b.b * wb,
+        a: a.a * wa + b.a * wb,
     };
 }
 
@@ -58,4 +59,13 @@ export function className(...args: Array<(string | null | undefined)[] | Record<
         }
     }
     return result.join(' ');
+}
+
+export function noInteractive() {
+    return {
+        onMouseDown: (e) => (e.preventDefault(), false),
+        style: {
+            cursor: 'default'
+        }
+    };
 }

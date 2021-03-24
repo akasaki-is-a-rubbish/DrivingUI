@@ -1,8 +1,8 @@
 import React, { useEffect, useMemo, useRef } from 'react';
 import car from './car.png';
 import { Client } from './Client';
-import { baseDistance, colors, sensorFunction, sensorMap, Color } from './config';
-import { fromPolar, mixColor, useWebfxCallback, useWebfxRef } from './utils';
+import { baseDistance, colors, sensorFunction, sensorMap, RGB } from './config';
+import { fromPolar, mixColor, noInteractive, useWebfxCallback, useWebfxRef } from './utils';
 
 const PI = Math.PI;
 
@@ -38,7 +38,7 @@ export function CarView() {
         [prev, next] = [next, colors[i]];
       }
       var color = mixColor(prev, next, 1 - (o - prev.distance) / (next.distance - prev.distance));
-      ctx.strokeStyle = `rgb(${(color.r)}, ${(color.g)}, ${(color.b)})`;
+      ctx.strokeStyle = `rgba(${(color.r)}, ${(color.g)}, ${(color.b)}, ${(color.a)})`;
       ctx.stroke();
     }
 
@@ -54,6 +54,7 @@ export function CarView() {
       const H = 170;
       const W = 200;
       const R = W / 2;
+      const STEP = 1;
 
       clear();
 
@@ -63,23 +64,23 @@ export function CarView() {
 
       moveTo(M - getOffset(0), M + H + R);
 
-      for (let y = M + H + R; y > M + R; y -= 3) {
+      for (let y = M + H + R; y > M + R; y -= STEP) {
         let o = getOffset((M + H + R - y) / H * 100);
         lineTo(M - o, y, o);
       }
 
-      for (let dire = PI; dire <= 2 * PI; dire += 3 / R) {
+      for (let dire = PI; dire <= 2 * PI; dire += STEP / R) {
         let o = getOffset(100 + (dire - PI) / PI * 150);
         lineTo(...fromPolar(M + R, M + R, R + o, dire), o);
       }
 
 
-      for (let y = M + R; y < M + H + R; y += 3) {
+      for (let y = M + R; y < M + H + R; y += STEP) {
         let o = getOffset(250 + (y - (M + R)) / H * 100);
         lineTo(M + W + o, y, o);
       }
 
-      for (let dire = 0; dire <= PI; dire += 3 / R) {
+      for (let dire = 0; dire <= PI; dire += STEP / R) {
         let o = getOffset(350 + (dire / PI) * 150);
         lineTo(...fromPolar(M + R, M + H + R, R + o, dire), o);
       }
@@ -137,7 +138,7 @@ export function CarView() {
   console.info('rerender');
 
   return (
-    <div className='car-view'>
+    <div className='car-view' {...noInteractive()}>
       <canvas ref={ref} width='320' height='490' />
       <img className="car-body" src={car} alt="" />
     </div>
