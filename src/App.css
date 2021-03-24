@@ -95,3 +95,10 @@ video {
 .camera video {
   width: 100%;
 }
+
+.my-navbar.MuiBottomNavigation-root {
+  height: 70px;
+}
+.my-navbar .MuiSvgIcon-root {
+  font-size: 3rem;
+}
