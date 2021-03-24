@@ -23,7 +23,7 @@ export function FrontActivity(props: { hidden: boolean; }) {
         return () => cancelAnimationFrame(raf);
     }, [props.hidden]);
     return (
-        <Activity hidden={props.hidden}>
+        <Activity hidden={props.hidden} className="front">
             <canvas width='1280' height='720' ref={canvas}></canvas>
         </Activity>
     );

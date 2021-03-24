@@ -40,3 +40,22 @@ export function mixColor(a: Color, b: Color, weight: number): Color {
         b: a.b * wa + b.b * wb,
     };
 }
+
+export function className(...args: Array<(string | null | undefined)[] | Record<string, boolean>>) {
+    let result = [];
+    for (const arg of args) {
+        if (arg instanceof Array) {
+            for (const it of arg) {
+                if (it) result.push(it);
+            }
+        } else {
+            for (const key in arg) {
+                if (Object.prototype.hasOwnProperty.call(arg, key)) {
+                    const val = arg[key];
+                    if (val) result.push(key);
+                }
+            }
+        }
+    }
+    return result.join(' ');
+}

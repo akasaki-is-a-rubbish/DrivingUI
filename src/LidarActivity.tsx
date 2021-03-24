@@ -55,7 +55,7 @@ export function LidarActivity(props: { hidden: boolean; }) {
   }, [data]);
 
   return (
-    <Activity hidden={props.hidden}>
+    <Activity hidden={props.hidden} className="lidar">
       {/* <div>{JSON.stringify(data)}</div> */}
       <canvas width={CANVAS_SIZE[0]} height={CANVAS_SIZE[1]} ref={canvas}></canvas>
     </Activity>
