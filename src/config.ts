@@ -4,10 +4,10 @@ export const websocketServer = 'ws://10.0.0.1:8765/';
 let curpos = 0;
 
 export const sensorMap: Record<string, {spread: number, pos: number}> = {
-    dist4x_0s1: { spread: 31.25, pos: curpos += 31.25 },
-    dist4x_0s2: { spread: 31.25, pos: curpos += 31.25 },
-    dist4x_0s3: { spread: 31.25, pos: curpos += 31.25 },
-    dist4x_0s4: { spread: 31.25, pos: curpos += 31.25 },
+    fronts1: { spread: 31.25, pos: curpos += 31.25 },
+    fronts2: { spread: 31.25, pos: curpos += 31.25 },
+    fronts3: { spread: 31.25, pos: curpos += 31.25 },
+    fronts4: { spread: 31.25, pos: curpos += 31.25 },
     dist4x_1s1: { spread: 31.25, pos: curpos += 31.25 },
     dist4x_1s2: { spread: 31.25, pos: curpos += 31.25 },
     dist4x_1s3: { spread: 31.25, pos: curpos += 31.25 },
@@ -33,7 +33,8 @@ export const colors: Array<{ distance: number } & Color> = [
     { distance: -25, r: 255, g: 200, b: 0 },
     // { distance: 0, r: 0, g: 0, b: 0 },
     { distance: 0, r: 255, g: 255, b: 255 },
-];
+]
+.sort((a, b) => b.distance - a.distance);
 
 export const baseDistance = 50;
 
