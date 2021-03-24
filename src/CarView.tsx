@@ -111,21 +111,20 @@ export function CarView() {
     };
   }, []);
 
-  const data = useWebfxRef(Client.current.data);
+  let data = useWebfxRef(Client.current.data);
+  
+  data = Object.entries(data)
+    .filter(([x, val]) => !(val instanceof Array))
+    .flatMap(([x, val]) =>
+      Object.entries(val as Record<string, number>)
+        .map(([xx, yy]) => [x + '_' + xx, yy])
+    )
+    .map(([x, val]) => [sensorMap[x], val] as const)
+    .filter(([sensor, val]) => sensor) as [typeof sensorMap[string], number][];
+
 
   useEffect(() => {
-    var d = Object.fromEntries(
-      Object.keys(data)
-        .flatMap(x =>
-          Object.keys(data[x])
-            .map(y => [x + y, data[x][y]])
-        )
-    );
-    // console.info(d);
-    painter.dataPoints = Object.entries(d)
-      .map(([x, val]) => [sensorMap[x], val] as const)
-      .filter(([sensor, val]) => sensor)
-      .map(([sensor, val]) => {
+    painter.dataPoints = data.map(([sensor, val]) => {
         return {
           spread: sensor.spread,
           pos: sensor.pos,
@@ -133,7 +132,9 @@ export function CarView() {
         };
       });
     painter.redraw();
-  }, [data]);
+    console.info('rerender canvas');
+  }, [JSON.stringify(data)]);
+  console.info('rerender');
 
   return (
     <div className='car-view'>

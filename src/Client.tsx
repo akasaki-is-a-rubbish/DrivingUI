@@ -77,5 +77,4 @@ class DataHub {
   }
 }
 
-window['client'] = Client.current;
-Client.current = new Client();
+window['client'] = Client.current = new Client();
