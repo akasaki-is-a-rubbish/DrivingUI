@@ -31,12 +31,11 @@ export function CarView() {
     o -= baseDistance;
     var prev = colors[0];
     var next = colors[1];
-    for (let i = 1; i < colors.length; i++) {
-      if (next.distance > o) break;
+    for (let i = 2; i < colors.length; i++) {
+      if (next.distance < o) break;
       [prev, next] = [next, colors[i]];
     }
-    var color = mixColor(prev, next, (prev.distance - o) / (next.distance - prev.distance));
-    // var color = next;
+    var color = mixColor(prev, next, 1 - (o - prev.distance) / (next.distance - prev.distance));
     ctx.strokeStyle = `rgb(${(color.r)}, ${(color.g)}, ${(color.b)})`;
     ctx.stroke();
   }
