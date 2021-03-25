@@ -4,25 +4,25 @@ export const websocketServer = 'ws://10.0.0.1:8765/';
 let curpos = 0;
 
 export const sensorMap: Record<string, {spread: number, pos: number}> = {
+    left_s1: { spread: 31.25, pos: curpos += 31.25 },
+    left_s2: { spread: 31.25, pos: curpos += 31.25 },
+    left_s3: { spread: 31.25, pos: curpos += 31.25 },
+    left_s4: { spread: 31.25, pos: curpos += 31.25 },
     front_s1: { spread: 31.25, pos: curpos += 31.25 },
     front_s2: { spread: 31.25, pos: curpos += 31.25 },
     front_s3: { spread: 31.25, pos: curpos += 31.25 },
     front_s4: { spread: 31.25, pos: curpos += 31.25 },
-    dist4x_1_s1: { spread: 31.25, pos: curpos += 31.25 },
-    dist4x_1_s2: { spread: 31.25, pos: curpos += 31.25 },
-    dist4x_1_s3: { spread: 31.25, pos: curpos += 31.25 },
-    dist4x_1_s4: { spread: 31.25, pos: curpos += 31.25 },
-    dist4x_2_s1: { spread: 31.25, pos: curpos += 31.25 },
-    dist4x_2_s2: { spread: 31.25, pos: curpos += 31.25 },
-    dist4x_2_s3: { spread: 31.25, pos: curpos += 31.25 },
-    dist4x_2_s4: { spread: 31.25, pos: curpos += 31.25 },
-    dist4x_3_s1: { spread: 31.25, pos: curpos += 31.25 },
-    dist4x_3_s2: { spread: 31.25, pos: curpos += 31.25 },
-    dist4x_3_s3: { spread: 31.25, pos: curpos += 31.25 },
-    dist4x_3_s4: { spread: 31.25, pos: curpos += 31.25 },
+    right_s1: { spread: 31.25, pos: curpos += 31.25 },
+    right_s2: { spread: 31.25, pos: curpos += 31.25 },
+    right_s3: { spread: 31.25, pos: curpos += 31.25 },
+    right_s4: { spread: 31.25, pos: curpos += 31.25 },
+    back_s1: { spread: 31.25, pos: curpos += 31.25 },
+    back_s2: { spread: 31.25, pos: curpos += 31.25 },
+    back_s3: { spread: 31.25, pos: curpos += 31.25 },
+    back_s4: { spread: 31.25, pos: curpos += 31.25 },
 };
 
-export const lidarName = 'RPLidar';
+export const lidarName = 'mainLidar';
 
 export const initData = {
     'dist4x_1': {s1: 0, s2: 0, s3: 0, s4: 700}
