@@ -31,13 +31,7 @@ export function CarView() {
       ctx.lineTo(x, y);
       lastX = x; lastY = y;
       o -= baseDistance;
-      var prev = colors[0];
-      var next = colors[1];
-      for (let i = 2; i < colors.length; i++) {
-        if (next.distance < o) break;
-        [prev, next] = [next, colors[i]];
-      }
-      var color = mixColor(prev, next, 1 - (o - prev.distance) / (next.distance - prev.distance));
+      const color = getColor(o);
       ctx.strokeStyle = `rgba(${(color.r)}, ${(color.g)}, ${(color.b)}, ${(color.a)})`;
       ctx.stroke();
     }
@@ -105,6 +99,16 @@ export function CarView() {
       return result;
     }
 
+    function getColor(o: number) {
+      var prev = colors[0];
+      var next = colors[1];
+      for (let i = 2; i < colors.length; i++) {
+        if (next.distance < o) break;
+        [prev, next] = [next, colors[i]];
+      }
+      return mixColor(prev, next, 1 - (o - prev.distance) / (next.distance - prev.distance));
+    }
+
     return {
       get dataPoints() { return dataPoints; },
       set dataPoints(val) { dataPoints = val; },
@@ -133,9 +137,9 @@ export function CarView() {
         };
       });
     painter.redraw();
-    console.info('rerender canvas');
+    console.info('rerender radar');
   }, [JSON.stringify(data)]);
-  console.info('rerender');
+  // console.info('rerender');
 
   return (
     <div className='car-view' {...noInteractive()}>

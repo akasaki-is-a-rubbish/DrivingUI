@@ -25,7 +25,7 @@ export const sensorMap: Record<string, {spread: number, pos: number}> = {
 export const lidarName = 'mainLidar';
 
 export const initData = {
-    'dist4x_1': {s1: 0, s2: 0, s3: 0, s4: 700}
+    'left': {s1: 0, s2: 0, s3: 0, s4: 700}
 };
 
 export const colors: Array<{ distance: number } & RGBA> = [
