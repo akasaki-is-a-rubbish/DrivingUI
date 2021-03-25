@@ -12,6 +12,8 @@ export class Client {
   data = new Ref<Data | null>();
   dataHub = new DataHub();
 
+  onReceivedBinary = new Callbacks<Action<Blob>>();
+
   constructor() {
     this.data.value = {};
     this.handleNewData(JSON.parse(JSON.stringify(initData)));
@@ -37,6 +39,8 @@ export class Client {
       if (typeof e.data == 'string') {
         var parsed = JSON.parse(e.data);
         this.handleNewData(parsed);
+      } else if (e.data instanceof Blob) {
+        this.onReceivedBinary.invoke(e.data);
       } else {
         console.warn('unknown msg type');
       }

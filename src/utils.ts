@@ -1,12 +1,12 @@
 import { AnyFunc, Callbacks, Ref } from "@yuuza/webfx";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { RGBA } from "./config";
 
-export function useWebfxCallback<T extends AnyFunc>(callbacks: Callbacks<T>, cb: T) {
+export function useWebfxCallback<T extends AnyFunc>(callbacks: Callbacks<T>, cb: T, deps?: React.DependencyList) {
     useEffect(() => {
         callbacks.add(cb);
         return () => callbacks.remove(cb);
-    }, []);
+    }, deps);
 }
 
 export function useWebfxRef<T>(ref: Ref<T>) {
@@ -14,7 +14,7 @@ export function useWebfxRef<T>(ref: Ref<T>) {
     useWebfxCallback(ref.onChanged, x => {
         // console.info('Ref changed', ref)
         setVal(x.value);
-    });
+    }, []);
     return val;
 }
 
