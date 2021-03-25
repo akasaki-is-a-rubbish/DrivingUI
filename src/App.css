@@ -103,7 +103,9 @@ video {
 }
 
 .front canvas {
-  width: 100%;
+  margin: auto;
+  display: block;
+  /* max-height: 100%; */
 }
 
 .my-navbar.MuiBottomNavigation-root {
