@@ -10,10 +10,16 @@ import { MusicActivity } from './MusicActivity';
 import { LidarActivity } from './LidarActivity';
 import { FrontActivity } from './FrontActivity';
 
-export type Data = any;
+const activities = [
+  { name: 'rac', friendlyName: '雷达', activity: RadarAndCamsActivity, icon: Sensors},
+  { name: 'front', friendlyName: 'Front', activity: FrontActivity, icon: Camera},
+  { name: 'lidar', friendlyName: 'Lidar', activity: LidarActivity, icon: LocationOn},
+  { name: 'music', friendlyName: '音乐', activity: MusicActivity, icon: MusicNote},
+] as const;
+type ActivityName = (typeof activities)[number]['name'];
 
 function App() {
-  const [navStateRef] = useState(() => Object.assign(new webfx.Ref<NavValue>(), { value: 'rac' }));
+  const [navStateRef] = useState(() => Object.assign(new webfx.Ref<ActivityName>(), { value: 'rac' }));
   const navState = useWebfxRef(navStateRef);
   useEffect(() => {
     Client.current.connect();
@@ -21,40 +27,33 @@ function App() {
   }, []);
 
   const connection = useWebfxRef(Client.current.connectionState);
-  let curActivity: JSX.Element = null!;
-
-  // if (navState == 'rac')
-  //   curActivity = ;
 
   return (
     <div className="App">
       {/* {connection == 'disconnected' ? <div>(Disconnected)</div> : null} */}
       <div className="activity-outer">
-        <RadarAndCamsActivity hidden={navState != 'rac'} />
-        <MusicActivity hidden={navState != 'music'} />
-        <LidarActivity hidden={navState != 'lidar'} />
-        <FrontActivity hidden={navState != 'front'} />
+        {
+          activities.map(x =>
+            <x.activity hidden={navState != x.name} />
+          )
+        }
       </div>
       <NavBar valRef={navStateRef} />
     </div>
   );
 }
 
-const navs = ['rac', 'front', 'lidar', 'music'] as const;
-type NavValue = (typeof navs)[number];
-
-function NavBar(props: { valRef: webfx.Ref<NavValue>; }) {
+function NavBar(props: { valRef: webfx.Ref<ActivityName>; }) {
   const val = useWebfxRef(props.valRef);
   return (
     <BottomNavigation value={val} onChange={(e, newval) => {
       props.valRef.value = newval;
     }} className="my-navbar">
-      <BottomNavigationAction label="雷达" value="rac" icon={<Sensors />} />
-      {/* TODO: */}
-      <BottomNavigationAction label="Front" value="front" icon={<Camera />} />
-      <BottomNavigationAction label="Lidar" value="lidar" icon={<LocationOn />} />
-
-      <BottomNavigationAction label="音乐" value="music" icon={<MusicNote />} />
+      {
+        activities.map(x =>
+          <BottomNavigationAction label={x.friendlyName} value={x.name} icon={<x.icon />} />
+        )
+      }
     </BottomNavigation>
   );
 }

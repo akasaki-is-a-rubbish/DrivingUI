@@ -1,6 +1,7 @@
 import { Action, Callbacks, Ref } from '@yuuza/webfx';
-import { Data } from './App';
 import { initData, websocketServer } from './config';
+
+export type Data = any;
 
 export class Client {
   static current: Client;
