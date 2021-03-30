@@ -23,6 +23,19 @@ export function FrontActivity(props: { hidden: boolean; }) {
                 imgdata[4 * i + 3] = 255;
             }
             ctx.putImageData(img, 0, 0);
+            const points = [...Client.current.data.value['frontPoints']];
+            console.info(points);
+            if (points instanceof Array) {
+                ctx.lineCap = 'round';
+                ctx.lineWidth = 10;
+                ctx.strokeStyle = 'red';
+                for (const {x, y} of points) {
+                    ctx.beginPath();
+                    ctx.moveTo(x, y);
+                    ctx.lineTo(x, y);
+                    ctx.stroke();
+                }
+            }
         }
         return render;
     }, [w, h, canvas.current]);
