@@ -42,20 +42,19 @@ export function mixColor(a: RGBA, b: RGBA, weight: number): RGBA {
     };
 }
 
-export function className(...args: Array<(string | null | undefined)[] | Record<string, boolean>>) {
-    let result = [];
+export function className(...args: Array<string | (string | null | undefined)[] | Record<string, boolean>>) {
+    let result: string[] = [];
     for (const arg of args) {
-        if (arg instanceof Array) {
-            for (const it of arg) {
-                if (it) result.push(it);
-            }
+        if (typeof arg == 'string') {
+            result.push(arg);
+        } else if (arg instanceof Array) {
+            result.push(...arg.filter(x => x) as string[])
         } else {
-            for (const key in arg) {
-                if (Object.prototype.hasOwnProperty.call(arg, key)) {
-                    const val = arg[key];
-                    if (val) result.push(key);
-                }
-            }
+            result.push(
+                ...Object.entries(arg)
+                    .filter(([key, val]) => val)
+                    .map(([key, val]) => key)
+            );
         }
     }
     return result.join(' ');
@@ -63,7 +62,7 @@ export function className(...args: Array<(string | null | undefined)[] | Record<
 
 export function noInteractive() {
     return {
-        onMouseDown: (e) => (e.preventDefault(), false),
+        onMouseDown: (e: MouseEvent) => (e.preventDefault(), false),
         style: {
             cursor: 'default'
         }
