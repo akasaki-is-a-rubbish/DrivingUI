@@ -1,7 +1,7 @@
 import React, { Ref, useEffect, useState } from 'react';
 import './App.css';
 import { Client } from './Client';
-import { useWebfxCallback, useWebfxRef } from './utils';
+import { className, useWebfxCallback, useWebfxRef } from './utils';
 import { BottomNavigation, BottomNavigationAction } from "@material-ui/core";
 import * as webfx from "@yuuza/webfx";
 import { Sensors, Camera, LocationOn, MusicNote } from "./icons";
@@ -9,12 +9,13 @@ import { RadarAndCamsActivity } from './RadarActivity';
 import { MusicActivity } from './MusicActivity';
 import { LidarActivity } from './LidarActivity';
 import { FrontActivity } from './FrontActivity';
+import { fakeScreen } from './config';
 
 const activities = [
-  { name: 'rac', friendlyName: '雷达', activity: RadarAndCamsActivity, icon: Sensors},
-  { name: 'front', friendlyName: 'Front', activity: FrontActivity, icon: Camera},
-  { name: 'lidar', friendlyName: 'Lidar', activity: LidarActivity, icon: LocationOn},
-  { name: 'music', friendlyName: '音乐', activity: MusicActivity, icon: MusicNote},
+  { name: 'rac', friendlyName: '倒车', activity: RadarAndCamsActivity, icon: Sensors },
+  { name: 'front', friendlyName: 'Front', activity: FrontActivity, icon: Camera },
+  { name: 'lidar', friendlyName: '雷达', activity: LidarActivity, icon: LocationOn },
+  { name: 'music', friendlyName: '音乐', activity: MusicActivity, icon: MusicNote },
 ] as const;
 type ActivityName = (typeof activities)[number]['name'];
 
@@ -29,7 +30,7 @@ function App() {
   const connection = useWebfxRef(Client.current.connectionState);
 
   return (
-    <div className="App">
+    <div className={className("App", { fakeScreen })}>
       {/* {connection == 'disconnected' ? <div>(Disconnected)</div> : null} */}
       <div className="activity-outer">
         {

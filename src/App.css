@@ -5,6 +5,16 @@
 html, body {
   margin: 0;
   padding: 0;
+  overflow: hidden;
+}
+
+body {
+  height: 100vh;
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+  background: gray;
 }
 
 video {
@@ -12,7 +22,10 @@ video {
 }
 
 .App {
+  background: white;
+  position: relative;
   text-align: center;
+  width: 100%;
   height: 100vh;
   /* background: black; */
   /* color: white; */
@@ -20,6 +33,14 @@ video {
   display: flex;
   flex-flow: column;
   justify-content: space-between;
+}
+
+.App.fakeScreen {
+  width: 1280px;
+  height: 720px;
+  border: solid 3px black;
+  box-shadow: 0 0 10px black;
+  border-radius: 10px;
 }
 
 .activity-outer {
@@ -69,7 +90,7 @@ video {
   flex-flow: column wrap;
   justify-content: space-around;
   max-height: 100%;
-  max-width: 40vw;
+  max-width: 50%;
 }
 
 .camera {
@@ -109,8 +130,24 @@ video {
 }
 
 .my-navbar.MuiBottomNavigation-root {
-  height: 70px;
+  height: 75px;
+  width: 400px;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  /* box-shadow: 0 0 10px gray; */
 }
+
+.my-navbar .MuiButtonBase-root {
+  margin: 5px;
+  letter-spacing: 5px;
+  box-shadow: rgba(0,0,0,0.25) 0px 1px 3px,
+        inset rgba(0,0,0,0.1) 0px 1px 0px,
+        inset rgba(255,255,255,0.25) 0px 0px 0px,
+        inset rgba(0,0,0,0.03) 0px 20px 0px,
+        inset rgba(255,255,255,0.15) 0px -20px 20px, inset rgba(0,0,0,0.05) 0px 20px 20px;
+}
+
 .my-navbar .MuiSvgIcon-root {
   font-size: 3rem;
 }

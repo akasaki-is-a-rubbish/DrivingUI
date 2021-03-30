@@ -1,8 +1,10 @@
 
 export const websocketServer = 'ws://10.0.0.1:8765/';
 
-let curpos = 0;
+/** Fake a fixed-sized screen */
+export const fakeScreen = true;
 
+let curpos = 0;
 export const sensorMap: Record<string, {spread: number, pos: number}> = {
     left_s1: { spread: 31.25, pos: curpos += 31.25 },
     left_s2: { spread: 31.25, pos: curpos += 31.25 },
