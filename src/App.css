@@ -127,6 +127,7 @@ video {
   margin: auto;
   display: block;
   /* max-height: 100%; */
+  width: 100%;
 }
 
 .my-navbar.MuiBottomNavigation-root {
@@ -141,6 +142,13 @@ video {
 .my-navbar .MuiButtonBase-root {
   margin: 5px;
   letter-spacing: 5px;
+  /* box-shadow: rgba(254,254,254,0.25) 0px 1px 3px,
+        inset rgba(254,254,254,0.1) 0px 1px 0px,
+        inset rgba(0,0,0,0.25) 0px 0px 0px,
+        inset rgba(254,254,254,0.03) 0px 20px 0px,
+        inset rgba(0,0,0,0.15) 0px -20px 20px, inset rgba(254,254,254,0.05) 0px 20px 20px;
+  background: black;
+  color: white; */
   box-shadow: rgba(0,0,0,0.25) 0px 1px 3px,
         inset rgba(0,0,0,0.1) 0px 1px 0px,
         inset rgba(255,255,255,0.25) 0px 0px 0px,
@@ -148,6 +156,18 @@ video {
         inset rgba(255,255,255,0.15) 0px -20px 20px, inset rgba(0,0,0,0.05) 0px 20px 20px;
 }
 
+.my-navbar .MuiButtonBase-root.Mui-selected {
+  /* color: #97a6ff; */
+}
+
 .my-navbar .MuiSvgIcon-root {
-  font-size: 3rem;
+  font-size: 2rem;
+}
+
+.my-navbar .MuiBottomNavigationAction-label {
+  font-size: 1.2rem!important;
+}
+
+.music iframe {
+  zoom: 1.5;
 }

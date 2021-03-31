@@ -12,15 +12,15 @@ import { FrontActivity } from './FrontActivity';
 import { fakeScreen } from './config';
 
 const activities = [
-  { name: 'rac', friendlyName: '倒车', activity: RadarAndCamsActivity, icon: Sensors },
-  { name: 'front', friendlyName: 'Front', activity: FrontActivity, icon: Camera },
+  { name: 'rac', friendlyName: '撞车', activity: RadarAndCamsActivity, icon: Sensors },
+  { name: 'front', friendlyName: '开车', activity: FrontActivity, icon: Camera },
   { name: 'lidar', friendlyName: '雷达', activity: LidarActivity, icon: LocationOn },
   { name: 'music', friendlyName: '音乐', activity: MusicActivity, icon: MusicNote },
 ] as const;
 type ActivityName = (typeof activities)[number]['name'];
 
 function App() {
-  const [navStateRef] = useState(() => Object.assign(new webfx.Ref<ActivityName>(), { value: 'rac' }));
+  const [navStateRef] = useState(() => Object.assign(new webfx.Ref<ActivityName>(), { value: 'music' }));
   const navState = useWebfxRef(navStateRef);
   useEffect(() => {
     Client.current.connect();
@@ -47,7 +47,7 @@ function App() {
 function NavBar(props: { valRef: webfx.Ref<ActivityName>; }) {
   const val = useWebfxRef(props.valRef);
   return (
-    <BottomNavigation value={val} onChange={(e, newval) => {
+    <BottomNavigation value={val} showLabels={true} onChange={(e, newval) => {
       props.valRef.value = newval;
     }} className="my-navbar">
       {

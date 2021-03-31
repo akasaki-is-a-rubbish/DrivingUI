@@ -43,7 +43,7 @@ export function FrontActivity(props: { hidden: boolean; }) {
         if (!props.hidden) {
             data.arrayBuffer().then(buf => render(buf));
         }
-    }, [props.hidden]);
+    }, [render, props.hidden]);
     return (
         <Activity hidden={props.hidden} className="front">
             <canvas width={w} height={h} ref={canvas}></canvas>
