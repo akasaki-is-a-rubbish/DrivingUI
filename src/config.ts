@@ -1,8 +1,11 @@
 
-// export const websocketServer = 'ws://10.0.0.1:8765/';
-// export const websocketServer = 'ws://10.33.51.112:8765/';
-// export const websocketServer = 'ws://192.168.43.157:8765/';
-export const websocketServer = 'ws://192.168.1.108:8765/';
+export const websocketServer = 
+    'ws://localhost:8765'
+    // 'ws://10.0.0.1:8765/'
+    // 'ws://10.33.51.112:8765/'
+    // 'ws://192.168.43.157:8765/'
+    // 'ws://192.168.1.137:8765/'
+;
 
 
 /** Fake a fixed-sized screen */

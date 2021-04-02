@@ -20,7 +20,7 @@ const activities = [
 type ActivityName = (typeof activities)[number]['name'];
 
 function App() {
-  const [navStateRef] = useState(() => Object.assign(new webfx.Ref<ActivityName>(), { value: 'music' }));
+  const [navStateRef] = useState(() => Object.assign(new webfx.Ref<ActivityName>(), { value: 'front' }));
   const navState = useWebfxRef(navStateRef);
   useEffect(() => {
     Client.current.connect();

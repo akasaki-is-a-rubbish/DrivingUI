@@ -123,7 +123,7 @@ video {
   justify-content: center;
 }
 
-.front canvas {
+.front canvas, .front img {
   margin: auto;
   display: block;
   /* max-height: 100%; */

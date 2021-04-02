@@ -24,6 +24,7 @@ export class Client {
     this.closed = false;
     this.ws?.close();
     this.ws = new WebSocket(websocketServer);
+    // this.ws.binaryType = 'arraybuffer';
     this.ws.onopen = () => {
       console.info("[ws] open");
       this.connectionState.value = 'ok';
