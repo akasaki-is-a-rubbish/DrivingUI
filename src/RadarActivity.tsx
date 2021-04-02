@@ -29,7 +29,7 @@ function SomeCameras() {
   }, []);
   return (
     <div className="cameras">
-      {cameras.map(x => <Camera device={x} />)}
+      {cameras.map(x => <Camera key={x} device={x} />)}
     </div>
   );
 }

@@ -12,12 +12,12 @@ import { FrontActivity } from './FrontActivity';
 import { fakeScreen } from './config';
 
 const activities = [
-  { name: 'rac', friendlyName: '撞车', activity: RadarAndCamsActivity, icon: Sensors },
-  { name: 'front', friendlyName: '开车', activity: FrontActivity, icon: Camera },
-  { name: 'lidar', friendlyName: '雷达', activity: LidarActivity, icon: LocationOn },
-  { name: 'music', friendlyName: '音乐', activity: MusicActivity, icon: MusicNote },
+  { key: 'rac', friendlyName: '撞车', activity: RadarAndCamsActivity, icon: Sensors },
+  { key: 'front', friendlyName: '开车', activity: FrontActivity, icon: Camera },
+  { key: 'lidar', friendlyName: '雷达', activity: LidarActivity, icon: LocationOn },
+  { key: 'music', friendlyName: '音乐', activity: MusicActivity, icon: MusicNote },
 ] as const;
-type ActivityName = (typeof activities)[number]['name'];
+type ActivityName = (typeof activities)[number]['key'];
 
 function App() {
   const [navStateRef] = useState(() => Object.assign(new webfx.Ref<ActivityName>(), { value: 'front' }));
@@ -35,7 +35,7 @@ function App() {
       <div className="activity-outer">
         {
           activities.map(x =>
-            <x.activity hidden={navState != x.name} />
+            <x.activity key={x.key} hidden={navState != x.key} />
           )
         }
       </div>
@@ -52,7 +52,7 @@ function NavBar(props: { valRef: webfx.Ref<ActivityName>; }) {
     }} className="my-navbar">
       {
         activities.map(x =>
-          <BottomNavigationAction label={x.friendlyName} value={x.name} icon={<x.icon />} />
+          <BottomNavigationAction key={x.key} label={x.friendlyName} value={x.key} icon={<x.icon />} />
         )
       }
     </BottomNavigation>
