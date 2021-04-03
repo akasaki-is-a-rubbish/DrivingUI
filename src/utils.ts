@@ -62,7 +62,7 @@ export function className(...args: Array<string | (string | null | undefined)[] 
 
 export function noInteractive() {
     return {
-        onMouseDown: (e: MouseEvent) => (e.preventDefault(), false),
+        onMouseDown: (e: React.MouseEvent) => (e.preventDefault(), false),
         style: {
             cursor: 'default'
         }

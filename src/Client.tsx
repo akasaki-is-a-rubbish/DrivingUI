@@ -3,6 +3,10 @@ import { initData, websocketServer } from './config';
 
 export type Data = any;
 
+const binaryType = 'arraybuffer' as const;
+export const Binary = ArrayBuffer;
+export type Binary = InstanceType<typeof Binary>;
+
 export class Client {
   static current: Client;
 
@@ -13,7 +17,7 @@ export class Client {
   data = new Ref<Data | null>();
   dataHub = new DataHub();
 
-  onReceivedBinary = new Callbacks<Action<Blob>>();
+  onReceivedBinary = new Callbacks<Action<Binary>>();
 
   constructor() {
     this.data.value = {};
@@ -24,7 +28,7 @@ export class Client {
     this.closed = false;
     this.ws?.close();
     this.ws = new WebSocket(websocketServer);
-    // this.ws.binaryType = 'arraybuffer';
+    this.ws.binaryType = binaryType;
     this.ws.onopen = () => {
       console.info("[ws] open");
       this.connectionState.value = 'ok';
@@ -41,7 +45,7 @@ export class Client {
       if (typeof e.data == 'string') {
         var parsed = JSON.parse(e.data);
         this.handleNewData(parsed);
-      } else if (e.data instanceof Blob) {
+      } else if (e.data instanceof Binary) {
         this.onReceivedBinary.invoke(e.data);
       } else {
         console.warn('unknown msg type');
@@ -83,4 +87,8 @@ class DataHub {
   }
 }
 
-window['client'] = Client.current = new Client();
+declare global {
+  var client: Client;
+}
+
+window.client = Client.current = new Client();

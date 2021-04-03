@@ -36,6 +36,10 @@ export function CarView() {
       ctx.stroke();
     }
 
+    function moveAround(pos: number, dist: number) {
+      
+    }
+
     function redraw() {
       canvas = ref.current!;
       if (!canvas)
@@ -118,18 +122,18 @@ export function CarView() {
 
   let data = useWebfxRef(Client.current.data);
   
-  data = Object.entries(data)
+  let data2 = Object.entries(data)
     .filter(([x, val]) => !(val instanceof Array))
     .flatMap(([x, val]) =>
       Object.entries(val as Record<string, number>)
-        .map(([xx, yy]) => [x + '_' + xx, yy])
+        .map(([xx, yy]) => [x + '_' + xx, yy] as const)
     )
     .map(([x, val]) => [sensorMap[x], val] as const)
     .filter(([sensor, val]) => sensor) as [typeof sensorMap[string], number][];
 
 
   useEffect(() => {
-    painter.dataPoints = data.map(([sensor, val]) => {
+    painter.dataPoints = data2.map(([sensor, val]) => {
         return {
           spread: sensor.spread,
           pos: sensor.pos,
