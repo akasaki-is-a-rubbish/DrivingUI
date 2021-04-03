@@ -13,6 +13,8 @@ export function FrontActivity(props: { hidden: boolean; }) {
         const ctx = canvas.current!.getContext('2d')!;
         const img = ctx.createImageData(w, h);
         const imgdata = img.data;
+        const rgbadata = new Uint8Array(w * h * 4);
+        rgbadata.fill(255);
         imgdata.fill(128);
 
         let lastReport = Date.now();
@@ -44,14 +46,14 @@ export function FrontActivity(props: { hidden: boolean; }) {
         function convertData(data: ArrayBuffer) {
             convTime.begin();
             const buf = new Uint8Array(data);
-            imgdata.set(buf);
-            // const pixelCount = buf.length / 3;
-            // for (var i = 0; i < pixelCount; i++) {
-            //     imgdata[4 * i] = buf[3 * i];
-            //     imgdata[4 * i + 1] = buf[3 * i + 1];
-            //     imgdata[4 * i + 2] = buf[3 * i + 2];
-            //     imgdata[4 * i + 3] = 255;
-            // }
+            const rgba = rgbadata;
+            const pixelCount = buf.length / 3;
+            for (var i = 0; i < pixelCount; i++) {
+                rgba[4 * i] = buf[3 * i];
+                rgba[4 * i + 1] = buf[3 * i + 1];
+                rgba[4 * i + 2] = buf[3 * i + 2];
+            }
+            imgdata.set(rgba, 0);
             convTime.end();
         }
 
