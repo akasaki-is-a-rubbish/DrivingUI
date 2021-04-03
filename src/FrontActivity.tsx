@@ -9,7 +9,7 @@ export function FrontActivity(props: { hidden: boolean; }) {
     const domImg = useRef<HTMLImageElement>(null);
     const { w = 1, h = 1 } = useWebfxRef(Client.current.getData('image')) || {};
     const imageHandler = useMemo(() => {
-        if (!domImg.current) return () => { };
+        if (!canvas.current) return () => { };
         const ctx = canvas.current!.getContext('2d')!;
         const img = ctx.createImageData(w, h);
         const imgdata = img.data;
