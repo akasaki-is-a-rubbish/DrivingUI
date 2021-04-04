@@ -37,6 +37,8 @@ export const initData = {
     'left': {s1: 0, s2: 0, s3: 0, s4: 700}
 };
 
+export const frontStats = true;
+
 export const colors: Array<{ distance: number } & RGBA> = [
     { distance: -50, r: 255, g: 0, b: 0, a: 1 },
     { distance: -25, r: 255, g: 200, b: 0, a: 1 },

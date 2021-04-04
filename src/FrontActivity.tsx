@@ -1,12 +1,11 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Activity } from './Basics';
 import { Client } from './Client';
+import { frontStats } from './config';
 import { useWebfxCallback, useWebfxRef } from './utils';
 
 export function FrontActivity(props: { hidden: boolean; }) {
     const canvas = useRef<HTMLCanvasElement>(null);
-    const domInfo = useRef<HTMLDivElement>(null);
-    const domImg = useRef<HTMLImageElement>(null);
     const { w = 1, h = 1 } = useWebfxRef(Client.current.getData('image')) || {};
     const imageHandler = useMemo(() => {
         if (!canvas.current) return () => { };
@@ -33,14 +32,15 @@ export function FrontActivity(props: { hidden: boolean; }) {
                 fpsReport = fps;
                 fps = 0;
             }
-            const text = `${w}x${h} | fps = ${fpsReport} | rendered = ${rendered} | dropped = ${dropped} | ${[rafTime, convTime, canvasTime].join(', ')} ms`;
-            // domInfo.current!.textContent = text;
-            ctx.font = '20px Consolas';
-            const textWidth = ctx.measureText(text);
-            ctx.fillStyle = 'black';
-            ctx.fillRect(0, 0, textWidth.width, 22);
-            ctx.fillStyle = 'white';
-            ctx.fillText(text, 0, 20);
+            if (frontStats) {
+                const text = `${w}x${h} | fps = ${fpsReport} | rendered = ${rendered} | dropped = ${dropped} | ${[rafTime, convTime, canvasTime].join(', ')} ms`;
+                ctx.font = '20px Consolas';
+                const textWidth = ctx.measureText(text);
+                ctx.fillStyle = 'black';
+                ctx.fillRect(0, 0, textWidth.width, 22);
+                ctx.fillStyle = 'white';
+                ctx.fillText(text, 0, 20);
+            }
         }
 
         function convertData(data: ArrayBuffer) {
@@ -75,24 +75,9 @@ export function FrontActivity(props: { hidden: boolean; }) {
         }
 
         function render(data: ArrayBuffer) {
-            // ctx.clearRect(0, 0, w, h);
             convertData(data);
 
-            // const beginLoad = Date.now();
-            // const imgele = await new Promise<HTMLImageElement>(resolve => {
-            //     const ele = domImg.current!;
-            //     // const ele = document.createElement('img');
-            //     const objurl = URL.createObjectURL(data);
-            //     ele.src = objurl;
-            //     ele.onload = (e) => {
-            //         URL.revokeObjectURL(objurl);
-            //         resolve(ele);
-            //     };
-            // });
-            // convTime = Date.now() - beginLoad;
-
             canvasTime.begin();
-            // ctx.drawImage(imgele, 0, 0);
             ctx.putImageData(img, 0, 0);
             drawPoints();
             canvasTime.end();
@@ -128,8 +113,6 @@ export function FrontActivity(props: { hidden: boolean; }) {
     return (
         <Activity hidden={props.hidden} className="front">
             <canvas width={w} height={h} ref={canvas}></canvas>
-            {/* <div ref={domInfo} style={{position: 'absolute', top: 0, background: 'black', color: 'white'}}>Info</div>
-            <img ref={domImg} /> */}
         </Activity>
     );
 }
