@@ -52,6 +52,7 @@ export function FrontActivity(props: { hidden: boolean; }) {
                 rgba[4 * i] = buf[3 * i];
                 rgba[4 * i + 1] = buf[3 * i + 1];
                 rgba[4 * i + 2] = buf[3 * i + 2];
+                // rgba[4 * i + 3] = 255;
             }
             imgdata.set(rgba, 0);
             convTime.end();
