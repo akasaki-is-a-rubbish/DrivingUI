@@ -136,6 +136,8 @@ video {
   position: absolute;
   left: 0;
   bottom: 0;
+  /* background: none; */
+  border-top-right-radius: 19px;
   /* box-shadow: 0 0 10px gray; */
 }
 
@@ -149,11 +151,16 @@ video {
         inset rgba(0,0,0,0.15) 0px -20px 20px, inset rgba(254,254,254,0.05) 0px 20px 20px;
   background: black;
   color: white; */
+  background: white;
   box-shadow: rgba(0,0,0,0.25) 0px 1px 3px,
         inset rgba(0,0,0,0.1) 0px 1px 0px,
         inset rgba(255,255,255,0.25) 0px 0px 0px,
         inset rgba(0,0,0,0.03) 0px 20px 0px,
         inset rgba(255,255,255,0.15) 0px -20px 20px, inset rgba(0,0,0,0.05) 0px 20px 20px;
+}
+
+.my-navbar .MuiButtonBase-root:last-child {
+  border-top-right-radius: 19px;
 }
 
 .my-navbar .MuiButtonBase-root.Mui-selected {
