@@ -1,5 +1,5 @@
 import React from 'react';
-import { Activity } from './Basics';
+import { Activity } from './Activity';
 
 export function MusicActivity(props: { hidden: boolean; }) {
   return (

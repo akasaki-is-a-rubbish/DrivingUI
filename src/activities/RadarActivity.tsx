@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Activity } from './Basics';
-import { Camera } from './Camera';
-import { CarView } from './CarView';
-import { Client } from './Client';
-import { useWebfxRef } from './utils';
+import { Activity } from './Activity';
+import { Camera } from '../Camera';
+import { CarView } from '../CarView';
+import { Client } from '../Client';
+import { useWebfxRef } from '../utils';
 
 export function RadarAndCamsActivity(props: { hidden: boolean; }) {
   const data = useWebfxRef(Client.current.data);

@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Activity } from './Basics';
-import { Client } from './Client';
-import { frontStats } from './config';
-import { useWebfxCallback, useWebfxRef } from './utils';
+import { Activity } from './Activity';
+import { Client } from '../Client';
+import { frontStats } from '../config';
+import { useWebfxCallback, useWebfxRef } from '../utils';
 
 export function FrontActivity(props: { hidden: boolean; }) {
     const canvas = useRef<HTMLCanvasElement>(null);

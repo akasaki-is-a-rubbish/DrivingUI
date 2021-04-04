@@ -1,13 +1,13 @@
 import { Ref } from '@yuuza/webfx';
 import React, { useCallback, useEffect, useMemo, useRef } from 'react';
-import { Activity } from './Basics';
-import { Client } from './Client';
-import { lidarName } from './config';
-import { useWebfxCallback, useWebfxRef, fromPolar, pointDist } from './utils';
+import { Activity } from './Activity';
+import { Client } from '../Client';
+import { lidarName } from '../config';
+import { useWebfxCallback, useWebfxRef, fromPolar, pointDist } from '../utils';
 
 const CANVAS_SIZE = [600, 600];
 
-export function LidarActivity(props: { hidden: boolean; }) {
+export function LidarView() {
   const windowed = useMemo(() => new DataWindow(Client.current.getData(lidarName), 200, 3), []);
   const data = useWebfxRef(windowed.data);
   const canvas = useRef<HTMLCanvasElement>(null);
@@ -42,7 +42,7 @@ export function LidarActivity(props: { hidden: boolean; }) {
       // ctx.stroke();
       if (data) {
         for (const p of data) {
-          const [quality, rat, dist] = p; 
+          const [quality, rat, dist] = p;
           drawPoint(rat, dist, quality / 15);
         }
       }
@@ -55,10 +55,7 @@ export function LidarActivity(props: { hidden: boolean; }) {
   }, [data]);
 
   return (
-    <Activity hidden={props.hidden} className="lidar">
-      {/* <div>{JSON.stringify(data)}</div> */}
-      <canvas width={CANVAS_SIZE[0]} height={CANVAS_SIZE[1]} ref={canvas}></canvas>
-    </Activity>
+    <canvas width={CANVAS_SIZE[0]} height={CANVAS_SIZE[1]} ref={canvas}></canvas>
   );
 }
 

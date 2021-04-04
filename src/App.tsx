@@ -4,20 +4,9 @@ import { Client } from './Client';
 import { className, useWebfxCallback, useWebfxRef } from './utils';
 import { BottomNavigation, BottomNavigationAction } from "@material-ui/core";
 import * as webfx from "@yuuza/webfx";
-import { Sensors, Camera, LocationOn, MusicNote } from "./icons";
-import { RadarAndCamsActivity } from './RadarActivity';
-import { MusicActivity } from './MusicActivity';
-import { LidarActivity } from './LidarActivity';
-import { FrontActivity } from './FrontActivity';
 import { fakeScreen } from './config';
+import { activities, ActivityName } from './activities';
 
-const activities = [
-  { key: 'rac', friendlyName: '撞车', activity: RadarAndCamsActivity, icon: Sensors },
-  { key: 'front', friendlyName: '开车', activity: FrontActivity, icon: Camera },
-  { key: 'lidar', friendlyName: '雷达', activity: LidarActivity, icon: LocationOn },
-  { key: 'music', friendlyName: '音乐', activity: MusicActivity, icon: MusicNote },
-] as const;
-type ActivityName = (typeof activities)[number]['key'];
 
 function App() {
   const [navStateRef] = useState(() => Object.assign(new webfx.Ref<ActivityName>(), { value: 'front' }));
