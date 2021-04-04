@@ -17,6 +17,7 @@ export class Client {
   data = new Ref<Data | null>();
   dataHub = new DataHub();
 
+  onOpen = new Callbacks<Action>();
   onReceivedBinary = new Callbacks<Action<Binary>>();
 
   constructor() {
@@ -32,6 +33,7 @@ export class Client {
     this.ws.onopen = () => {
       console.info("[ws] open");
       this.connectionState.value = 'ok';
+      this.onOpen.invoke();
     };
     this.ws.onerror = (e) => console.error("[ws] error", e);
     this.ws.onclose = (e) => {
@@ -66,6 +68,14 @@ export class Client {
   getData(key?: string) {
     if (key) return this.dataHub.get(key);
     return this.data;
+  }
+
+  send(obj: any) {
+    this.ws.send(obj);
+  }
+
+  sendJson(jsonObj: any) {
+    this.send(JSON.stringify(jsonObj));
   }
 
   close() {

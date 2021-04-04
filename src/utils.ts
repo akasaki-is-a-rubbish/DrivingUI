@@ -13,9 +13,13 @@ export function useWebfxRef<T>(ref: Ref<T>) {
     const [val, setVal] = useState(ref.value);
     useWebfxCallback(ref.onChanged, x => {
         // console.info('Ref changed', ref)
-        setVal(x.value);
-    }, []);
+        if (val !== x.value) setVal(x.value);
+    }, [val]);
     return val;
+}
+
+export function delay(ms: number) {
+    return new Promise(r => setTimeout(r, ms));
 }
 
 export function pointDist(x1: number, y1: number, x2: number, y2: number) {

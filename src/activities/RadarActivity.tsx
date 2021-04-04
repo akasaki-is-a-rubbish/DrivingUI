@@ -6,7 +6,7 @@ import { Client } from '../Client';
 import { useWebfxRef } from '../utils';
 
 export function RadarAndCamsActivity(props: { hidden: boolean; }) {
-  const data = useWebfxRef(Client.current.data);
+  // const data = useWebfxRef(Client.current.data);
   return (
     <Activity className="radar" hidden={props.hidden}>
       {/* <div>Data: <code>{JSON.stringify(data)}</code></div> */}

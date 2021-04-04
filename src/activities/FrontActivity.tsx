@@ -2,19 +2,24 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Activity } from './Activity';
 import { Client } from '../Client';
 import { frontStats } from '../config';
-import { useWebfxCallback, useWebfxRef } from '../utils';
+import { delay, useWebfxCallback, useWebfxRef } from '../utils';
 
-export function FrontActivity(props: { hidden: boolean; }) {
+export const FrontActivity = React.memo(function (props: { hidden: boolean; }) {
     const canvas = useRef<HTMLCanvasElement>(null);
-    const { w = 1, h = 1 } = useWebfxRef(Client.current.getData('image')) || {};
+
+    const [{ w = 1, h = 1 }, setSize] = useState({} as any);
+    useWebfxCallback(Client.current.getData('image').onChanged, (x) => {
+        if (x.value.w != w || x.value.h != h) {
+            setSize(x.value);
+        }
+    }, [w, h]);
+
     const imageHandler = useMemo(() => {
-        if (!canvas.current) return () => { };
+        if (!canvas.current) return null;
         const ctx = canvas.current!.getContext('2d')!;
         const img = ctx.createImageData(w, h);
         const imgdata = img.data;
-        const rgbadata = new Uint8Array(w * h * 4);
-        rgbadata.fill(255);
-        imgdata.fill(128);
+        imgdata.fill(255);
 
         let lastReport = Date.now();
         let rendered = 0;
@@ -46,7 +51,7 @@ export function FrontActivity(props: { hidden: boolean; }) {
         function convertData(data: ArrayBuffer) {
             convTime.begin();
             const buf = new Uint8Array(data);
-            const rgba = rgbadata;
+            const rgba = imgdata;
             const pixelCount = buf.length / 3;
             for (var i = 0; i < pixelCount; i++) {
                 rgba[4 * i] = buf[3 * i];
@@ -54,7 +59,6 @@ export function FrontActivity(props: { hidden: boolean; }) {
                 rgba[4 * i + 2] = buf[3 * i + 2];
                 // rgba[4 * i + 3] = 255;
             }
-            imgdata.set(rgba, 0);
             convTime.end();
         }
 
@@ -85,18 +89,15 @@ export function FrontActivity(props: { hidden: boolean; }) {
         }
 
         let pendingImage: ArrayBuffer | null = null;
-        function handle(data: ArrayBuffer) {
+        async function handle(data: ArrayBuffer) {
             const requestedAF = !!pendingImage;
             pendingImage = data;
             if (!requestedAF) {
                 rafTime.begin();
-                requestAnimationFrame(
-                    () => {
-                        rafTime.end();
-                        render(pendingImage!);
-                        pendingImage = null;
-                    }
-                );
+                await new Promise(r => requestAnimationFrame(r));
+                rafTime.end();
+                render(pendingImage!);
+                pendingImage = null;
             } else {
                 dropped++;
             }
@@ -104,18 +105,26 @@ export function FrontActivity(props: { hidden: boolean; }) {
         return handle;
     }, [w, h, canvas.current]);
 
-    useWebfxCallback(Client.current.onReceivedBinary, (data) => {
-        if (!props.hidden) {
-            imageHandler(data as ArrayBuffer);
+    useWebfxCallback(Client.current.onReceivedBinary, async (data) => {
+        if (imageHandler) await imageHandler(data as ArrayBuffer);
+        if (props.hidden || !imageHandler) {
+            await delay(100);
         }
+        Client.current.sendJson({ cmd: 'requestImage' });
     }, [imageHandler, props.hidden]);
+
+    useWebfxCallback(Client.current.onOpen, () => {
+        Client.current.sendJson({ cmd: 'requestImage' });
+    }, []);
+
+    console.info('front render()');
 
     return (
         <Activity hidden={props.hidden} className="front">
             <canvas width={w} height={h} ref={canvas}></canvas>
         </Activity>
     );
-}
+});
 
 class PerfTimer {
     value = 0;

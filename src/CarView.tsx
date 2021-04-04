@@ -6,7 +6,9 @@ import { fromPolar, mixColor, noInteractive, useWebfxCallback, useWebfxRef } fro
 
 const PI = Math.PI;
 
-export function CarView() {
+const sensorDataNames = [...new Set(Object.keys(sensorMap).map(x => x.substr(0, x.indexOf('_'))))];
+
+export const CarView = React.memo(function () {
   const ref = useRef<HTMLCanvasElement>(null);
 
   const painter = useMemo(() => {
@@ -120,9 +122,9 @@ export function CarView() {
     };
   }, []);
 
-  let data = useWebfxRef(Client.current.data);
-  
-  let data2 = Object.entries(data)
+  const data = sensorDataNames.map(x => [x, useWebfxRef(Client.current.getData(x)) || {}]);
+  console.info(data);
+  const data2 = data
     .filter(([x, val]) => !(val instanceof Array))
     .flatMap(([x, val]) =>
       Object.entries(val as Record<string, number>)
@@ -142,8 +144,9 @@ export function CarView() {
       });
     painter.redraw();
     console.info('rerender radar');
-  }, [JSON.stringify(data)]);
-  // console.info('rerender');
+  }, [data]);
+
+  console.info('CarView render()');
 
   return (
     <div className='car-view' {...noInteractive()}>
@@ -151,4 +154,4 @@ export function CarView() {
       <img className="car-body" src={car} alt="" />
     </div>
   );
-}
+});

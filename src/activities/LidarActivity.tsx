@@ -7,7 +7,7 @@ import { useWebfxCallback, useWebfxRef, fromPolar, pointDist } from '../utils';
 
 const CANVAS_SIZE = [600, 600];
 
-export function LidarView() {
+export const LidarView = React.memo(function () {
   const windowed = useMemo(() => new DataWindow(Client.current.getData(lidarName), 200, 3), []);
   const data = useWebfxRef(windowed.data);
   const canvas = useRef<HTMLCanvasElement>(null);
@@ -57,7 +57,7 @@ export function LidarView() {
   return (
     <canvas width={CANVAS_SIZE[0]} height={CANVAS_SIZE[1]} ref={canvas}></canvas>
   );
-}
+});
 
 class DataWindow<T> {
   readonly data = new Ref<T[]>();

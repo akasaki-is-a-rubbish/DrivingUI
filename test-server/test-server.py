@@ -9,15 +9,16 @@ async def client_handler(client: websockets.WebSocketServerProtocol, path: str):
     print('client connected', client.remote_address)
     try:
         img = np.empty((720, 1280, 3), np.uint8)
-        ret, buf = cv2.imencode('*.bmp', img)
-        buf = buf.tobytes("C")
+        # ret, buf = cv2.imencode('*.bmp', img)
+        buf = img.tobytes("C")
 
         while True:
+            await client.recv();
             await client.send(json.dumps({'image': {'w': img.shape[1], 'h': img.shape[0]}}))
-            # buf = img.tobytes("C")
-            print(len(buf))
+            # img = img.tobytes("C")
+            # print(len(buf))
             await client.send(buf)
-            await asyncio.sleep(0.07)
+            # await asyncio.sleep(0.03)
 
     finally:
         client.close()
@@ -25,7 +26,7 @@ async def client_handler(client: websockets.WebSocketServerProtocol, path: str):
 
 
 async def main():
-    server = await websockets.serve(client_handler, '127.0.0.1', 8765)
+    server = await websockets.serve(client_handler, '127.0.0.1', 8765, compression=None)
     print('test server started listening...')
     await server.wait_closed()
 
