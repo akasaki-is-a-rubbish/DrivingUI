@@ -12,4 +12,7 @@ export const activities = [
     // { key: 'lidar', friendlyName: '雷达', activity: LidarActivity, icon: LocationOn },
     { key: 'music', friendlyName: '音乐', activity: MusicActivity, icon: MusicNote },
 ] as const;
+
 export type ActivityName = (typeof activities)[number]['key'];
+
+export const defaultActivitiy: ActivityName = 'home'; 

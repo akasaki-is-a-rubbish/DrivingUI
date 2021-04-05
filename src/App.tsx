@@ -5,11 +5,11 @@ import { className, useWebfxCallback, useWebfxRef } from './utils';
 import { BottomNavigation, BottomNavigationAction } from "@material-ui/core";
 import * as webfx from "@yuuza/webfx";
 import { fakeScreen } from './config';
-import { activities, ActivityName } from './activities';
+import { activities, ActivityName, defaultActivitiy } from './activities';
 
 
 function App() {
-  const [navStateRef] = useState(() => Object.assign(new webfx.Ref<ActivityName>(), { value: 'front' }));
+  const [navStateRef] = useState(() => Object.assign(new webfx.Ref<ActivityName>(), { value: defaultActivitiy }));
   const navState = useWebfxRef(navStateRef);
   useEffect(() => {
     Client.current.connect();
