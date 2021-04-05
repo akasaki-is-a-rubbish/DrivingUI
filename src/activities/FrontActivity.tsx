@@ -3,6 +3,7 @@ import { Activity } from './Activity';
 import { Client } from '../Client';
 import { frontStats } from '../config';
 import { delay, useWebfxCallback, useWebfxRef } from '../utils';
+import { LidarView } from '../LidarView';
 
 export const FrontActivity = React.memo(function (props: { hidden: boolean; }) {
     const canvas = useRef<HTMLCanvasElement>(null);
@@ -121,7 +122,8 @@ export const FrontActivity = React.memo(function (props: { hidden: boolean; }) {
 
     return (
         <Activity hidden={props.hidden} className="front">
-            <canvas width={w} height={h} ref={canvas}></canvas>
+            <canvas className="frontView" width={w} height={h} ref={canvas}></canvas>
+            <LidarView />
         </Activity>
     );
 });

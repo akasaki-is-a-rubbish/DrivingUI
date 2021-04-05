@@ -1,11 +1,11 @@
 import { Ref } from '@yuuza/webfx';
 import React, { useCallback, useEffect, useMemo, useRef } from 'react';
-import { Activity } from './Activity';
-import { Client } from '../Client';
-import { lidarName } from '../config';
-import { useWebfxCallback, useWebfxRef, fromPolar, pointDist } from '../utils';
+import { Activity } from './activities/Activity';
+import { Client } from './Client';
+import { lidarName } from './config';
+import { useWebfxCallback, useWebfxRef, fromPolar, pointDist } from './utils';
 
-const CANVAS_SIZE = [600, 600];
+const CANVAS_SIZE = [300, 300];
 
 export const LidarView = React.memo(function () {
   const windowed = useMemo(() => new DataWindow(Client.current.getData(lidarName), 200, 3), []);
@@ -55,7 +55,7 @@ export const LidarView = React.memo(function () {
   }, [data]);
 
   return (
-    <canvas width={CANVAS_SIZE[0]} height={CANVAS_SIZE[1]} ref={canvas}></canvas>
+    <canvas className="lidarView" width={CANVAS_SIZE[0]} height={CANVAS_SIZE[1]} ref={canvas}></canvas>
   );
 });
 

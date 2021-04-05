@@ -123,11 +123,19 @@ video {
   justify-content: center;
 }
 
-.front canvas, .front img {
+.front .frontView, .front img {
   margin: auto;
   display: block;
   /* max-height: 100%; */
   width: 100%;
+  background: rgb(206, 206, 206);
+}
+
+.front .lidarView {
+  position: absolute;
+  right: 0;
+  top: 0;
+  background: rgba(0, 132, 255, 0.2);
 }
 
 .my-navbar.MuiBottomNavigation-root {
