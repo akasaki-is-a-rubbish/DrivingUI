@@ -5,14 +5,22 @@ const Sensors = function (){
 };
 
 import Camera from "@material-ui/icons/Camera";
+import Videocam from "@material-ui/icons/Videocam";
 import LocationOn from "@material-ui/icons/LocationOn";
 import MusicNote from "@material-ui/icons/MusicNote";
 import Home from "@material-ui/icons/Home";
+import Weather from "@material-ui/icons/Cloud";
+import Navigation from "@material-ui/icons/Navigation";
+import Settings from "@material-ui/icons/Settings";
 
 export {
     Sensors,
     Camera,
+    Videocam,
     LocationOn,
     MusicNote,
-    Home
+    Home,
+    Weather,
+    Navigation,
+    Settings
 };
