@@ -25,7 +25,7 @@ export const LidarView = React.memo(function () {
         ctx.moveTo(x, y);
       }
       ctx.lineTo(x, y);
-      ctx.strokeStyle = `rgba(0, 0, 0, ${quality})`;
+      ctx.strokeStyle = `rgba(255, 255, 255, ${quality})`;
       ctx.stroke();
       lastP = { x, y };
     }

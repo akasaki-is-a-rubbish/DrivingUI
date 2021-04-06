@@ -133,9 +133,10 @@ video {
 
 .front .lidarView {
   position: absolute;
-  right: 0;
-  top: 0;
-  background: rgba(0, 132, 255, 0.2);
+  right: 10px;
+  top: 10px;
+  background: rgba(0, 0, 0, 0.514);
+  border-radius: 50%;
 }
 
 .my-navbar.MuiBottomNavigation-root {

@@ -1,6 +1,7 @@
 import { Box, styled } from "@material-ui/core";
 import React from "react";
 import { Camera, MusicNote, Navigation, Sensors, Settings, Videocam, Weather } from "../icons";
+import { noInteractive } from "../utils";
 import { Activity } from "./Activity";
 
 const Card = styled(Box)({
@@ -42,7 +43,7 @@ const HomeBox = styled(Box)({
 export function HomeActivity(props: { hidden: boolean; }) {
     return (
         <Activity className="home" hidden={props.hidden}>
-            <HomeBox>
+            <HomeBox {...noInteractive()}>
                 <Card>
                     <CardIcon><Navigation/></CardIcon>
                     <CardTitle>导航</CardTitle>
