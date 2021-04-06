@@ -72,3 +72,13 @@ export function noInteractive() {
         }
     };
 }
+
+export function getColor(colors: any, o: number) {
+  var prev = colors[0];
+  var next = colors[1];
+  for (let i = 2; i < colors.length; i++) {
+    if (next.distance < o) break;
+    [prev, next] = [next, colors[i]];
+  }
+  return mixColor(prev, next, 1 - (o - prev.distance) / (next.distance - prev.distance));
+}

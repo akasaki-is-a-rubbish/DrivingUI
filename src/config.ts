@@ -47,6 +47,13 @@ export const colors: Array<{ distance: number } & RGBA> = [
 ]
 .sort((a, b) => b.distance - a.distance);
 
+export const lidarPointColors: Array<{ distance: number } & RGBA> = [
+    { distance: 0, r: 255, g: 0, b: 0, a: 1 },
+    { distance: 1000, r: 255, g: 200, b: 0, a: 1 },
+    { distance: 3000, r: 0, g: 255, b: 0, a: 1 },
+]
+.sort((a, b) => b.distance - a.distance);
+
 export const baseDistance = 50;
 
 export function sensorFunction(x: number) {

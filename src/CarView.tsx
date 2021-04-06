@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useRef } from 'react';
 import car from './car.png';
 import { Client } from './Client';
 import { baseDistance, colors, sensorFunction, sensorMap, RGB } from './config';
-import { fromPolar, mixColor, noInteractive, useWebfxCallback, useWebfxRef } from './utils';
+import { fromPolar, getColor, mixColor, noInteractive, useWebfxCallback, useWebfxRef } from './utils';
 
 const PI = Math.PI;
 
@@ -33,7 +33,7 @@ export const CarView = React.memo(function () {
       ctx.lineTo(x, y);
       lastX = x; lastY = y;
       o -= baseDistance;
-      const color = getColor(o);
+      const color = getColor(colors, o);
       ctx.strokeStyle = `rgba(${(color.r)}, ${(color.g)}, ${(color.b)}, ${(color.a)})`;
       ctx.stroke();
     }
@@ -103,16 +103,6 @@ export const CarView = React.memo(function () {
         }
       }
       return result;
-    }
-
-    function getColor(o: number) {
-      var prev = colors[0];
-      var next = colors[1];
-      for (let i = 2; i < colors.length; i++) {
-        if (next.distance < o) break;
-        [prev, next] = [next, colors[i]];
-      }
-      return mixColor(prev, next, 1 - (o - prev.distance) / (next.distance - prev.distance));
     }
 
     return {

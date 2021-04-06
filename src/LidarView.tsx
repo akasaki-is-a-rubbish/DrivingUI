@@ -2,10 +2,10 @@ import { Ref } from '@yuuza/webfx';
 import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 import { Activity } from './activities/Activity';
 import { Client } from './Client';
-import { lidarName } from './config';
-import { useWebfxCallback, useWebfxRef, fromPolar, pointDist } from './utils';
+import { lidarName, lidarPointColors } from './config';
+import { useWebfxCallback, useWebfxRef, fromPolar, pointDist, getColor } from './utils';
 
-const CANVAS_SIZE = [300, 300];
+const CANVAS_SIZE = [250, 250];
 
 export const LidarView = React.memo(function () {
   const windowed = useMemo(() => new DataWindow(Client.current.getData(lidarName), 200, 3), []);
@@ -17,7 +17,7 @@ export const LidarView = React.memo(function () {
     let lastP: { x: number, y: number; } | null = null;
 
     function drawPoint(ratio: number, dist: number, quality: number) {
-      var [x, y] = fromPolar(CANVAS_SIZE[0] / 2, CANVAS_SIZE[1] / 2, dist * 0.02, ratio / 180 * Math.PI);
+      var [x, y] = fromPolar(CANVAS_SIZE[0] / 2, CANVAS_SIZE[1] / 2, dist * 0.015, ratio / 180 * Math.PI);
       ctx.beginPath();
       if (lastP && pointDist(lastP.x, lastP.y, x, y) < 0) {
         ctx.moveTo(lastP.x, lastP.y);
@@ -25,7 +25,8 @@ export const LidarView = React.memo(function () {
         ctx.moveTo(x, y);
       }
       ctx.lineTo(x, y);
-      ctx.strokeStyle = `rgba(255, 255, 255, ${quality})`;
+      const color = getColor(lidarPointColors, dist);
+      ctx.strokeStyle = `rgba(${color.r}, ${color.g}, ${color.b}, ${quality * color.a})`;
       ctx.stroke();
       lastP = { x, y };
     }

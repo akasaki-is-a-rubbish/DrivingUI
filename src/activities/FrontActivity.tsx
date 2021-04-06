@@ -29,7 +29,7 @@ export const FrontActivity = React.memo(function (props: { hidden: boolean; }) {
         let fpsReport = 0;
         let rafTime = new PerfTimer('raf');
         let convTime = new PerfTimer('conv');
-        let canvasTime = new PerfTimer('canvas');
+        let canvasTime = new PerfTimer('draw');
         function updateCounter() {
             fps++; rendered++;
             const now = Date.now();
@@ -40,12 +40,12 @@ export const FrontActivity = React.memo(function (props: { hidden: boolean; }) {
             }
             if (frontStats) {
                 const text = `${w}x${h} | fps = ${fpsReport} | rendered = ${rendered} | dropped = ${dropped} | ${[rafTime, convTime, canvasTime].join(', ')} ms`;
-                ctx.font = '20px Consolas';
+                ctx.font = '18px Consolas,monospace';
                 const textWidth = ctx.measureText(text);
-                ctx.fillStyle = 'black';
-                ctx.fillRect(0, 0, textWidth.width, 22);
+                ctx.fillStyle = 'rgba(0,0,0,0.5)';
+                ctx.fillRect(400, h - 30, textWidth.width + 15, 24);
                 ctx.fillStyle = 'white';
-                ctx.fillText(text, 0, 20);
+                ctx.fillText(text, 410, h - 10);
             }
         }
 
