@@ -39,13 +39,13 @@ export const FrontActivity = React.memo(function (props: { hidden: boolean; }) {
                 fps = 0;
             }
             if (frontStats) {
-                const text = `${w}x${h} | fps = ${fpsReport} | rendered = ${rendered} | dropped = ${dropped} | ${[rafTime, convTime, canvasTime].join(', ')} ms`;
+                const text = `${w}x${h} | fps = ${fpsReport} | rendered = ${rendered} | ${[rafTime, convTime, canvasTime].join(', ')} ms`;
                 ctx.font = '18px Consolas,monospace';
                 const textWidth = ctx.measureText(text);
                 ctx.fillStyle = 'rgba(0,0,0,0.5)';
-                ctx.fillRect(400, h - 30, textWidth.width + 15, 24);
+                ctx.fillRect(400, h - 24, textWidth.width + 15, 24);
                 ctx.fillStyle = 'white';
-                ctx.fillText(text, 410, h - 10);
+                ctx.fillText(text, 410, h - (18 / 2));
             }
         }
 

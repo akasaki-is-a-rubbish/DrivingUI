@@ -1,6 +1,6 @@
 import { Box, styled } from "@material-ui/core";
 import React from "react";
-import { Camera, MusicNote, Navigation, Sensors, Settings, Videocam, Weather } from "../icons";
+import { Camera, MusicIcon, Navigation, Sensors, Settings, Videocam, Weather, Movie, Map, Radar, Sun } from "../icons";
 import { noInteractive } from "../utils";
 import { Activity } from "./Activity";
 
@@ -45,27 +45,27 @@ export function HomeActivity(props: { hidden: boolean; }) {
         <Activity className="home" hidden={props.hidden}>
             <HomeBox {...noInteractive()}>
                 <Card>
-                    <CardIcon><Navigation/></CardIcon>
+                    <CardIcon><Map/></CardIcon>
                     <CardTitle>导航</CardTitle>
                 </Card>
                 <Card>
-                    <CardIcon><MusicNote/></CardIcon>
+                    <CardIcon><MusicIcon/></CardIcon>
                     <CardTitle>音乐</CardTitle>
                 </Card>
                 <Card>
-                    <CardIcon><Weather/></CardIcon>
-                    <CardTitle>天气</CardTitle>
+                    <CardIcon><Sun/></CardIcon>
+                    <CardTitle>40 °C</CardTitle>
                 </Card>
                 <Card>
-                    <CardIcon><Videocam/></CardIcon>
+                    <CardIcon><Movie/></CardIcon>
                     <CardTitle>行车记录</CardTitle>
                 </Card>
                 <Card>
-                    <CardIcon><Sensors/></CardIcon>
+                    <CardIcon><Radar/></CardIcon>
                     <CardTitle>倒车</CardTitle>
                 </Card>
                 <Card>
-                    <CardIcon><Settings/></CardIcon>
+                    <CardIcon color="#1177ff"><Settings/></CardIcon>
                     <CardTitle>设置</CardTitle>
                 </Card>
             </HomeBox>
