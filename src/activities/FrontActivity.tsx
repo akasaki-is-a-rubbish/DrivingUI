@@ -8,7 +8,8 @@ import { LidarView } from '../LidarView';
 export const FrontActivity = React.memo(function (props: { hidden: boolean; }) {
     const canvas = useRef<HTMLCanvasElement>(null);
 
-    const [{ w = 1, h = 1 }, setSize] = useState({} as any);
+    const [{ w = 960, h = 540 }, setSize] = useState({} as any);
+    const connectState = useWebfxRef(Client.current.connectionState);
     useWebfxCallback(Client.current.getData('image').onChanged, (x) => {
         if (x.value.w != w || x.value.h != h) {
             setSize(x.value);
@@ -89,6 +90,20 @@ export const FrontActivity = React.memo(function (props: { hidden: boolean; }) {
             updateCounter();
         }
 
+        function noSignal() {
+            for (let p = 0; p < imgdata.length; p += 4) {
+                imgdata[p] = imgdata[p + 1] = imgdata[p + 2] = Math.floor(128 + Math.random() * 128);
+            }
+            ctx.putImageData(img, 0, 0);
+            ctx.font = '160px Consolas,monospace';
+            ctx.fillStyle = 'white';
+            ctx.strokeStyle = 'black';
+            ctx.lineWidth = 3;
+            ctx.fillText('NO SIGNAL', 80, 320);
+            ctx.strokeText('NO SIGNAL', 80, 320);
+        }
+        // noSignal();
+
         let pendingImage: ArrayBuffer | null = null;
         async function handle(data: ArrayBuffer) {
             const requestedAF = !!pendingImage;
@@ -103,11 +118,11 @@ export const FrontActivity = React.memo(function (props: { hidden: boolean; }) {
                 dropped++;
             }
         }
-        return handle;
+        return { handle };
     }, [w, h, canvas.current]);
 
     useWebfxCallback(Client.current.onReceivedBinary, async (data) => {
-        if (imageHandler) await imageHandler(data as ArrayBuffer);
+        if (imageHandler) await imageHandler.handle(data as ArrayBuffer);
         if (props.hidden || !imageHandler) {
             await delay(100);
         }

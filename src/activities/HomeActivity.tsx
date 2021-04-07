@@ -18,6 +18,8 @@ const Card = styled(Box)({
     display: 'flex',
     flexFlow: 'column',
     justifyContent: 'center',
+    background: 'white',
+    userSelect: 'none',
 });
 
 const CardIcon = styled(Box)({
@@ -37,7 +39,8 @@ const HomeBox = styled(Box)({
     alignItems: 'center',
     justifyContent: 'space-around',
     alignContent: 'space-around',
-    padding: '60px 3% 100px'
+    padding: '60px 3% 100px',
+    background: '#eeeeee'
 });
 
 export function HomeActivity(props: { hidden: boolean; }) {
