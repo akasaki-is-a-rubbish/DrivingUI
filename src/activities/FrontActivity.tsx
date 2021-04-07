@@ -65,7 +65,7 @@ export const FrontActivity = React.memo(function (props: { hidden: boolean; }) {
         }
 
         function drawPoints() {
-            const points = [...(Client.current.data.value['frontPoints'] || [])];
+            const points = [...(Client.current.data.value['lanePoints'] || [])];
             // console.info(points);
             if (points instanceof Array) {
                 ctx.lineCap = 'round';
@@ -80,12 +80,31 @@ export const FrontActivity = React.memo(function (props: { hidden: boolean; }) {
             }
         }
 
+        function drawTargets() {
+            const targets = (Client.current.data.value['targets'] as any[] || []) as
+                [number, number, number, number, number, number, string][];
+            console.info(targets);
+            ctx.lineCap = 'round';
+            ctx.lineWidth = 2;
+            const alpha = Math.max(1 - (Date.now() - targetsCtr.lastIncr) / 200, 0.3);
+            ctx.strokeStyle = `rgba(255,255,0,${alpha})`;
+            ctx.font = '20px';
+            ctx.fillStyle = `rgba(128,255,0,0.8)`;
+            for (const t of targets) {
+                let [x1, y1, x2, y2, _, cataId, catagory] = t;
+                console.info(x1, y1, x2, y2);
+                ctx.strokeRect(x1, y1, x2 - x1, y2 - y1)
+                ctx.fillText(catagory, x1, y1 - 10);
+            }
+        }
+
         function render(data: ArrayBuffer) {
             convertData(data);
 
             canvasTime.begin();
             ctx.putImageData(img, 0, 0);
             drawPoints();
+            drawTargets();
             canvasTime.end();
             updateCounter();
         }
