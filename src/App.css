@@ -14,7 +14,7 @@ body {
   flex-flow: column;
   justify-content: center;
   align-items: center;
-  background: gray;
+  /* background: rgb(253, 251, 251); */
 }
 
 video {
@@ -174,7 +174,7 @@ video {
 }
 
 .my-navbar .MuiButtonBase-root.Mui-selected {
-  /* color: #97a6ff; */
+  color: black;
 }
 
 .my-navbar .MuiSvgIcon-root {

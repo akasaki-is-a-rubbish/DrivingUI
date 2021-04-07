@@ -8,7 +8,7 @@ function createWindow () {
       nodeIntegration: false,
     }
   })
-
+  win.setMenuBarVisibility(false);
   win.loadURL('http://localhost:3000');
 }
 
