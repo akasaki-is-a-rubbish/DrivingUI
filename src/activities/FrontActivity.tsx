@@ -5,6 +5,8 @@ import { frontStats } from '../config';
 import { delay, useWebfxCallback, useWebfxRef } from '../utils';
 import { LidarView } from '../LidarView';
 
+const QUEUE_SIZE = 10;
+
 export const FrontActivity = React.memo(function (props: { hidden: boolean; }) {
     const canvas = useRef<HTMLCanvasElement>(null);
 
@@ -22,6 +24,8 @@ export const FrontActivity = React.memo(function (props: { hidden: boolean; }) {
         const img = ctx.createImageData(w, h);
         const imgdata = img.data;
         imgdata.fill(255);
+
+        const imgQueue: ArrayBuffer[] = [];
 
         const renderedCtr = new PerfCounter();
         let dropped = 0;
@@ -127,7 +131,12 @@ export const FrontActivity = React.memo(function (props: { hidden: boolean; }) {
                 rafTime.begin();
                 await new Promise(r => requestAnimationFrame(r));
                 rafTime.end();
-                render(pendingImage!);
+
+                imgQueue.push(pendingImage)
+                if (imgQueue.length == QUEUE_SIZE) {
+                    render(imgQueue.shift()!);
+                }
+
                 pendingImage = null;
             } else {
                 dropped++;
