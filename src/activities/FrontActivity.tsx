@@ -92,6 +92,8 @@ export const FrontActivity = React.memo(function (props: { hidden: boolean; }) {
             ctx.fillStyle = `rgba(128,255,0,0.8)`;
             for (const t of targets) {
                 let [x1, y1, x2, y2, _, cataId, catagory] = t;
+                const xscale = 2, yscale = 1.9;
+                x1 *= xscale; y1 *= yscale; x2 *= xscale; y2 *= yscale;
                 console.info(x1, y1, x2, y2);
                 ctx.strokeRect(x1, y1, x2 - x1, y2 - y1)
                 ctx.fillText(catagory, x1, y1 - 10);
