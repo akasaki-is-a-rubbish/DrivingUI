@@ -23,24 +23,18 @@ export const FrontActivity = React.memo(function (props: { hidden: boolean; }) {
         const imgdata = img.data;
         imgdata.fill(255);
 
-        let lastReport = Date.now();
-        let rendered = 0;
+        const renderedCtr = new PerfCounter();
         let dropped = 0;
-        let fps = 0;
-        let fpsReport = 0;
-        let rafTime = new PerfTimer('raf');
-        let convTime = new PerfTimer('conv');
-        let canvasTime = new PerfTimer('draw');
+        const rafTime = new PerfTimer('raf');
+        const convTime = new PerfTimer('conv');
+        const canvasTime = new PerfTimer('draw');
+        const laneCtr = new PerfCounter();
+        const targetsCtr = new PerfCounter();
         function updateCounter() {
-            fps++; rendered++;
-            const now = Date.now();
-            if (now - lastReport >= 1000) {
-                lastReport = now;
-                fpsReport = fps;
-                fps = 0;
-            }
+            renderedCtr.incr();
+            [renderedCtr, laneCtr, targetsCtr].forEach(x => x.update());
             if (frontStats) {
-                const text = `${w}x${h} | fps = ${fpsReport} | rendered = ${rendered} | ${[rafTime, convTime, canvasTime].join(', ')} ms`;
+                const text = `${w}x${h} | fps = ${[renderedCtr, laneCtr, targetsCtr].map(x => x.freq.toFixed(1)).join(', ')} | rendered = ${renderedCtr.total} | ${[rafTime, convTime, canvasTime].join(', ')} ms`;
                 ctx.font = '18px Consolas,monospace';
                 const textWidth = ctx.measureText(text);
                 ctx.fillStyle = 'rgba(0,0,0,0.5)';
@@ -139,7 +133,7 @@ export const FrontActivity = React.memo(function (props: { hidden: boolean; }) {
                 dropped++;
             }
         }
-        return { handle };
+        return { handle, laneCtr, targetsCtr };
     }, [w, h, canvas.current]);
 
     useWebfxCallback(Client.current.onReceivedBinary, async (data) => {
@@ -153,6 +147,14 @@ export const FrontActivity = React.memo(function (props: { hidden: boolean; }) {
     useWebfxCallback(Client.current.onOpen, () => {
         Client.current.sendJson({ cmd: 'requestImage' });
     }, []);
+
+    useWebfxCallback(Client.current.getData('targets').onChanged, () => {
+        imageHandler?.targetsCtr.incr();
+    }, [imageHandler]);
+
+    useWebfxCallback(Client.current.getData('lanePoints').onChanged, () => {
+        imageHandler?.laneCtr.incr();
+    }, [imageHandler]);
 
     console.info('front render()');
 
@@ -179,5 +181,27 @@ class PerfTimer {
 
     toString() {
         return this.name + '=' + this.value;
+    }
+}
+
+class PerfCounter {
+    total = 0;
+    freq = 0;
+    lastTotal = 0;
+    lastUpdate = Date.now();
+    lastIncr = 0;
+
+    incr() {
+        this.total++;
+        this.lastIncr = Date.now();
+    }
+    update() {
+        const now = Date.now();
+        if (now - this.lastUpdate >= 1000) {
+            this.freq = (this.total - this.lastTotal) * 1000 / (now - this.lastUpdate);
+            this.lastTotal = this.total;
+            this.lastUpdate = now;
+        }
+        return this;
     }
 }
