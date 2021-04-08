@@ -5,7 +5,7 @@ import { frontStats } from '../config';
 import { delay, useWebfxCallback, useWebfxRef } from '../utils';
 import { LidarView } from '../LidarView';
 
-const QUEUE_SIZE = 10;
+const QUEUE_SIZE = 7;
 
 export const FrontActivity = React.memo(function (props: { hidden: boolean; }) {
     const canvas = useRef<HTMLCanvasElement>(null);
@@ -83,18 +83,24 @@ export const FrontActivity = React.memo(function (props: { hidden: boolean; }) {
                 [number, number, number, number, number, number, string][];
             console.info(targets);
             ctx.lineCap = 'round';
-            ctx.lineWidth = 2;
-            const alpha = Math.max(1 - (Date.now() - targetsCtr.lastIncr) / 200, 0.3);
+            ctx.lineWidth = 3;
+            const alpha = Math.max(1 - (Date.now() - targetsCtr.lastIncr) / 100, 0);
             ctx.strokeStyle = `rgba(255,255,0,${alpha})`;
             ctx.font = '20px';
             ctx.fillStyle = `rgba(128,255,0,0.8)`;
             for (const t of targets) {
-                let [x1, y1, x2, y2, _, cataId, catagory] = t;
-                const xscale = 2, yscale = 1.9;
+                let [x1, y1, x2, y2, conf, cataId, catagory] = t;
+                if (conf < 0.2) continue;
+                const xscale = 1, yscale = 1, yoffset = 0;
                 x1 *= xscale; y1 *= yscale; x2 *= xscale; y2 *= yscale;
-                console.info(x1, y1, x2, y2);
-                ctx.strokeRect(x1, y1, x2 - x1, y2 - y1)
-                ctx.fillText(catagory, x1, y1 - 10);
+                y1 += yoffset; y2 += yoffset;
+                const confAlpha = 0.4 + ((conf - 0.2) / 0.8) * 0.6;
+                ctx.strokeStyle = `rgba(255,255,0,${alpha * confAlpha})`;
+                // ctx.strokeRect(x1, y1, x2 - x1, y2 - y1);
+                ctx.fillStyle = `rgba(128,255,0,${confAlpha})`;
+                const text = catagory + ' ' + (conf * 100).toFixed();
+                const textWidth = ctx.measureText(text).width;
+                ctx.fillText(text, (x1 + x2) / 2 - textWidth / 2, y1 - 10);
             }
         }
 
