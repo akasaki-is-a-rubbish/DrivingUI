@@ -27,6 +27,8 @@ export const FrontActivity = React.memo(function (props: { hidden: boolean; }) {
 
         const imgQueue: ArrayBuffer[] = [];
 
+        const logs: string[] = [];
+
         const renderedCtr = new PerfCounter();
         let dropped = 0;
         const rafTime = new PerfTimer('raf');
@@ -39,7 +41,7 @@ export const FrontActivity = React.memo(function (props: { hidden: boolean; }) {
             [renderedCtr, laneCtr, targetsCtr].forEach(x => x.update());
             if (frontStats) {
                 const fpss = [renderedCtr, laneCtr, targetsCtr].map(x => x.freq.toFixed(1)).join(', ');
-                const rendertimes = [rafTime, convTime, canvasTime].join(', ');
+                const rendertimes = [recvTime, rafTime, convTime, canvasTime].join(' ');
                 const text = `${w}x${h} | fps = ${fpss} | rendered = ${renderedCtr.total} | ${rendertimes} ms`;
                 ctx.font = '18px Consolas,monospace';
                 const textWidth = ctx.measureText(text);
@@ -131,19 +133,32 @@ export const FrontActivity = React.memo(function (props: { hidden: boolean; }) {
         }
         // noSignal();
 
+        const recvTime = new PerfTimer('recv');
+        recvTime.begin();
+
         let pendingImage: ArrayBuffer | null = null;
         async function handle(data: ArrayBuffer) {
             const requestedAF = !!pendingImage;
             pendingImage = data;
             if (!requestedAF) {
+                recvTime.end();
                 rafTime.begin();
                 await new Promise(r => requestAnimationFrame(r));
                 rafTime.end();
 
-                imgQueue.push(pendingImage)
+                const delayTask = delay(30);
+
                 if (imgQueue.length == QUEUE_SIZE) {
-                    render(imgQueue.shift()!);
+                    const renderBuf = imgQueue.shift()!;
+                    render(renderBuf);
+                    new Uint8Array(renderBuf).set(new Uint8Array(pendingImage));
+                    imgQueue.push(renderBuf);
+                } else {
+                    imgQueue.push(pendingImage)
                 }
+                recvTime.begin();
+
+                await delayTask;
 
                 pendingImage = null;
             } else {
