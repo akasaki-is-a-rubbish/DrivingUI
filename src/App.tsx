@@ -6,27 +6,17 @@ import { BottomNavigation, BottomNavigationAction } from "@material-ui/core";
 import * as webfx from "@yuuza/webfx";
 import { fakeScreen } from './config';
 import { activities, ActivityName, defaultActivitiy } from './activities';
-
-import * as darkreader from "darkreader";
+import { appTheme } from './appTheme';
 
 
 function App() {
   const [navStateRef] = useState(() => Object.assign(new webfx.Ref<ActivityName>(), { value: defaultActivitiy }));
   const navState = useWebfxRef(navStateRef);
   useEffect(() => {
+    appTheme.init();
     Client.current.connect();
     return () => Client.current.close();
   }, []);
-
-  useEffect(() => {
-    if (!(darkreader as any).isEnabled()) {
-      darkreader.enable({
-        brightness: 100,
-        contrast: 90,
-        sepia: 10
-      });
-    }
-  }, [])
 
   const connection = useWebfxRef(Client.current.connectionState);
 
