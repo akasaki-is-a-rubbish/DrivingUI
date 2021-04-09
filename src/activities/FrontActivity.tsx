@@ -38,7 +38,9 @@ export const FrontActivity = React.memo(function (props: { hidden: boolean; }) {
             renderedCtr.incr();
             [renderedCtr, laneCtr, targetsCtr].forEach(x => x.update());
             if (frontStats) {
-                const text = `${w}x${h} | fps = ${[renderedCtr, laneCtr, targetsCtr].map(x => x.freq.toFixed(1)).join(', ')} | rendered = ${renderedCtr.total} | ${[rafTime, convTime, canvasTime].join(', ')} ms`;
+                const fpss = [renderedCtr, laneCtr, targetsCtr].map(x => x.freq.toFixed(1)).join(', ');
+                const rendertimes = [rafTime, convTime, canvasTime].join(', ');
+                const text = `${w}x${h} | fps = ${fpss} | rendered = ${renderedCtr.total} | ${rendertimes} ms`;
                 ctx.font = '18px Consolas,monospace';
                 const textWidth = ctx.measureText(text);
                 ctx.fillStyle = 'rgba(0,0,0,0.5)';
