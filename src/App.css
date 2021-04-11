@@ -67,6 +67,7 @@ video {
   flex: 1;
   align-items: center;
   justify-content: space-around;
+  padding: 0 30px;
 }
 
 .car-view {
@@ -90,7 +91,7 @@ video {
   flex-flow: column wrap;
   justify-content: space-around;
   max-height: 100%;
-  max-width: 50%;
+  max-width: 70%;
 }
 
 .camera {

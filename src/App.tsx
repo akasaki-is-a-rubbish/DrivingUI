@@ -26,7 +26,7 @@ function App() {
       <div className="activity-outer">
         {
           activities.map(x =>
-            <x.activity key={x.key} hidden={navState != x.key} />
+            <x.activity key={x.key} hidden={navState != x.key} navState={navStateRef} />
           )
         }
       </div>

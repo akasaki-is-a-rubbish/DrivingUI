@@ -30,6 +30,7 @@ function SomeCameras() {
   return (
     <div className="cameras">
       {cameras.map(x => <Camera key={x} device={x} />)}
+      {/* <Camera img="res/cam_back.png"></Camera> */}
     </div>
   );
 }

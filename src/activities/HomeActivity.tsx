@@ -1,10 +1,12 @@
-import { Box, styled } from "@material-ui/core";
+import { Box, ButtonBase, styled } from "@material-ui/core";
+import { Ref } from "@yuuza/webfx";
 import React from "react";
+import { ActivityName } from ".";
 import { Camera, MusicIcon, Navigation, Sensors, Settings, Videocam, Weather, Movie, Map, Radar, Sun } from "../icons";
 import { noInteractive } from "../utils";
 import { Activity } from "./Activity";
 
-const Card = styled(Box)({
+const Card = styled(ButtonBase)({
     position: 'relative',
     // boxShadow: '0 0 10px black',
     boxShadow: `rgba(0,0,0,0.25) 0px 2px 5px,
@@ -43,32 +45,32 @@ const HomeBox = styled(Box)({
     background: '#eeeeee'
 });
 
-export function HomeActivity(props: { hidden: boolean; }) {
+export function HomeActivity(props: { hidden: boolean; navState: Ref<ActivityName>; }) {
     return (
         <Activity className="home" hidden={props.hidden}>
             <HomeBox {...noInteractive()}>
                 <Card>
-                    <CardIcon><Map/></CardIcon>
+                    <CardIcon><Map /></CardIcon>
                     <CardTitle>导航</CardTitle>
                 </Card>
-                <Card>
-                    <CardIcon><MusicIcon/></CardIcon>
+                <Card onClick={() => props.navState.value = 'music'}>
+                    <CardIcon><MusicIcon /></CardIcon>
                     <CardTitle>音乐</CardTitle>
                 </Card>
                 <Card>
-                    <CardIcon><Sun/></CardIcon>
+                    <CardIcon><Sun /></CardIcon>
                     <CardTitle>40 °C</CardTitle>
                 </Card>
                 <Card>
-                    <CardIcon><Movie/></CardIcon>
+                    <CardIcon><Movie /></CardIcon>
                     <CardTitle>行车记录</CardTitle>
                 </Card>
-                <Card>
-                    <CardIcon><Radar/></CardIcon>
+                <Card onClick={() => props.navState.value = 'rac'}>
+                    <CardIcon><Radar /></CardIcon>
                     <CardTitle>倒车</CardTitle>
                 </Card>
                 <Card>
-                    <CardIcon color="#1177ff"><Settings/></CardIcon>
+                    <CardIcon color="#1177ff"><Settings /></CardIcon>
                     <CardTitle>设置</CardTitle>
                 </Card>
             </HomeBox>
