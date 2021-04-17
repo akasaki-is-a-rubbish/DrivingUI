@@ -1,3 +1,4 @@
+import { Timer } from '@yuuza/webfx';
 import React, { useEffect, useMemo, useRef } from 'react';
 import car from './car.png';
 import { Client } from './Client';
@@ -10,6 +11,9 @@ const sensorDataNames = [...new Set(Object.keys(sensorMap).map(x => x.substr(0, 
 
 export const CarView = React.memo(function () {
   const ref = useRef<HTMLCanvasElement>(null);
+  const beep = useMemo(() => new Beeper(), []);
+
+  useEffect(() => () => beep.setInterval(-1), []);
 
   const painter = useMemo(() => {
     var canvas: HTMLCanvasElement;
@@ -39,7 +43,7 @@ export const CarView = React.memo(function () {
     }
 
     function moveAround(pos: number, dist: number) {
-      
+
     }
 
     function redraw() {
@@ -113,7 +117,7 @@ export const CarView = React.memo(function () {
   }, []);
 
   const data = sensorDataNames.map(x => [x, useWebfxRef(Client.current.getData(x)) || {}]);
-  console.info(data);
+  // console.info(data);
   const data2 = data
     .filter(([x, val]) => !(val instanceof Array))
     .flatMap(([x, val]) =>
@@ -123,17 +127,26 @@ export const CarView = React.memo(function () {
     .map(([x, val]) => [sensorMap[x], val] as const)
     .filter(([sensor, val]) => sensor) as [typeof sensorMap[string], number][];
 
-
   useEffect(() => {
+    console.info('radar data2', data2);
     painter.dataPoints = data2.map(([sensor, val]) => {
-        return {
-          spread: sensor.spread,
-          pos: sensor.pos,
-          val: sensorFunction(val)
-        };
-      });
+      return {
+        spread: sensor.spread,
+        pos: sensor.pos,
+        val: sensorFunction(val)
+      };
+    });
     painter.redraw();
     console.info('rerender radar');
+
+    const min = data2.map(x => x[1])
+      .filter(x => x != 0)
+      .reduce((p, c) => Math.min(p, c), 10000);
+    if (min < 100) beep.setInterval(0);
+    else if (min < 300) beep.setInterval(100);
+    else if (min < 600) beep.setInterval(300);
+    else if (min < 900) beep.setInterval(500);
+    else beep.setInterval(-1);
   }, [data]);
 
   console.info('CarView render()');
@@ -145,3 +158,39 @@ export const CarView = React.memo(function () {
     </div>
   );
 });
+
+
+class Beeper {
+  ctx = new AudioContext();
+  interval = 0;
+  lastBeep: OscillatorNode | null = null;
+  freq = 1174;
+  running = new Timer(() => {
+    this.lastBeep?.stop();
+    const beep = this.ctx.createOscillator();
+    this.lastBeep = beep;
+    beep.connect(this.ctx.destination);
+    beep.detune.value = this.freq;
+    beep.start(this.ctx.currentTime + this.ctx.baseLatency);
+    beep.stop(this.ctx.currentTime + this.ctx.baseLatency + 0.05);
+  });
+
+  setInterval(i: number) {
+    if (this.interval == i) return;
+    console.info('interval', i);
+    this.interval = i;
+    this.running.tryCancel();
+    if (i < 0) {
+      this.lastBeep?.stop();
+      this.lastBeep = null;
+    } else if (i == 0) {
+      const beep = this.ctx.createOscillator();
+      this.lastBeep = beep;
+      beep.connect(this.ctx.destination);
+      beep.detune.value = this.freq;
+      beep.start(this.ctx.currentTime);
+    } else {
+      this.running.interval(i);
+    }
+  }
+}
