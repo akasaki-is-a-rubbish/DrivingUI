@@ -11,7 +11,7 @@ export function RadarAndCamsActivity(props: { hidden: boolean; }) {
     <Activity className="radar" hidden={props.hidden}>
       {/* <div>Data: <code>{JSON.stringify(data)}</code></div> */}
       <div className="columns">
-        <CarView />
+        <CarView hidden={props.hidden} />
         <SomeCameras />
       </div>
     </Activity>

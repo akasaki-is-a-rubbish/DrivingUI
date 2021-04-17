@@ -1,12 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
 import CameraIcon from "@material-ui/icons/Camera";
 
-export const Camera = React.memo(function ({ device, img }: { device?: string; img?: string; }) {
+export const Camera = React.memo(function ({ device, img, fake }: { device?: string; img?: string; fake?: boolean; }) {
     const video = useRef<HTMLVideoElement>(null);
     const [label, setLabel] = useState(device);
     const [loaded, setLoaded] = useState(false);
     useEffect(() => {
-        if (!img) {
+        if (!(img || fake)) {
             navigator.mediaDevices.getUserMedia({ video: device ? { deviceId: device } : true })
                 .then(function (stream) {
                     console.info('camera stream', stream);
@@ -21,7 +21,7 @@ export const Camera = React.memo(function ({ device, img }: { device?: string; i
     return (
         <div className='camera'>
             {
-                !img ? 
+                !(img || fake) ? 
                 <video ref={video} autoPlay></video> :
                 <img src={img} alt=""/>
             }

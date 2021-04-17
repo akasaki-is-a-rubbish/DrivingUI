@@ -84,7 +84,7 @@ class DataWindow<T> {
     });
   }
   _onChanged = (ref: Ref<T[]>) => {
-    console.info(ref.value?.length);
+    // console.info(ref.value?.length);
     var newdata = ref.value || [];
     this.history.push(newdata);
     if (this.maxIter && this.history.length > this.maxIter)

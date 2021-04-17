@@ -9,7 +9,7 @@ const PI = Math.PI;
 
 const sensorDataNames = [...new Set(Object.keys(sensorMap).map(x => x.substr(0, x.indexOf('_'))))];
 
-export const CarView = React.memo(function () {
+export const CarView = React.memo(function (props: { hidden: boolean }) {
   const ref = useRef<HTMLCanvasElement>(null);
   const beep = useMemo(() => new Beeper(), []);
 
@@ -128,26 +128,30 @@ export const CarView = React.memo(function () {
     .filter(([sensor, val]) => sensor) as [typeof sensorMap[string], number][];
 
   useEffect(() => {
-    console.info('radar data2', data2);
-    painter.dataPoints = data2.map(([sensor, val]) => {
-      return {
-        spread: sensor.spread,
-        pos: sensor.pos,
-        val: sensorFunction(val)
-      };
-    });
-    painter.redraw();
-    console.info('rerender radar');
+    if (!props.hidden) {
+      console.info('radar data2', data2);
+      painter.dataPoints = data2.map(([sensor, val]) => {
+        return {
+          spread: sensor.spread,
+          pos: sensor.pos,
+          val: sensorFunction(val)
+        };
+      });
+      painter.redraw();
+      console.info('rerender radar');
 
-    const min = data2.map(x => x[1])
-      .filter(x => x != 0)
-      .reduce((p, c) => Math.min(p, c), 10000);
-    if (min < 100) beep.setInterval(0);
-    else if (min < 300) beep.setInterval(100);
-    else if (min < 600) beep.setInterval(300);
-    else if (min < 900) beep.setInterval(500);
-    else beep.setInterval(-1);
-  }, [data]);
+      const min = data2.map(x => x[1])
+        .filter(x => x != 0)
+        .reduce((p, c) => Math.min(p, c), 10000);
+      if (min < 100) beep.setInterval(0);
+      else if (min < 300) beep.setInterval(100);
+      else if (min < 600) beep.setInterval(300);
+      else if (min < 900) beep.setInterval(500);
+      else beep.setInterval(-1);
+    } else {
+      beep.setInterval(-1);
+    }
+  }, [data, props.hidden]);
 
   console.info('CarView render()');
 

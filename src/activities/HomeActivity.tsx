@@ -10,7 +10,7 @@ export function HomeActivity(props: { hidden: boolean; navState: Ref<ActivityNam
     return (
         <Activity className="home" hidden={props.hidden}>
             <HomeBox {...noInteractive()}>
-                <Card>
+                <Card onClick={() => props.navState.value = 'nav'}>
                     <CardIcon><Map /></CardIcon>
                     <CardTitle>导航</CardTitle>
                 </Card>
@@ -20,9 +20,9 @@ export function HomeActivity(props: { hidden: boolean; navState: Ref<ActivityNam
                 </Card>
                 <Card>
                     <CardIcon><Sun /></CardIcon>
-                    <CardTitle>40 °C</CardTitle>
+                    <CardTitle>32 °C</CardTitle>
                 </Card>
-                <Card>
+                <Card onClick={() => props.navState.value = 'front'}>
                     <CardIcon><Movie /></CardIcon>
                     <CardTitle>行车记录</CardTitle>
                 </Card>

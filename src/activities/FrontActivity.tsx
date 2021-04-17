@@ -41,14 +41,15 @@ export const FrontActivity = React.memo(function (props: { hidden: boolean; }) {
             [renderedCtr, laneCtr, targetsCtr].forEach(x => x.update());
             if (frontStats) {
                 const fpss = [renderedCtr, laneCtr, targetsCtr].map(x => x.freq.toFixed(1)).join(', ');
-                const rendertimes = [recvTime, rafTime, convTime, canvasTime].join(' ');
+                const rendertimes = [rafTime, convTime, canvasTime].join(' ');
                 const text = `${w}x${h} | fps = ${fpss} | rendered = ${renderedCtr.total} | ${rendertimes} ms`;
                 ctx.font = '18px Consolas,monospace';
                 const textWidth = ctx.measureText(text);
+                const left = 500;
                 ctx.fillStyle = 'rgba(0,0,0,0.5)';
-                ctx.fillRect(400, h - 24, textWidth.width + 15, 24);
+                ctx.fillRect(left, h - 24, textWidth.width + 15, 24);
                 ctx.fillStyle = 'white';
-                ctx.fillText(text, 410, h - (18 / 2));
+                ctx.fillText(text, left + 10, h - (18 / 2));
             }
         }
 
@@ -85,7 +86,7 @@ export const FrontActivity = React.memo(function (props: { hidden: boolean; }) {
         function drawTargets() {
             const targets = (Client.current.data.value['targets'] as any[] || []) as
                 [number, number, number, number, number, number, string][];
-            console.info(targets);
+            // console.info(targets);
             ctx.lineCap = 'round';
             ctx.lineWidth = 3;
             const alpha = Math.max(1 - (Date.now() - targetsCtr.lastIncr) / 100, 0);
