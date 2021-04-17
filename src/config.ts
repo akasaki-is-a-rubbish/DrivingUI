@@ -18,29 +18,29 @@ export const initData = {
     'back': { s1: 400, s2: 300, s3: 900, s4: 0 }
 };
 
-let curpos = 0;
+let curpos = -50;
 export const sensorMap: Record<string, { spread: number, pos: number }> = Object.fromEntries(
     mapArrayObj(
         ['key', 'spread', 'pos'],
         [
-            ['left_s1', 31.25, curpos += 31.25],
-            ['left_s2', 31.25, curpos += 31.25],
-            ['left_s3', 31.25, curpos += 31.25],
             ['left_s4', 31.25, curpos += 31.25],
+            ['left_s3', 31.25, curpos += 31.25],
+            ['left_s2', 31.25, curpos += 31.25],
+            ['left_s1', 31.25, curpos += 31.25],
             ['front_s1', 31.25, curpos += 31.25],
             ['front_s2', 31.25, curpos += 31.25],
             ['front_s3', 31.25, curpos += 31.25],
             ['front_s4', 31.25, curpos += 31.25],
-            ['right_s1', 31.25, curpos += 31.25],
-            ['right_s2', 31.25, curpos += 31.25],
-            ['right_s3', 31.25, curpos += 31.25],
             ['right_s4', 31.25, curpos += 31.25],
-            ['back_s1', 31.25, curpos += 31.25],
-            ['back_s2', 31.25, curpos += 31.25],
-            ['back_s3', 31.25, curpos += 31.25],
+            ['right_s3', 31.25, curpos += 31.25],
+            ['right_s2', 31.25, curpos += 31.25],
+            ['right_s1', 31.25, curpos += 31.25],
             ['back_s4', 31.25, curpos += 31.25],
+            ['back_s3', 31.25, curpos += 31.25],
+            ['back_s2', 31.25, curpos += 31.25],
+            ['back_s1', 31.25, curpos += 31.25],
         ]
-    ).map(({ key, spread, pos }) => [key, { spread, pos }])
+    ).map(({ key, spread, pos }) => [key, { spread, pos: pos % 500 }])
 );
 
 export const frontStats = true;

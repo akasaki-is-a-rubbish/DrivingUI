@@ -75,6 +75,7 @@ video {
   display: inline-block;
   width: 320px;
   overflow: hidden;
+  transform: translate(0, -40px) scale(1.3);
 }
 
 .car-body {
@@ -91,7 +92,7 @@ video {
   flex-flow: column wrap;
   justify-content: space-around;
   max-height: 100%;
-  max-width: 70%;
+  max-width: 35%;
 }
 
 .camera {

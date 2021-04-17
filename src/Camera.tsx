@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import CameraIcon from "@material-ui/icons/Camera";
 
-export function Camera({ device, img }: { device?: string; img?: string; }) {
+export const Camera = React.memo(function ({ device, img }: { device?: string; img?: string; }) {
     const video = useRef<HTMLVideoElement>(null);
     const [label, setLabel] = useState(device);
     const [loaded, setLoaded] = useState(false);
@@ -25,7 +25,7 @@ export function Camera({ device, img }: { device?: string; img?: string; }) {
                 <video ref={video} autoPlay></video> :
                 <img src={img} alt=""/>
             }
-            {
+            {/* {
                 !loaded ? <div style={{
                     position: 'absolute',
                     top: 0,
@@ -39,8 +39,8 @@ export function Camera({ device, img }: { device?: string; img?: string; }) {
                 }}>
                     <CameraIcon style={{fontSize: '200px', color: 'white'}}/>
                 </div> : null
-            }
+            } */}
             <div className='label'>{label}</div>
         </div>
     );
-}
+});
