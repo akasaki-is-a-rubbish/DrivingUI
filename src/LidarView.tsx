@@ -37,6 +37,12 @@ export const LidarView = React.memo(function () {
       ctx.lineWidth = 3;
       ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
+      ctx.moveTo(0, 0);
+      ctx.lineTo(CANVAS_SIZE[0], 0);
+      ctx.lineTo(CANVAS_SIZE[0] / 2, CANVAS_SIZE[1] / 2);
+      ctx.closePath();
+      ctx.fillStyle = 'rgba(128, 128, 128, 0.3)';
+      ctx.fill();
       // ctx.beginPath();
       // ctx.moveTo(0, 0);
       // ctx.lineTo(100, 100);

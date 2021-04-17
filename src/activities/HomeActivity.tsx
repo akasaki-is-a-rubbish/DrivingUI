@@ -6,6 +6,39 @@ import { Camera, MusicIcon, Navigation, Sensors, Settings, Videocam, Weather, Mo
 import { noInteractive } from "../utils";
 import { Activity } from "./Activity";
 
+export function HomeActivity(props: { hidden: boolean; navState: Ref<ActivityName>; }) {
+    return (
+        <Activity className="home" hidden={props.hidden}>
+            <HomeBox {...noInteractive()}>
+                <Card>
+                    <CardIcon><Map /></CardIcon>
+                    <CardTitle>导航</CardTitle>
+                </Card>
+                <Card onClick={() => props.navState.value = 'music'}>
+                    <CardIcon><MusicIcon /></CardIcon>
+                    <CardTitle>音乐</CardTitle>
+                </Card>
+                <Card>
+                    <CardIcon><Sun /></CardIcon>
+                    <CardTitle>40 °C</CardTitle>
+                </Card>
+                <Card>
+                    <CardIcon><Movie /></CardIcon>
+                    <CardTitle>行车记录</CardTitle>
+                </Card>
+                <Card onClick={() => props.navState.value = 'rac'}>
+                    <CardIcon><Radar /></CardIcon>
+                    <CardTitle>倒车</CardTitle>
+                </Card>
+                <Card>
+                    <CardIcon color="#1177ff"><Settings /></CardIcon>
+                    <CardTitle>设置</CardTitle>
+                </Card>
+            </HomeBox>
+        </Activity>
+    );
+}
+
 const Card = styled(ButtonBase)({
     position: 'relative',
     // boxShadow: '0 0 10px black',
@@ -44,36 +77,3 @@ const HomeBox = styled(Box)({
     padding: '60px 3% 100px',
     background: '#eeeeee'
 });
-
-export function HomeActivity(props: { hidden: boolean; navState: Ref<ActivityName>; }) {
-    return (
-        <Activity className="home" hidden={props.hidden}>
-            <HomeBox {...noInteractive()}>
-                <Card>
-                    <CardIcon><Map /></CardIcon>
-                    <CardTitle>导航</CardTitle>
-                </Card>
-                <Card onClick={() => props.navState.value = 'music'}>
-                    <CardIcon><MusicIcon /></CardIcon>
-                    <CardTitle>音乐</CardTitle>
-                </Card>
-                <Card>
-                    <CardIcon><Sun /></CardIcon>
-                    <CardTitle>40 °C</CardTitle>
-                </Card>
-                <Card>
-                    <CardIcon><Movie /></CardIcon>
-                    <CardTitle>行车记录</CardTitle>
-                </Card>
-                <Card onClick={() => props.navState.value = 'rac'}>
-                    <CardIcon><Radar /></CardIcon>
-                    <CardTitle>倒车</CardTitle>
-                </Card>
-                <Card>
-                    <CardIcon color="#1177ff"><Settings /></CardIcon>
-                    <CardTitle>设置</CardTitle>
-                </Card>
-            </HomeBox>
-        </Activity>
-    );
-}
