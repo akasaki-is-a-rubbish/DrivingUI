@@ -4,9 +4,10 @@ import React from "react";
 import { ActivityName } from ".";
 import { Camera, MusicIcon, Navigation, Sensors, Settings, Videocam, Weather, Movie, Map, Radar, Sun } from "../icons";
 import { noInteractive } from "../utils";
-import { Activity } from "./Activity";
+import { Activity, createActivity } from "./Activity";
+import { ClockText } from "../Clock";
 
-export function HomeActivity(props: { hidden: boolean; navState: Ref<ActivityName>; }) {
+export const HomeActivity = createActivity(function (props) {
     return (
         <Activity className="home" hidden={props.hidden}>
             <HomeBox {...noInteractive()}>
@@ -35,9 +36,12 @@ export function HomeActivity(props: { hidden: boolean; navState: Ref<ActivityNam
                     <CardTitle>设置</CardTitle>
                 </Card>
             </HomeBox>
+            <Box position="absolute" right="30px" bottom="10px" fontSize="50px">
+                <ClockText />
+            </Box>
         </Activity>
     );
-}
+});
 
 const Card = styled(ButtonBase)({
     position: 'relative',

@@ -5,7 +5,7 @@ import { CarView } from '../CarView';
 import { Client } from '../Client';
 import { useWebfxRef } from '../utils';
 
-export function RadarAndCamsActivity(props: { hidden: boolean; }) {
+export const RadarAndCamsActivity = React.memo(function(props: { hidden: boolean; }) {
   // const data = useWebfxRef(Client.current.data);
   return (
     <Activity className="radar" hidden={props.hidden}>
@@ -16,7 +16,7 @@ export function RadarAndCamsActivity(props: { hidden: boolean; }) {
       </div>
     </Activity>
   );
-}
+});
 
 function SomeCameras() {
   const [cameras, setCameras] = useState<string[]>([

@@ -45,8 +45,8 @@ function NavBar(props: { valRef: webfx.Ref<ActivityName>; }) {
         activities
           .filter(x => x.inBar)
           .map(x =>
-          <BottomNavigationAction key={x.key} label={x.friendlyName} value={x.key} icon={<x.icon />} />
-        )
+            <BottomNavigationAction key={x.key} label={x.friendlyName} value={x.key} icon={<x.icon />} />
+          )
       }
     </BottomNavigation>
   );
