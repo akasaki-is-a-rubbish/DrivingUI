@@ -26,6 +26,7 @@ import Home from "@material-ui/icons/Home";
 import Weather from "@material-ui/icons/Cloud";
 import Navigation from "@material-ui/icons/Navigation";
 import Settings from "@material-ui/icons/Settings";
+import Menu from "@material-ui/icons/Menu";
 
 export {
     Sensors,
@@ -36,5 +37,6 @@ export {
     Home,
     Weather,
     Navigation,
-    Settings
+    Settings,
+    Menu
 };

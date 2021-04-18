@@ -148,13 +148,15 @@ video {
   position: absolute;
   left: 0;
   bottom: 0;
+  background: rgba(255,255,255,0.5);
+  padding: 0;
   /* background: none; */
   border-top-right-radius: 19px;
   /* box-shadow: 0 0 10px gray; */
 }
 
 .my-navbar .MuiButtonBase-root {
-  margin: 5px;
+  margin: 3px 3px 0 0;
   letter-spacing: 5px;
   text-align: center;
   /* box-shadow: rgba(254,254,254,0.25) 0px 1px 3px,
