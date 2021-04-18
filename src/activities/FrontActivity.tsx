@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Activity } from './Activity';
+import { Activity, createActivity } from './Activity';
 import { Client } from '../Client';
 import { frontStats } from '../config';
 import { delay, useWebfxCallback, useWebfxRef } from '../utils';
@@ -7,7 +7,7 @@ import { LidarView } from '../LidarView';
 
 const QUEUE_SIZE = 7;
 
-export const FrontActivity = React.memo(function (props: { hidden: boolean; }) {
+export const FrontActivity = createActivity(function (props) {
     const canvas = useRef<HTMLCanvasElement>(null);
 
     const [{ w = 960, h = 540 }, setSize] = useState({} as any);

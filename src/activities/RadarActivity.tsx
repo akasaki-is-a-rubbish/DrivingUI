@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Activity } from './Activity';
+import { Activity, createActivity } from './Activity';
 import { Camera } from '../Camera';
 import { CarView } from '../CarView';
 import { Client } from '../Client';
 import { useWebfxRef } from '../utils';
 
-export const RadarAndCamsActivity = React.memo(function(props: { hidden: boolean; }) {
+export const RadarAndCamsActivity = createActivity(function (props) {
   // const data = useWebfxRef(Client.current.data);
   return (
     <Activity className="radar" hidden={props.hidden}>

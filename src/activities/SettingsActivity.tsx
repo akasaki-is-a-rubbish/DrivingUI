@@ -1,7 +1,7 @@
 import React from 'react';
-import { Activity } from './Activity';
+import { Activity, createActivity } from './Activity';
 
-export const SettingsActivity = React.memo(function (props: { hidden: boolean; }) {
+export const SettingsActivity = createActivity(function (props) {
     return (
         <Activity hidden={props.hidden} className={"music"}>
             
