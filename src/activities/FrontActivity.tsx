@@ -112,10 +112,13 @@ export const FrontActivity = createActivity(function (props) {
             convertData(data);
 
             canvasTime.begin();
+
             ctx.putImageData(img, 0, 0);
             drawPoints();
             drawTargets();
+
             canvasTime.end();
+
             updateCounter();
         }
 

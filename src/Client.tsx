@@ -40,7 +40,7 @@ export class Client {
       this.connectionState.value = 'disconnected';
       if (this.closed) return;
       console.warn('[ws] closed, reconnecting...');
-      setTimeout(() => this.connect(), 5000);
+      setTimeout(() => this.connect(), 3000);
     };
     this.ws.onmessage = (e) => {
       // console.info("[ws] msg", e.data);
