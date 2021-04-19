@@ -31,7 +31,7 @@ export const HomeActivity = createActivity(function (props) {
                     <CardIcon><Radar /></CardIcon>
                     <CardTitle>倒车</CardTitle>
                 </Card>
-                <Card>
+                <Card onClick={() => props.navState.value = 'settings'}>
                     <CardIcon color="#1177ff"><Settings /></CardIcon>
                     <CardTitle>设置</CardTitle>
                 </Card>
