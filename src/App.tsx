@@ -3,6 +3,7 @@ import './App.css';
 import { Client } from './Client';
 import { className, useWebfxCallback, useWebfxRef } from './utils';
 import { BottomNavigation, BottomNavigationAction } from "@material-ui/core";
+import Snackbar from '@material-ui/core/Snackbar';
 import * as webfx from "@yuuza/webfx";
 import { fakeScreen } from './config';
 import { activities, ActivityName, defaultActivitiy } from './activities';
@@ -13,9 +14,20 @@ function App() {
   const [navStateRef] = useState(() => Object.assign(new webfx.Ref<ActivityName>(), { value: defaultActivitiy }));
   const navState = useWebfxRef(navStateRef);
   useEffect(() => {
-    appTheme.init();
     Client.current.connect();
     return () => Client.current.close();
+  }, []);
+
+  useEffect(() => {
+    appTheme.init();
+    var keydown = (e: KeyboardEvent) => {
+      if (e.ctrlKey && e.key == 'd') {
+        e.preventDefault();
+        appTheme.toggle();
+      }
+    };
+    window.addEventListener('keydown', keydown);
+    return () => window.removeEventListener('keydown', keydown);
   }, []);
 
   const connection = useWebfxRef(Client.current.connectionState);
@@ -31,6 +43,7 @@ function App() {
         }
       </div>
       <NavBar valRef={navStateRef} />
+      <Snackbar elevation={6} variant="filled" />
     </div>
   );
 }
