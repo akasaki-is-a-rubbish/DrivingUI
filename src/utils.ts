@@ -18,6 +18,17 @@ export function useWebfxRef<T>(ref: Ref<T>) {
     return val;
 }
 
+export function useAutoUpdatingState<T>(func: () => T, interval = 1000) {
+    const [val, setVal] = useState(() => func());
+    useEffect(() => {
+        var timer = setInterval(() => {
+            setVal(func());
+        }, interval);
+        return () => clearInterval(timer);
+    }, []);
+    return val;
+}
+
 export function delay(ms: number) {
     return new Promise(r => setTimeout(r, ms));
 }
