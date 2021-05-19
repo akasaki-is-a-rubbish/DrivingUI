@@ -45,7 +45,7 @@ export const FrontActivity = createActivity(function (props) {
                 const text = `${w}x${h} | fps = ${fpss} | rendered = ${renderedCtr.total} | ${rendertimes} ms`;
                 ctx.font = '18px Consolas,monospace';
                 const textWidth = ctx.measureText(text);
-                const left = 500;
+                const left = 400;
                 ctx.fillStyle = 'rgba(0,0,0,0.5)';
                 ctx.fillRect(left, h - 24, textWidth.width + 15, 24);
                 ctx.fillStyle = 'white';
