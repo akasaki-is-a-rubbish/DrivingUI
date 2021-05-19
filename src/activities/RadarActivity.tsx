@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Activity, createActivity } from './Activity';
 import { Camera } from '../components/Camera';
-import { CarView } from '../components/CarView';
+import { TopDownView } from '../components/TopDownView';
 import { Client } from '../Client';
 import { useWebfxRef } from '../utils';
 
@@ -11,7 +11,7 @@ export const RadarAndCamsActivity = createActivity(function (props) {
     <Activity className="radar" hidden={props.hidden}>
       {/* <div>Data: <code>{JSON.stringify(data)}</code></div> */}
       <div className="columns">
-        <CarView hidden={props.hidden} />
+        <TopDownView hidden={props.hidden} />
         <SomeCameras />
       </div>
     </Activity>

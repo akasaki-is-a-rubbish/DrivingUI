@@ -9,7 +9,7 @@ const PI = Math.PI;
 
 const sensorDataNames = [...new Set(Object.keys(sensorMap).map(x => x.substr(0, x.indexOf('_'))))];
 
-export const CarView = React.memo(function (props: { hidden: boolean }) {
+export const TopDownView = React.memo(function (props: { hidden: boolean }) {
   const ref = useRef<HTMLCanvasElement>(null);
   const beep = useMemo(() => new Beeper(), []);
 
