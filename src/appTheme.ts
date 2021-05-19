@@ -1,5 +1,8 @@
 import * as darkreader from "darkreader";
 
+/**
+ * A singleton object to control app theme.
+ */
 export const appTheme = {
     enabled: false,
     init() {

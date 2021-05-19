@@ -1,12 +1,20 @@
 import { Action, Callbacks, Ref } from '@yuuza/webfx';
 import { initData, websocketServer } from './config';
 
-export type Data = any;
+export type Data = Record<string, any>;
 
+// We was trying between 'arraybuffer' and 'blob' receving types.
 const binaryType = 'arraybuffer' as const;
 export const Binary = ArrayBuffer;
 export type Binary = InstanceType<typeof Binary>;
 
+/**
+ * The websocket client that:
+ *  1) Connects to the "server" using websocket protocol
+ *  2) Receives and parse structured json data
+ *  3) Triggers events for data changing
+ *  4) Bypass binary data to the other handler (i.e. the rear camera view)
+ */
 export class Client {
   static current: Client;
 
@@ -14,7 +22,11 @@ export class Client {
   closed = false;
 
   connectionState = new Ref<'ok' | 'disconnected'>();
+
+  /** Ref for all json data. Its 'onChanged' are triggerd when any data changed. */
   data = new Ref<Data | null>();
+
+  /** Refs for every json data key. For views to separatly listen for the needed data. */
   dataHub = new DataHub();
 
   onOpen = new Callbacks<Action>();
@@ -26,8 +38,11 @@ export class Client {
     this.connectionState.value = 'disconnected';
   }
   connect() {
+    // In case we are reconnecting
     this.closed = false;
     this.ws?.close();
+
+    // Create a new WebSocket instance
     this.ws = new WebSocket(websocketServer);
     this.ws.binaryType = binaryType;
     this.ws.onopen = () => {
@@ -45,9 +60,11 @@ export class Client {
     this.ws.onmessage = (e) => {
       // console.info("[ws] msg", e.data);
       if (typeof e.data == 'string') {
+        // It's json data of sensors or image header
         var parsed = JSON.parse(e.data);
         this.handleNewData(parsed);
       } else if (e.data instanceof Binary) {
+        // Should be an image buffer
         this.onReceivedBinary.invoke(e.data);
       } else {
         console.warn('unknown msg type');
@@ -87,6 +104,7 @@ export class Client {
 
 class DataHub {
   map = new Map<string, Ref<any>>();
+  /** Get Ref for the key or create one if not exists. */
   get(key: string) {
     var ref = this.map.get(key);
     if (!ref) {

@@ -11,13 +11,19 @@ import { appTheme } from './appTheme';
 
 
 function App() {
+  // The Ref of (router) navigation state is created here.
   const [navStateRef] = useState(() => Object.assign(new webfx.Ref<ActivityName>(), { value: defaultActivitiy }));
+
+  // Use `useWebfxRef()` to get the value of Ref in React function component.
   const navState = useWebfxRef(navStateRef);
+
+  // The singleton Client is initialized here.
   useEffect(() => {
     Client.current.connect();
     return () => Client.current.close();
   }, []);
 
+  // Initializing app theme
   useEffect(() => {
     appTheme.init();
     var keydown = (e: KeyboardEvent) => {
@@ -30,7 +36,7 @@ function App() {
     return () => window.removeEventListener('keydown', keydown);
   }, []);
 
-  const connection = useWebfxRef(Client.current.connectionState);
+  // const connection = useWebfxRef(Client.current.connectionState);
 
   return (
     <div className={className("App", { fakeScreen })}>
@@ -48,6 +54,7 @@ function App() {
   );
 }
 
+/** The global fixed navigation bar */
 function NavBar(props: { valRef: webfx.Ref<ActivityName>; }) {
   const val = useWebfxRef(props.valRef);
   return (

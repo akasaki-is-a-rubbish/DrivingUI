@@ -7,18 +7,23 @@ import { useWebfxCallback, useWebfxRef, fromPolar, pointDist, getColor } from '.
 
 const CANVAS_SIZE = [250, 250];
 
+/** The visualization of the lidar */
 export const LidarView = React.memo(function () {
+  // Get the windowed result of the lidar data
   const windowed = useMemo(() => new DataWindow(Client.current.getData(lidarName), 200, 3), []);
   const data = useWebfxRef(windowed.data);
+
   const canvas = useRef<HTMLCanvasElement>(null);
 
   const render = useMemo(() => {
     let ctx: CanvasRenderingContext2D;
     let lastP: { x: number, y: number; } | null = null;
 
+    /** Draw a point */
     function drawPoint(ratio: number, dist: number, quality: number) {
       var [x, y] = fromPolar(CANVAS_SIZE[0] / 2, CANVAS_SIZE[1] / 2, dist * 0.015, ratio / 180 * Math.PI);
       ctx.beginPath();
+      // If it's very close to the last point, connects them.
       if (lastP && pointDist(lastP.x, lastP.y, x, y) < 0) {
         ctx.moveTo(lastP.x, lastP.y);
       } else {
@@ -50,6 +55,7 @@ export const LidarView = React.memo(function () {
       if (data) {
         for (const p of data) {
           const [quality, rat, dist] = p;
+          // The range of original quality: [0, 15], mapping it to [0, 1]
           drawPoint(rat, dist, quality / 15);
         }
       }
@@ -66,6 +72,7 @@ export const LidarView = React.memo(function () {
   );
 });
 
+/** Wrap an Ref<Array> as another Ref with data history and window */
 class DataWindow<T> {
   readonly data = new Ref<T[]>();
   private history: T[][] = [];
@@ -75,6 +82,8 @@ class DataWindow<T> {
     readonly maxIter: number,
   ) {
     this.data.value = [...(baseData.value || [])];
+
+    // Only do the processing when the target Ref is listened.
     this.data.onChanged.onChanged.add((add) => {
       if (add && this.data.onChanged.length == 1) {
         this.baseData.onChanged.add(this._onChanged);
