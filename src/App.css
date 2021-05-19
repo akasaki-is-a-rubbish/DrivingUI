@@ -73,7 +73,7 @@ video {
 .car-view {
   position: relative;
   display: inline-block;
-  width: 320px;
+  /* width: 320px; */
   overflow: hidden;
   transform: translate(0, -40px) scale(1.1);
 }
