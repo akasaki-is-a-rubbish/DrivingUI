@@ -4,6 +4,9 @@ import { Client } from '../Client';
 import { frontStats } from '../config';
 import { delay, useWebfxCallback, useWebfxRef } from '../utils';
 import { LidarView } from '../LidarView';
+import arrow_down from '../../res/arrow_down.svg';
+
+const imgArrowDown = loadImage(arrow_down);
 
 const QUEUE_SIZE = 7;
 
@@ -18,7 +21,6 @@ export const FrontActivity = createActivity(function (props) {
 });
 
 const RearView = React.memo(function ({ hidden }: { hidden: boolean }) {
-
     const canvas = useRef<HTMLCanvasElement>(null);
 
     const [{ w = 960, h = 540 }, setSize] = useState({} as any);
@@ -126,7 +128,7 @@ function createRearRenderer(canvas: HTMLCanvasElement, w: number, h: number) {
         // console.info(targets);
         ctx.lineCap = 'round';
         ctx.lineWidth = 3;
-        const alpha = Math.max(1 - (Date.now() - targetsCtr.lastIncr) / 100, 0);
+        const alpha = Math.max(1 - (Date.now() - targetsCtr.lastIncr) / 1000, 0.2);
         ctx.strokeStyle = `rgba(255,255,0,${alpha})`;
         ctx.font = '20px';
         ctx.fillStyle = `rgba(128,255,0,0.8)`;
@@ -138,7 +140,14 @@ function createRearRenderer(canvas: HTMLCanvasElement, w: number, h: number) {
             y1 += yoffset; y2 += yoffset;
             const confAlpha = 0.4 + ((conf - 0.2) / 0.8) * 0.6;
             ctx.strokeStyle = `rgba(255,255,0,${alpha * confAlpha})`;
-            // ctx.strokeRect(x1, y1, x2 - x1, y2 - y1);
+            ctx.strokeRect(x1, y1, x2 - x1, y2 - y1);
+            const xc = (x2 + x1) / 2;
+            if (['car', 'person', 'bus', 'truck'].includes(catagory)
+                && (x2 - x1 >= w * 0.1 || y2 - y1 >= h * 0.1)
+                && (w * 0.3 < x2 && x1 < w * 0.7)) {
+                const arrowy = y1 - 70 + Math.sin(Math.abs((Date.now() % 1000) - 500) / 500) * (20);
+                ctx.drawImage(imgArrowDown, (x1 + x2) / 2 - 64 / 2, arrowy, 64, 64);
+            }
             ctx.fillStyle = `rgba(128,255,0,${confAlpha})`;
             const text = catagory + ' ' + (conf * 100).toFixed();
             const textWidth = ctx.measureText(text).width;
@@ -173,6 +182,10 @@ function createRearRenderer(canvas: HTMLCanvasElement, w: number, h: number) {
         ctx.strokeText('NO SIGNAL', 80, 320);
     }
     // noSignal();
+
+    // setTimeout(() => {
+    //     ctx.drawImage(imgArrowDown, 0, 0, 64, 64);
+    // }, 300);
 
     const recvTime = new PerfTimer('recv');
     recvTime.begin();
@@ -247,4 +260,10 @@ class PerfCounter {
         }
         return this;
     }
+}
+
+function loadImage(path: string) {
+    var img = document.createElement('img');
+    img.src = path;
+    return img;
 }
