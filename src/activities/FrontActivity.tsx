@@ -3,7 +3,7 @@ import { Activity, createActivity } from './Activity';
 import { Client } from '../Client';
 import { frontStats } from '../config';
 import { delay, useWebfxCallback, useWebfxRef } from '../utils';
-import { LidarView } from '../LidarView';
+import { LidarView } from '../components/LidarView';
 import arrow_down from '../../res/arrow_down.svg';
 
 const imgArrowDown = loadImage(arrow_down);

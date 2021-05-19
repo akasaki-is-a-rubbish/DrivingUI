@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Activity, createActivity } from './Activity';
-import { Camera } from '../Camera';
-import { CarView } from '../CarView';
+import { Camera } from '../components/Camera';
+import { CarView } from '../components/CarView';
 import { Client } from '../Client';
 import { useWebfxRef } from '../utils';
 

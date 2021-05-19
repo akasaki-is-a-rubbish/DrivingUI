@@ -1,9 +1,9 @@
 import { Ref } from '@yuuza/webfx';
 import React, { useCallback, useEffect, useMemo, useRef } from 'react';
-import { Activity } from './activities/Activity';
-import { Client } from './Client';
-import { lidarName, lidarPointColors } from './config';
-import { useWebfxCallback, useWebfxRef, fromPolar, pointDist, getColor } from './utils';
+import { Activity } from '../activities/Activity';
+import { Client } from '../Client';
+import { lidarName, lidarPointColors } from '../config';
+import { useWebfxCallback, useWebfxRef, fromPolar, pointDist, getColor } from '../utils';
 
 const CANVAS_SIZE = [250, 250];
 

@@ -1,9 +1,9 @@
 import { Timer } from '@yuuza/webfx';
 import React, { useEffect, useMemo, useRef } from 'react';
 import car from './car.png';
-import { Client } from './Client';
-import { baseDistance, colors, sensorFunction, sensorMap, RGB } from './config';
-import { fromPolar, getColor, mixColor, noInteractive, useWebfxCallback, useWebfxRef } from './utils';
+import { Client } from '../Client';
+import { baseDistance, colors, sensorFunction, sensorMap, RGB } from '../config';
+import { fromPolar, getColor, mixColor, noInteractive, useWebfxCallback, useWebfxRef } from '../utils';
 
 const PI = Math.PI;
 

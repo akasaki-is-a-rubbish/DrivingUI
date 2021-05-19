@@ -5,7 +5,7 @@ import { ActivityName } from ".";
 import { Camera, MusicIcon, Navigation, Sensors, Settings, Videocam, Weather, Movie, Map, Radar, Sun } from "../icons";
 import { noInteractive } from "../utils";
 import { Activity, createActivity } from "./Activity";
-import { ClockText } from "../Clock";
+import { ClockText } from "../components/Clock";
 
 export const HomeActivity = createActivity(function (props) {
     return (

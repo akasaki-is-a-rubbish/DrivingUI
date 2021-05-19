@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useEffect } from "react"
-import { useAutoUpdatingState } from "./utils";
+import { useAutoUpdatingState } from "../utils";
 
 export function ClockText() {
     const text = useAutoUpdatingState(() => getClockText());
