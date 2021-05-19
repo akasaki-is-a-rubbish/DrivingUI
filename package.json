@@ -12,7 +12,7 @@
     "@material-ui/icons": "^4.11.2",
     "@yuuza/webfx": "^1.6.1",
     "darkreader": "^4.9.31",
-    "esbuild": "^0.8.52",
+    "esbuild": "^0.8.57",
     "react": "^17.0.0",
     "react-dom": "^17.0.0"
   },
