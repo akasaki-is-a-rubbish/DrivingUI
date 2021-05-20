@@ -19,7 +19,7 @@ export function useWebfxRef<T>(ref: Ref<T>) {
 }
 
 export function useAutoUpdatingState<T>(func: () => T, interval = 1000) {
-    const [val, setVal] = useState(() => func());
+    const [val, setVal] = useState(func);
     useEffect(() => {
         var timer = setInterval(() => {
             setVal(func());
