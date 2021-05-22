@@ -27,9 +27,10 @@ function SomeCameras() {
     navigator.mediaDevices.enumerateDevices()
       .then(x => {
         console.info('devices', x);
-        setCameras(x.filter(x => x.kind == 'videoinput').map(x => x.deviceId).slice(1, 3));
+        setCameras(x.filter(x => x.kind == 'videoinput').map(x => x.deviceId));
       }, console.error);
   }, []);
+  console.info({cameras})
   return (
     <div className="cameras">
       {cameras.map(x => <Camera key={x} device={x} />)}
