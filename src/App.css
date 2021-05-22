@@ -78,12 +78,20 @@ video {
   transform: translate(0, -40px) scale(1.1);
 }
 
+.car-line {
+  position: relative;
+}
+
 .car-body {
   position: absolute;
-  left: 27px;
-  top: 177px;
   transform: rotate(-90deg);
   height: 120px;
+}
+
+.car-bg {
+  position: absolute;
+  /* transform: rotate(-90deg); */
+  height: 430px;
 }
 
 .cameras {
