@@ -1,7 +1,6 @@
 import { Timer } from '@yuuza/webfx';
 import React, { useEffect, useMemo, useRef } from 'react';
 import car from '../car.png';
-import carbg from '../../res/carbg.svg';
 import { Client } from '../Client';
 import { baseDistance, colors, sensorFunction, sensorMap, RGB } from '../config';
 import { fromPolar, getColor, mixColor, noInteractive, useWebfxCallback, useWebfxRef } from '../utils';
@@ -61,22 +60,12 @@ export const TopDownView = React.memo(function (props: { hidden: boolean }) {
       const R = W / 2;
       const STEP = 1;
 
+      clear();
 
       ctx.strokeStyle = 'white';
       ctx.lineCap = 'round';
       ctx.lineWidth = 5;
 
-      ctx.beginPath();
-      ctx.resetTransform();
-      clear();
-
-      // moveTo(5, 530);
-      // const meterWidth = 300;
-      // for (let y = 0; y < 200; y++) {
-      //   lineTo(5 + (y / 200 * meterWidth), 5, y / 200 * 80 - 30)
-      // }
-
-      ctx.translate(20, 20);
       moveTo(M - getOffset(0), M + H + R);
 
       for (let y = M + H + R; y > M + R; y -= STEP) {
@@ -168,18 +157,8 @@ export const TopDownView = React.memo(function (props: { hidden: boolean }) {
 
   return (
     <div className='car-view' {...noInteractive()}>
-      <img style={{
-        left: -17 + 60 + 'px',
-        top: 32 + 20 + 'px'
-      }} className="car-bg" src={carbg} alt="" />
-      <canvas ref={ref} width='370' height='550'
-        className='car-line'
-      // style={{background: 'gray'}}
-      />
-      <img style={{
-        left: 30 + 20 + 'px',
-        top: 185 + 20 + 'px'
-      }} className="car-body" src={car} alt="" />
+      <canvas ref={ref} width='320' height='490' />
+      <img className="car-body" src={car} alt="" />
     </div>
   );
 });

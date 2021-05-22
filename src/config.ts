@@ -15,10 +15,7 @@ export const fakeScreen = true;
 export const lidarName = 'mainLidar';
 
 export const initData = {
-    'back': { s1: 100, s2: 1, s3: 1, s4: 100 },
-    'left': { s1: 500, s2: 300, s3: 100, s4: 300 },
-    'right': { s1: 0, s2: 0, s3: 0, s4: 0 },
-    'front': { s1: 0, s2: 0, s3: 0, s4: 0 },
+    'back': { s1: 400, s2: 300, s3: 900, s4: 0 }
 };
 
 let curpos = -50;
@@ -50,8 +47,7 @@ export const frontStats = true;
 
 export const colors = mapArrayObj(
     ['distance', 'r', 'g', 'b', 'a'], [
-    [-100, 255, 0, 0, 1],
-    [-60, 255, 150, 0, 1],
+    [-50, 255, 0, 0, 1],
     [-25, 255, 200, 0, 1],
     // [ 0, 0, 0, 0, 1 ],
     // [0, 255, 200, 0, 0],
@@ -68,7 +64,7 @@ export const lidarPointColors: Array<{ distance: number } & RGBA> = mapArrayObj(
 export const baseDistance = 70;
 
 export function sensorFunction(x: number) {
-    return (x == 0 || x > 1500) ? 0 : -((1500 - x) / 1500 * 110);
+    return (x == 0 || x > 1500) ? 0 : -((1500 - x) / 1500 * 100);
 }
 
 export type RGB = { r: number, g: number, b: number };
