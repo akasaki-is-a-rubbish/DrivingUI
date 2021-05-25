@@ -82,7 +82,9 @@ export class Client {
     this.data.value = { ...this.data.value, ...parsed };
   }
 
-  getData(key?: string) {
+  getData(key?: null): Ref<Record<string, any>>;
+  getData(key: string): Ref<any>;
+  getData(key?: string | null): Ref<any> | Ref<Record<string, any>> {
     if (key) return this.dataHub.get(key);
     return this.data;
   }

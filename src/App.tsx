@@ -49,7 +49,7 @@ function App() {
         }
       </div>
       <NavBar valRef={navStateRef} />
-      <Snackbar elevation={6} variant="filled" />
+      {/* <Snackbar elevation={6} variant="filled" /> */}
     </div>
   );
 }

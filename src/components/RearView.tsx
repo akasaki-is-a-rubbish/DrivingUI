@@ -14,7 +14,7 @@ export const RearView = React.memo(function ({ hidden }: { hidden: boolean }) {
     const [{ w = 960, h = 540 }, setSize] = useState({} as any);
     const connectState = useWebfxRef(Client.current.connectionState);
     useWebfxCallback(Client.current.getData('image').onChanged, (x) => {
-        if (x.value.w != w || x.value.h != h) {
+        if (x.value && (x.value.w != w || x.value.h != h)) {
             setSize(x.value);
         }
     }, [w, h]);
@@ -95,7 +95,7 @@ function createRearRenderer(canvas: HTMLCanvasElement, w: number, h: number) {
     }
 
     function drawPoints() {
-        const points = [...(Client.current.data.value['lanePoints'] || [])];
+        const points = [...(Client.current.data.value?.['lanePoints'] || [])];
         // console.info(points);
         if (points instanceof Array) {
             ctx.lineCap = 'round';
@@ -111,7 +111,7 @@ function createRearRenderer(canvas: HTMLCanvasElement, w: number, h: number) {
     }
 
     function drawTargets() {
-        const targets = (Client.current.data.value['targets'] as any[] || []) as
+        const targets = (Client.current.data.value?.['targets'] as any[] || []) as
             [number, number, number, number, number, number, string][];
         // console.info(targets);
         ctx.lineCap = 'round';
