@@ -8,6 +8,31 @@ const imgArrowDown = loadImage(arrow_down);
 
 const QUEUE_SIZE = 7;
 
+const HEIGHT_RATIO: Record<string, number> = {
+    car: 1,
+    person: 0.8,
+    bus: 2,
+    truck: 2
+};
+
+function arrowFilter(x1: number, y1: number, x2: number, y2: number, catagory: string, imgW: number, imgH: number) {
+    const w = x2 - x1, h = y2 - y1;
+
+    // Whether to show the arrow for this object
+    const showingArrow = (
+        ['car', 'person', 'bus', 'truck'].includes(catagory)
+        && (w >= imgW * 0.1 || h >= imgH * 0.1)
+        && (imgW * 0.3 < x2 && x1 < imgW * 0.7)
+    );
+
+    if (!showingArrow) return [showingArrow, 0];
+
+    // Compute the distance displayed above the arrow
+    const distance = (HEIGHT_RATIO[catagory] / (h / 400 * (imgH / 1280)));
+
+    return [showingArrow, distance.toFixed(1)];
+}
+
 export const RearView = React.memo(function ({ hidden }: { hidden: boolean }) {
     const canvas = useRef<HTMLCanvasElement>(null);
 
@@ -116,27 +141,39 @@ function createRearRenderer(canvas: HTMLCanvasElement, w: number, h: number) {
         // console.info(targets);
         ctx.lineCap = 'round';
         ctx.lineWidth = 3;
-        const alpha = Math.max(1 - (Date.now() - targetsCtr.lastIncr) / 1000, 0.2);
+        const alpha = Math.max(1 - (Date.now() - targetsCtr.lastIncr) / 1000, 1);
         ctx.strokeStyle = `rgba(255,255,0,${alpha})`;
-        ctx.font = '20px';
         ctx.fillStyle = `rgba(128,255,0,0.8)`;
         for (const t of targets) {
             let [x1, y1, x2, y2, conf, cataId, catagory] = t;
+
+            // Ignore objects with confidence below 0.2
             if (conf < 0.2) continue;
-            const xscale = 1, yscale = 1, yoffset = 0;
-            x1 *= xscale; y1 *= yscale; x2 *= xscale; y2 *= yscale;
-            y1 += yoffset; y2 += yoffset;
+
+            // Set alpha according to the confidence
             const confAlpha = 0.4 + ((conf - 0.2) / 0.8) * 0.6;
+
+            // Draw the box
             ctx.strokeStyle = `rgba(255,255,0,${alpha * confAlpha})`;
             ctx.strokeRect(x1, y1, x2 - x1, y2 - y1);
-            const xc = (x2 + x1) / 2;
-            if (['car', 'person', 'bus', 'truck'].includes(catagory)
-                && (x2 - x1 >= w * 0.1 || y2 - y1 >= h * 0.1)
-                && (w * 0.3 < x2 && x1 < w * 0.7)) {
-                const arrowy = y1 - 70 + Math.sin(Math.abs((Date.now() % 1000) - 500) / 500) * (20);
+
+            // Draw the arrow and the distance text
+            const [showArrow, distance] = arrowFilter(x1, y1, x2, y2, catagory, w, h);
+            if (showArrow) {
+                const floatingOffset = Math.sin(Math.abs((Date.now() % 1000) - 500) / 500) * 20;
+                const arrowy = y1 - 70 + floatingOffset;
                 ctx.drawImage(imgArrowDown, (x1 + x2) / 2 - 64 / 2, arrowy, 64, 64);
+                const disty = y1 - 70 + floatingOffset;
+                const text = distance + 'm';
+                ctx.fillStyle = `rgba(255,0,0,1)`;
+                ctx.font = '30px Consolas';
+                const textWidth = ctx.measureText(text).width;
+                ctx.fillText(text, (x1 + x2) / 2 - textWidth / 2, disty);
             }
+
+            // Draw the catagory text
             ctx.fillStyle = `rgba(128,255,0,${confAlpha})`;
+            ctx.font = '20px Consolas';
             const text = catagory + ' ' + (conf * 100).toFixed();
             const textWidth = ctx.measureText(text).width;
             ctx.fillText(text, (x1 + x2) / 2 - textWidth / 2, y1 - 10);
@@ -210,6 +247,7 @@ function createRearRenderer(canvas: HTMLCanvasElement, w: number, h: number) {
     return { handle, laneCtr, targetsCtr };
 }
 
+/** Performance timer */
 class PerfTimer {
     value = 0;
     start = 0;
@@ -228,6 +266,7 @@ class PerfTimer {
     }
 }
 
+/** Performance counter */
 class PerfCounter {
     total = 0;
     freq = 0;
@@ -238,6 +277,7 @@ class PerfCounter {
     incr() {
         this.total++;
         this.lastIncr = Date.now();
+        this.update();
     }
     update() {
         const now = Date.now();
