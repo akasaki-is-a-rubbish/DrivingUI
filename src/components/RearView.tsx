@@ -8,6 +8,8 @@ const imgArrowDown = loadImage(arrow_down);
 
 const QUEUE_SIZE = 7;
 
+const SHOWN_OBJECTS = ['car', 'person', 'bus', 'truck'];
+
 const HEIGHT_RATIO: Record<string, number> = {
     car: 1,
     person: 0.8,
@@ -20,7 +22,7 @@ function arrowFilter(x1: number, y1: number, x2: number, y2: number, catagory: s
 
     // Whether to show the arrow for this object
     const showingArrow = (
-        ['car', 'person', 'bus', 'truck'].includes(catagory)
+        HEIGHT_RATIO[catagory]
         && (w >= imgW * 0.1 || h >= imgH * 0.1)
         && (imgW * 0.3 < x2 && x1 < imgW * 0.7)
     );
@@ -149,6 +151,9 @@ function createRearRenderer(canvas: HTMLCanvasElement, w: number, h: number) {
 
             // Ignore objects with confidence below 0.2
             if (conf < 0.2) continue;
+
+            // Ignore unrelated objects
+            if (!SHOWN_OBJECTS.includes(catagory)) continue;
 
             // Set alpha according to the confidence
             const confAlpha = 0.4 + ((conf - 0.2) / 0.8) * 0.6;
