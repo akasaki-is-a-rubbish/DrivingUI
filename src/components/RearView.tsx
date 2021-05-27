@@ -3,6 +3,7 @@ import { Client } from '../Client';
 import { frontStats } from '../config';
 import { delay, useWebfxCallback, useWebfxRef } from '../utils';
 import arrow_down from '../../res/arrow_down.svg';
+import { numLimit } from '@yuuza/webfx';
 
 const imgArrowDown = loadImage(arrow_down);
 
@@ -17,7 +18,7 @@ const HEIGHT_RATIO: Record<string, number> = {
     truck: 2
 };
 
-function arrowFilter(x1: number, y1: number, x2: number, y2: number, catagory: string, imgW: number, imgH: number) {
+function arrowFilter(x1: number, y1: number, x2: number, y2: number, catagory: string, imgW: number, imgH: number): [false] | [true, number, number] {
     const w = x2 - x1, h = y2 - y1;
 
     // Whether to show the arrow for this object
@@ -27,12 +28,14 @@ function arrowFilter(x1: number, y1: number, x2: number, y2: number, catagory: s
         && (imgW * 0.3 < x2 && x1 < imgW * 0.7)
     );
 
-    if (!showingArrow) return [showingArrow, 0];
+    if (!showingArrow) return [false];
 
     // Compute the distance displayed above the arrow
     const distance = (HEIGHT_RATIO[catagory] / (h / 400 * (imgH / 1280)));
 
-    return [showingArrow, distance.toFixed(1)];
+    const arrowsize = numLimit(64 / distance * 7, 40, 100);
+
+    return [true, distance, arrowsize];
 }
 
 export const RearView = React.memo(function ({ hidden }: { hidden: boolean }) {
@@ -163,15 +166,19 @@ function createRearRenderer(canvas: HTMLCanvasElement, w: number, h: number) {
             ctx.strokeRect(x1, y1, x2 - x1, y2 - y1);
 
             // Draw the arrow and the distance text
-            const [showArrow, distance] = arrowFilter(x1, y1, x2, y2, catagory, w, h);
+            const [showArrow, distance, arrowsize] = arrowFilter(x1, y1, x2, y2, catagory, w, h);
             if (showArrow) {
+                if (arrowsize === undefined || distance === undefined) throw 'impossible';
+
                 const floatingOffset = Math.sin(Math.abs((Date.now() % 1000) - 500) / 500) * 20;
-                const arrowy = y1 - 70 + floatingOffset;
-                ctx.drawImage(imgArrowDown, (x1 + x2) / 2 - 64 / 2, arrowy, 64, 64);
-                const disty = y1 - 70 + floatingOffset;
-                const text = distance + 'm';
+                const arrowy = y1 - arrowsize - 6 + floatingOffset;
+                ctx.drawImage(imgArrowDown, (x1 + x2) / 2 - arrowsize / 2, arrowy, arrowsize, arrowsize);
+
+                const disty = y1 - arrowsize - 6 + floatingOffset;
+                const textsize = arrowsize / 2;
+                const text = distance.toFixed(1) + 'm';
                 ctx.fillStyle = `rgba(255,0,0,1)`;
-                ctx.font = '30px Consolas';
+                ctx.font = `${textsize}px Consolas`;
                 const textWidth = ctx.measureText(text).width;
                 ctx.fillText(text, (x1 + x2) / 2 - textWidth / 2, disty);
             }
