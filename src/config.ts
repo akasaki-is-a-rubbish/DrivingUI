@@ -10,13 +10,13 @@ export const websocketServer =
 
 
 /** Fake a fixed-sized screen */
-export const fakeScreen = true;
+export const fakeScreen = false;
 
 export const lidarName = 'mainLidar';
 
 export const initData = {
     'back': { s1: 100, s2: 1, s3: 1, s4: 100 },
-    'left': { s1: 500, s2: 300, s3: 100, s4: 300 },
+    'left': { s1: 0, s2: 0, s3: 0, s4: 0 },
     'right': { s1: 0, s2: 0, s3: 0, s4: 0 },
     'front': { s1: 0, s2: 0, s3: 0, s4: 0 },
 };

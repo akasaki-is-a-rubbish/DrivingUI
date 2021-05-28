@@ -100,7 +100,7 @@ video {
   flex-flow: column wrap;
   justify-content: space-around;
   max-height: 100%;
-  max-width: 35%;
+  max-width: 50%;
 }
 
 .camera {

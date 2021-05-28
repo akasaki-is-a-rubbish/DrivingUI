@@ -7,7 +7,7 @@ import { numLimit } from '@yuuza/webfx';
 
 const imgArrowDown = loadImage(arrow_down);
 
-const QUEUE_SIZE = 7;
+const QUEUE_SIZE = 1;
 
 const SHOWN_OBJECTS = ['car', 'person', 'bus', 'truck'];
 
@@ -151,6 +151,10 @@ function createRearRenderer(canvas: HTMLCanvasElement, w: number, h: number) {
         ctx.fillStyle = `rgba(128,255,0,0.8)`;
         for (const t of targets) {
             let [x1, y1, x2, y2, conf, cataId, catagory] = t;
+
+            // const yscale = (9 / 16) / (3 / 4);
+            // y1 *= yscale; y2 *= yscale;
+            // y1 += 10; y2 += 10;
 
             // Ignore objects with confidence below 0.2
             if (conf < 0.2) continue;

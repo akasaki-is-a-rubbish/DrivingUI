@@ -64,7 +64,7 @@ export const TopDownView = React.memo(function (props: { hidden: boolean }) {
 
       ctx.strokeStyle = 'white';
       ctx.lineCap = 'round';
-      ctx.lineWidth = 5;
+      ctx.lineWidth = 10;
 
       ctx.beginPath();
       ctx.resetTransform();
