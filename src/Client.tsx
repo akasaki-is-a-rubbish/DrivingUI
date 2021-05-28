@@ -1,4 +1,4 @@
-import { Action, Callbacks, Ref } from '@yuuza/webfx';
+import { Action, Callbacks, Ref, Timer } from '@yuuza/webfx';
 import { initData, websocketServer } from './config';
 
 export type Data = Record<string, any>;
@@ -32,6 +32,8 @@ export class Client {
   onOpen = new Callbacks<Action>();
   onReceivedBinary = new Callbacks<Action<Binary>>();
 
+  reconnectTimer = new Timer(() => this.connect());
+
   constructor() {
     this.data.value = {};
     this.handleNewData(JSON.parse(JSON.stringify(initData)));
@@ -55,7 +57,7 @@ export class Client {
       this.connectionState.value = 'disconnected';
       if (this.closed) return;
       console.warn('[ws] closed, reconnecting...');
-      setTimeout(() => this.connect(), 3000);
+      this.reconnectTimer.timeout(3000);
     };
     this.ws.onmessage = (e) => {
       // console.info("[ws] msg", e.data);
@@ -101,6 +103,7 @@ export class Client {
     this.closed = true;
     console.warn('[ws] close()');
     this.ws.close();
+    this.reconnectTimer.tryCancel();
   }
 }
 
