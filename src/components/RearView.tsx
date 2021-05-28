@@ -7,7 +7,7 @@ import { numLimit } from '@yuuza/webfx';
 
 const imgArrowDown = loadImage(arrow_down);
 
-const QUEUE_SIZE = 1;
+const QUEUE_SIZE = 7;
 
 const SHOWN_OBJECTS = ['car', 'person', 'bus', 'truck'];
 
@@ -102,12 +102,13 @@ function createRearRenderer(canvas: HTMLCanvasElement, w: number, h: number) {
             const rendertimes = [rafTime, convTime, canvasTime].join(' ');
             const text = `${w}x${h} | fps = ${fpss} | rendered = ${renderedCtr.total} | ${rendertimes} ms`;
             ctx.font = '18px Consolas,monospace';
-            const textWidth = ctx.measureText(text);
-            const left = 400;
+            const metric = ctx.measureText(text);
+            const left = (w / canvas.offsetWidth) * 400;
+            const top = Math.min((h / canvas.offsetHeight) * window.innerHeight, h);
             ctx.fillStyle = 'rgba(0,0,0,0.5)';
-            ctx.fillRect(left, h - 24, textWidth.width + 15, 24);
+            ctx.fillRect(left, top - 24, metric.width + 15, 24);
             ctx.fillStyle = 'white';
-            ctx.fillText(text, left + 10, h - (18 / 2));
+            ctx.fillText(text, left + 10, top - (15 / 2));
         }
     }
 

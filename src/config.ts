@@ -10,7 +10,7 @@ export const websocketServer =
 
 
 /** Fake a fixed-sized screen */
-export const fakeScreen = false;
+export const fakeScreen = true;
 
 export const lidarName = 'mainLidar';
 
