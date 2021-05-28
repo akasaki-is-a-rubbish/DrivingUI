@@ -101,3 +101,7 @@ export function mapArrayObj<T extends object>(keys: (keyof T)[], arr: any[][]): 
         ) as any
     );
 }
+
+export function arrayPick<T>(array: T[], indexies: number[]): T[] {
+    return indexies.map(i => array[i]);
+}

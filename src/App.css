@@ -30,9 +30,9 @@ video {
   /* background: black; */
   /* color: white; */
   overflow: hidden;
-  display: flex;
+  /* display: flex;
   flex-flow: column;
-  justify-content: space-between;
+  justify-content: space-between; */
 }
 
 .App.fakeScreen {
@@ -44,8 +44,7 @@ video {
 }
 
 .activity-outer {
-  flex: 1;
-  position: relative;
+  height: 100%;
 }
 
 .activity {
@@ -68,6 +67,7 @@ video {
   align-items: center;
   justify-content: space-around;
   padding: 0 30px;
+  overflow: hidden;
 }
 
 .car-view {
@@ -94,7 +94,7 @@ video {
   height: 430px;
 }
 
-.cameras {
+/** .cameras {
   align-self: stretch;
   display: flex;
   flex-flow: column wrap;
@@ -108,8 +108,18 @@ video {
   position: relative;
   margin: 0;
   padding: 0;
-  /* display: flex; */
+  // display: flex;
+} */
+
+.cameras {
+  max-width: 50%;
+  height: 100%;
 }
+
+.camera {
+  width: 100%;
+}
+
 
 .camera .label {
   position: absolute;

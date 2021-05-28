@@ -3,7 +3,8 @@ import { Activity, createActivity } from './Activity';
 import { Camera } from '../components/Camera';
 import { TopDownView } from '../components/TopDownView';
 import { Client } from '../Client';
-import { useWebfxRef } from '../utils';
+import { arrayPick, useWebfxRef } from '../utils';
+import { radarCameras } from '../config';
 
 export const RadarAndCamsActivity = createActivity(function (props) {
   // const data = useWebfxRef(Client.current.data);
@@ -19,21 +20,25 @@ export const RadarAndCamsActivity = createActivity(function (props) {
 });
 
 function SomeCameras() {
-  const [cameras, setCameras] = useState<string[]>([
-    // '99e5e0461eb2d98dcf640ff2ba595363c05dc9b1549da3303c47dac714d08366',
-    // '2b3eb2f37f900060e0e8f0d1e8e497109c821fc24f0ae8dc3eef5495123d2ae8'
-  ]);
+  const [cameras, setCameras] = useState<string[]>([]);
   useEffect(() => {
     navigator.mediaDevices.enumerateDevices()
       .then(x => {
         console.info('devices', x);
-        setCameras(x.filter(x => x.kind == 'videoinput').map(x => x.deviceId));
+        setCameras(
+          arrayPick(
+            x.filter(x => x.kind == 'videoinput')
+              .map(x => x.deviceId)
+            , radarCameras
+          )
+          .filter(x => !!x)
+        );
       }, console.error);
-  }, []);
-  console.info({cameras})
+  }, [radarCameras]);
+  console.info({ cameras })
   return (
     <div className="cameras">
-      {cameras.map(x => <Camera key={x} device={x} />)}
+      {cameras.map(x => <Camera key={x} device={x} maxHeight={(100 / cameras.length) + '%'} />)}
       {/* <Camera img="res/cam_back.png"></Camera> */}
     </div>
   );

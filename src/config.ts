@@ -3,9 +3,6 @@ import { mapArrayObj } from "./utils";
 export const websocketServer =
     'ws://localhost:8765'
     // 'ws://10.0.0.1:8765/'
-    // 'ws://10.33.51.112:8765/'
-    // 'ws://192.168.43.157:8765/'
-    // 'ws://192.168.1.137:8765/'
     ;
 
 
@@ -14,37 +11,19 @@ export const fakeScreen = true;
 
 export const lidarName = 'mainLidar';
 
+
+export const radarCameras = [
+    1,
+    2,
+    3,
+];
+
 export const initData = {
     // 'back': { s1: 100, s2: 150, s3: 150, s4: 100 },
     // 'left': { s1: 0, s2: 0, s3: 0, s4: 0 },
     // 'right': { s1: 0, s2: 0, s3: 0, s4: 0 },
     // 'front': { s1: 0, s2: 0, s3: 0, s4: 0 },
 };
-
-let curpos = -50;
-export const sensorMap: Record<string, { spread: number, pos: number }> = Object.fromEntries(
-    mapArrayObj(
-        ['key', 'spread', 'pos'],
-        [
-            ['left_s4', 31.25, curpos += 31.25],
-            ['left_s3', 31.25, curpos += 31.25],
-            ['left_s2', 31.25, curpos += 31.25],
-            ['left_s1', 31.25, curpos += 31.25],
-            ['front_s1', 31.25, curpos += 31.25],
-            ['front_s2', 31.25, curpos += 31.25],
-            ['front_s3', 31.25, curpos += 31.25],
-            ['front_s4', 31.25, curpos += 31.25],
-            ['right_s4', 31.25, curpos += 31.25],
-            ['right_s3', 31.25, curpos += 31.25],
-            ['right_s2', 31.25, curpos += 31.25],
-            ['right_s1', 31.25, curpos += 31.25],
-            ['back_s4', 31.25, curpos += 31.25],
-            ['back_s3', 31.25, curpos += 31.25],
-            ['back_s2', 31.25, curpos += 31.25],
-            ['back_s1', 31.25, curpos += 31.25],
-        ]
-    ).map(({ key, spread, pos }) => [key, { spread, pos: pos % 500 }])
-);
 
 export const frontStats = true;
 
@@ -73,3 +52,29 @@ export function sensorFunction(x: number) {
 
 export type RGB = { r: number, g: number, b: number };
 export type RGBA = RGB & { a: number };
+
+
+let curpos = -50;
+export const sensorMap: Record<string, { spread: number, pos: number }> = Object.fromEntries(
+    mapArrayObj(
+        ['key', 'spread', 'pos'],
+        [
+            ['left_s4', 31.25, curpos += 31.25],
+            ['left_s3', 31.25, curpos += 31.25],
+            ['left_s2', 31.25, curpos += 31.25],
+            ['left_s1', 31.25, curpos += 31.25],
+            ['front_s1', 31.25, curpos += 31.25],
+            ['front_s2', 31.25, curpos += 31.25],
+            ['front_s3', 31.25, curpos += 31.25],
+            ['front_s4', 31.25, curpos += 31.25],
+            ['right_s4', 31.25, curpos += 31.25],
+            ['right_s3', 31.25, curpos += 31.25],
+            ['right_s2', 31.25, curpos += 31.25],
+            ['right_s1', 31.25, curpos += 31.25],
+            ['back_s4', 31.25, curpos += 31.25],
+            ['back_s3', 31.25, curpos += 31.25],
+            ['back_s2', 31.25, curpos += 31.25],
+            ['back_s1', 31.25, curpos += 31.25],
+        ]
+    ).map(({ key, spread, pos }) => [key, { spread, pos: pos % 500 }])
+);
