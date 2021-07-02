@@ -5,6 +5,7 @@ import { MusicActivity } from './MusicActivity';
 import { HomeActivity } from './HomeActivity';
 import { FrontActivity } from './FrontActivity';
 import { NavActivity } from "./NavActivity";
+import { StatusActivity } from "./StatusActivity";
 import { SettingsActivity } from "./SettingsActivity";
 
 export const activities = [
@@ -12,6 +13,7 @@ export const activities = [
     { inBar: true, key: 'rac', friendlyName: '倒车', activity: RadarAndCamsActivity, icon: Radar },
     // { inBar: true, key: 'lidar', friendlyName: '雷达', activity: LidarActivity, icon: LocationOn },
     { inBar: true, key: 'music', friendlyName: '音乐', activity: MusicActivity, icon: MusicIcon },
+    { inBar: true, key: 'status', friendlyName: '状态', activity: StatusActivity, icon: Menu},
     { inBar: true, key: 'home', friendlyName: '菜单', activity: HomeActivity, icon: Menu},
     { inBar: false, key: 'nav', friendlyName: '导航', activity: NavActivity, icon: Map },
     { inBar: false, key: 'settings', friendlyName: '设置', activity: SettingsActivity, icon: Settings },
