@@ -14,8 +14,8 @@ npm run dev
 ```shell
 git submodule update --init
 cd MusicCloud
-npm i
-npm run build
+pnpm i
+pnpm run build
 ```
 
 ## Configuration
