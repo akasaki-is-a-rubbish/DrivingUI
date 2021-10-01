@@ -11,6 +11,8 @@ export const fakeScreen = true;
 
 export const lidarName = 'mainLidar';
 
+export const showLogo = false;
+
 
 export const radarCameras = [
     1,
