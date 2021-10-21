@@ -20,6 +20,13 @@ function App() {
   // The singleton Client is initialized here.
   useEffect(() => {
     Client.current.connect();
+    Client.current.onOpen.add(() => {
+      if (!Client.current.remoteServer)
+        Client.current.sendJson({
+          cmd: 'videoEnabled',
+          value: true,
+        })
+    })
     return () => Client.current.close();
   }, []);
 

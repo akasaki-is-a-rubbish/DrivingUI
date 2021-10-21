@@ -34,18 +34,24 @@ export class Client {
 
   reconnectTimer = new Timer(() => this.connect());
 
+  remoteServer: string | null = null;
+
   constructor() {
     this.data.value = {};
     this.handleNewData(JSON.parse(JSON.stringify(initData)));
     this.connectionState.value = 'disconnected';
   }
+  connectTo(ip: string) {
+    this.remoteServer = 'ws://' + ip + ':8765';
+    this.connect();
+  }
   connect() {
     // In case we are reconnecting
-    this.closed = false;
-    this.ws?.close();
+    this.close();
 
     // Create a new WebSocket instance
-    this.ws = new WebSocket(websocketServer);
+    this.closed = false;
+    this.ws = new WebSocket(this.remoteServer || websocketServer);
     this.ws.binaryType = binaryType;
     this.ws.onopen = () => {
       console.info("[ws] open");
@@ -92,7 +98,7 @@ export class Client {
   }
 
   send(obj: any) {
-    this.ws.send(obj);
+    this.ws?.send(obj);
   }
 
   sendJson(jsonObj: any) {
@@ -100,10 +106,15 @@ export class Client {
   }
 
   close() {
+    this.reconnectTimer.tryCancel();
+    if (this.closed) return;
     this.closed = true;
     console.warn('[ws] close()');
-    this.ws.close();
-    this.reconnectTimer.tryCancel();
+    if (this.ws) {
+      this.ws.onclose = null;
+      this.ws.close();
+      this.ws = null!;
+    }
   }
 }
 

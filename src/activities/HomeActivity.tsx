@@ -21,7 +21,7 @@ export const HomeActivity = createActivity(function (props) {
                 </Card>
                 <Card>
                     <CardIcon><Sun /></CardIcon>
-                    <CardTitle>32 °C</CardTitle>
+                    <CardTitle>22 °C</CardTitle>
                 </Card>
                 <Card onClick={() => props.navState.value = 'front'}>
                     <CardIcon><Movie /></CardIcon>

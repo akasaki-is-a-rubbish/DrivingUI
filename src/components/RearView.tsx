@@ -244,7 +244,10 @@ function createRearRenderer(canvas: HTMLCanvasElement, w: number, h: number) {
 
             const delayTask = delay(30);
 
-            if (imgQueue.length == QUEUE_SIZE) {
+            const queuesize = Client.current.remoteServer ? 1 : QUEUE_SIZE;
+            while (imgQueue.length > queuesize)
+                imgQueue.shift();
+            if (imgQueue.length == queuesize) {
                 const renderBuf = imgQueue.shift()!;
                 render(renderBuf);
                 new Uint8Array(renderBuf).set(new Uint8Array(pendingImage));

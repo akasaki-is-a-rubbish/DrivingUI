@@ -11,7 +11,7 @@ export const MusicActivity = createActivity(function (props) {
     iframe.current.contentWindow?.postMessage({
       theme: appTheme.enabledRef.value ? 'dark' : 'light'
     }, '*');
-  }, [useWebfxRef(appTheme.enabledRef)])
+  }, [useWebfxRef(appTheme.enabledRef), iframe.current])
   return (
     <Activity hidden={props.hidden} className={"music"}>
       <iframe ref={iframe} style={{height: '100%', width: '100%'}} src={"./mc/index.html?time=" + useMemo(() => Date.now(), [])} frameBorder="0"></iframe>
