@@ -1,7 +1,8 @@
 import { mapArrayObj } from "./utils";
 
 export const websocketServer =
-    'ws://localhost:8765'
+    'ws://' + window.location.hostname + ':8765'
+    // 'ws://localhost:8765'
     // 'ws://10.0.0.1:8765/'
     ;
 

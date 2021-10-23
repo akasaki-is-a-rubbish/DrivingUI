@@ -2,7 +2,7 @@
   "name": "vehicleapp",
   "version": "0.0.0",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --host",
     "electron": "electron src/electron-main.js",
     "build": "tsc && vite build",
     "serve": "vite preview"
