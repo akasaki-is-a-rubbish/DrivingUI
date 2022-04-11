@@ -8,6 +8,7 @@ import * as webfx from "@yuuza/webfx";
 import { fakeScreen } from './config';
 import { activities, ActivityName, defaultActivitiy } from './activities';
 import { appTheme } from './appTheme';
+import { navContext } from './contexts';
 
 
 function App() {
@@ -46,18 +47,20 @@ function App() {
   // const connection = useWebfxRef(Client.current.connectionState);
 
   return (
-    <div className={className("App", { fakeScreen })}>
-      {/* {connection == 'disconnected' ? <div>(Disconnected)</div> : null} */}
-      <div className="activity-outer">
-        {
-          activities.map(x =>
-            <x.activity key={x.key} hidden={navState != x.key} navState={navStateRef} />
-          )
-        }
+    <navContext.Provider value={navStateRef}>
+      <div className={className("App", { fakeScreen })}>
+        {/* {connection == 'disconnected' ? <div>(Disconnected)</div> : null} */}
+        <div className="activity-outer">
+          {
+            activities.map(x =>
+              <x.activity key={x.key} hidden={navState != x.key} navState={navStateRef} />
+            )
+          }
+        </div>
+        <NavBar valRef={navStateRef} />
+        {/* <Snackbar elevation={6} variant="filled" /> */}
       </div>
-      <NavBar valRef={navStateRef} />
-      {/* <Snackbar elevation={6} variant="filled" /> */}
-    </div>
+    </navContext.Provider>
   );
 }
 

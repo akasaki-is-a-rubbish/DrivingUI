@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Activity, createActivity } from './Activity';
 import { Box, Button, Card, createMuiTheme, FormControlLabel, FormGroup, ListItem, Switch, ThemeProvider } from "@material-ui/core";
 import { appTheme } from '../appTheme';
@@ -7,8 +7,10 @@ import { blue } from '@material-ui/core/colors';
 import { Client } from '../Client';
 import { List } from '@material-ui/core';
 import { Container } from '@material-ui/core';
+import { navContext } from "../contexts"
 
 export const SettingsActivity = createActivity(function (props) {
+    const navState = useContext(navContext);
     return (
         <Activity hidden={props.hidden} className={"settings"}>
             <ThemeProvider theme={createMuiTheme({
@@ -29,6 +31,15 @@ export const SettingsActivity = createActivity(function (props) {
                             }} />
                         } label="夜间模式" />
                     </FormGroup>
+                </Container>
+                <h2>用户</h2>
+                <Container>
+                    <Button
+                        variant="contained" color="primary"
+                        onClick={() => navState.value = "pair"}
+                    >
+                        绑定用户
+                    </Button>
                 </Container>
                 <h2>在线设备</h2>
                 <div>

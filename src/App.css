@@ -232,3 +232,10 @@ video {
   margin-left: 20px;
   font-size: 30px;
 }
+
+.pair {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-bottom: 2rem;
+}

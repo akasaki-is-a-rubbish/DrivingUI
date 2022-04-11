@@ -7,6 +7,7 @@ import { FrontActivity } from './FrontActivity';
 import { NavActivity } from "./NavActivity";
 import { StatusActivity } from "./StatusActivity";
 import { SettingsActivity } from "./SettingsActivity";
+import { PairActivity } from "./PairActivity";
 
 export const activities = [
     { inBar: true, key: 'front', friendlyName: '行驶', activity: FrontActivity, icon: Cars },
@@ -17,6 +18,7 @@ export const activities = [
     { inBar: true, key: 'home', friendlyName: '菜单', activity: HomeActivity, icon: Menu},
     { inBar: false, key: 'nav', friendlyName: '导航', activity: NavActivity, icon: Map },
     { inBar: false, key: 'settings', friendlyName: '设置', activity: SettingsActivity, icon: Settings },
+    { inBar: false, key: 'pair', friendlyName: '配对', activity: PairActivity, icon: Settings },
 ] as const;
 
 export type ActivityName = (typeof activities)[number]['key'];
