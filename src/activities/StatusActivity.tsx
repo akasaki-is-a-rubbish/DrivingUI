@@ -1,4 +1,4 @@
-import { Box, ButtonBase, styled } from "@material-ui/core";
+import { Box, ButtonBase, styled } from "@mui/material";
 import React from 'react';
 import { Activity, createActivity } from './Activity';
 import { ClockText } from "../components/Clock";

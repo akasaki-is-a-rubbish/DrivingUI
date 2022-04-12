@@ -5,8 +5,14 @@
 ## Install & Run
 
 ```shell
-npm i
-npm run dev
+yarn
+yarn dev
+```
+
+Run with electron (electron is requried):
+
+```shell
+yarn electron
 ```
 
 ## Configuration

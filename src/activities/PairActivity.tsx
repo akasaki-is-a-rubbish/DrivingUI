@@ -1,7 +1,7 @@
 import { QRCodeSVG } from "qrcode.react";
 import React from "react"
 import { createActivity, Activity } from "./Activity"
-import Container from "@material-ui/core/Container"
+import Container from "@mui/material/Container"
 
 export const PairActivity = createActivity(function (props) {
     return (

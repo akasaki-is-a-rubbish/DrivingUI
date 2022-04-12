@@ -1,4 +1,4 @@
-import { Box, ButtonBase, styled } from "@material-ui/core";
+import { Box, ButtonBase, styled } from "@mui/material";
 import { Ref } from "@yuuza/webfx";
 import React from "react";
 import { ActivityName } from ".";
@@ -63,7 +63,9 @@ const Card = styled(ButtonBase)({
 
 const CardIcon = styled(Box)({
     '& svg': {
-        fontSize: '100px'
+        // fontSize: '100px'
+        width: '100px',
+        height: '100px',
     }
 });
 

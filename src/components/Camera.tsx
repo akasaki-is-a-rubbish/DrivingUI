@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import CameraIcon from "@material-ui/icons/Camera";
+import CameraIcon from "@mui/icons-material/Camera";
 
 export const Camera = React.memo(function ({ device, img, fake, maxHeight }: { device?: string; img?: string; fake?: boolean; maxHeight: string }) {
     const video = useRef<HTMLVideoElement>(null);

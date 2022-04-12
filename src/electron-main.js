@@ -37,5 +37,5 @@ var devserver = spawn('node', ['node_modules/vite/bin/vite.js'], {
   stdio: 'pipe',
   shell: false
 });
-devserver.stdout.pipe(devserver.stdout);
-devserver.stderr.pipe(devserver.stderr);
+devserver.stdout.pipe(process.stdout);
+devserver.stderr.pipe(process.stderr);
