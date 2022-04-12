@@ -81,6 +81,14 @@ export class Client {
   }
 
   private handleNewData(parsed: any) {
+    if (parsed.requestId) {
+      const callback = this.requestCallbacks[parsed.requestId];
+      if (callback) {
+        callback(parsed);
+        delete this.requestCallbacks[parsed.requestId];
+      }
+      return;
+    }
     for (const key in parsed) {
       if (Object.prototype.hasOwnProperty.call(parsed, key)) {
         const val = parsed[key];
@@ -103,6 +111,17 @@ export class Client {
 
   sendJson(jsonObj: any) {
     this.send(JSON.stringify(jsonObj));
+  }
+
+  lastRequestId = 0;
+  requestCallbacks: Record<number, (obj: object) => void> = {};
+
+  request(obj: object) {
+    const id = ++this.lastRequestId;
+    this.sendJson({requestId: id, ...obj});
+    return new Promise<object>((resolve) => {
+      this.requestCallbacks[id] = resolve;
+    });
   }
 
   close() {
