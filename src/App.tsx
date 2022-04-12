@@ -10,6 +10,7 @@ import { activities, ActivityName, defaultActivitiy } from './activities';
 import { appTheme } from './appTheme';
 import { navContext } from './contexts';
 
+appTheme.init();
 
 function App() {
   // The Ref of (router) navigation state is created here.
@@ -33,7 +34,6 @@ function App() {
 
   // Initializing app theme
   useEffect(() => {
-    appTheme.init();
     var keydown = (e: KeyboardEvent) => {
       if (e.ctrlKey && e.key == 'd') {
         e.preventDefault();

@@ -11,6 +11,7 @@ import { navContext } from "../contexts"
 
 export const SettingsActivity = createActivity(function (props) {
     const navState = useContext(navContext);
+    const dark = useWebfxRef(appTheme.enabledRef);
     return (
         <Activity hidden={props.hidden} className={"settings"}>
             <ThemeProvider theme={createMuiTheme({
@@ -26,7 +27,7 @@ export const SettingsActivity = createActivity(function (props) {
                 <Container>
                     <FormGroup>
                         <FormControlLabel control={
-                            <Switch size="medium" value={useWebfxRef(appTheme.enabledRef)} onChange={(e, val) => {
+                            <Switch size="medium" checked={dark} onChange={(e, val) => {
                                 appTheme.toggle(val);
                             }} />
                         } label="夜间模式" />
