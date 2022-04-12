@@ -21,6 +21,9 @@ export const appTheme = {
                 brightness: 100,
                 contrast: 90,
                 sepia: 10
+            }, {
+                ignoreInlineStyle: ['.qrcode *'],
+                ignoreImageAnalysis: ['.qrcode *'],
             });
         } else {
             darkreader.disable();
