@@ -5,7 +5,8 @@
     "dev": "vite --host",
     "electron": "electron src/electron-main.js",
     "build": "tsc && vite build",
-    "serve": "vite preview"
+    "serve": "vite preview",
+    "build:mc": "cd MusicCloud && pnpm i && pnpm build && cp -r dist/. ../public/mc/"
   },
   "dependencies": {
     "@emotion/react": "^11.9.0",
